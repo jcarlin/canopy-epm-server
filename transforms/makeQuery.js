@@ -13,7 +13,6 @@ const makeQuery = rawTransform => {
   const query = `SELECT ${dimensions},${metrics} FROM ${table} WHERE ${filterStatements.join(
     ' AND '
   )}`;
-  console.log(query);
   return query;
 };
 

@@ -1,0 +1,446 @@
+{
+  "page": [
+    {
+      "list": [
+        {
+          "dimension": "Variation",
+          "member": "Periodic"
+        },
+        {
+          "dimension": "Variation",
+          "member": "YTD"
+        }
+      ]
+    }
+  ],
+  "regions": [
+    {
+      "rowIndex": 0,
+      "colIndex": 0,
+      "rowDepth": 2,
+      "colDepth": 3,
+      "showRowHeaders": true,
+      "showColHeaders": true,
+      "includeVariance": false,
+      "includeVariancePct": false,
+      "pinned": [
+        {
+          "dimension": "Metric",
+          "member": "Net Profit"
+        },
+        {
+          "dimension": "Variation",
+          "member": "$LIST$"
+        }
+      ],
+      "rows": [
+        {
+          "dimension": "Department",
+          "member": "Sales",
+          "rows": [
+            {
+              "dimension": "Account",
+              "member": "40000 - REVENUE",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "46FAC - FACILITY RENTAL",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "46PAT - PATENTS/ROYALTIES",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "49001 - TRANSFERS",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "50000 - TOTAL EXPENSES",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "500SE - COMPENSATION EXPENSES",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "51100 - SALARY AND WAGES",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "56900 - INDIRECT COSTS",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "ENDFB - ENDING BALANCE",
+              "data entry": false
+            }
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "dimension": "Scenario",
+          "member": "Actual",
+          "columns": [
+            {
+              "dimension": "Time",
+              "member": "2017 Jan",
+              "columns": [
+                {
+                  "dimension": "Product",
+                  "member": "Books",
+                  "data entry": false
+                },
+                {
+                  "dimension": "Product",
+                  "member": "DVDs",
+                  "data entry": false
+                },
+                {
+                  "dimension": "Product",
+                  "member": "Healthcare",
+                  "data entry": false
+                },
+                {
+                  "dimension": "Product",
+                  "member": "Automotive",
+                  "data entry": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rowIndex": 0,
+      "colIndex": 1,
+      "rowDepth": 2,
+      "colDepth": 3,
+      "showRowHeaders": false,
+      "showColHeaders": true,
+      "includeVariance": false,
+      "includeVariancePct": false,
+      "pinned": [
+        {
+          "dimension": "Metric",
+          "member": "Net Profit"
+        },
+        {
+          "dimension": "Variation",
+          "member": "$LIST$"
+        }
+      ],
+      "rows": [
+        {
+          "dimension": "Department",
+          "member": "Sales",
+          "rows": [
+            {
+              "dimension": "Account",
+              "member": "40000 - REVENUE",
+              "data entry": true
+            },
+            {
+              "dimension": "Account",
+              "member": "46FAC - FACILITY RENTAL",
+              "data entry": true
+            },
+            {
+              "dimension": "Account",
+              "member": "46PAT - PATENTS/ROYALTIES",
+              "data entry": true
+            },
+            {
+              "dimension": "Account",
+              "member": "49001 - TRANSFERS",
+              "data entry": true
+            },
+            {
+              "dimension": "Account",
+              "member": "50000 - TOTAL EXPENSES",
+              "data entry": true
+            },
+            {
+              "dimension": "Account",
+              "member": "500SE - COMPENSATION EXPENSES",
+              "data entry": true
+            },
+            {
+              "dimension": "Account",
+              "member": "51100 - SALARY AND WAGES",
+              "data entry": true
+            },
+            {
+              "dimension": "Account",
+              "member": "56900 - INDIRECT COSTS",
+              "data entry": true
+            },
+            {
+              "dimension": "Account",
+              "member": "ENDFB - ENDING BALANCE",
+              "data entry": true
+            }
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "dimension": "Scenario",
+          "member": "Budget",
+          "columns": [
+            {
+              "dimension": "Time",
+              "member": "2017 Feb",
+              "columns": [
+                {
+                  "dimension": "Product",
+                  "member": "Books",
+                  "data entry": true
+                },
+                {
+                  "dimension": "Product",
+                  "member": "DVDs",
+                  "data entry": false
+                },
+                {
+                  "dimension": "Product",
+                  "member": "Healthcare",
+                  "data entry": false
+                },
+                {
+                  "dimension": "Product",
+                  "member": "Automotive",
+                  "data entry": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rowIndex": 1,
+      "colIndex": 0,
+      "rowDepth": 2,
+      "colDepth": 3,
+      "showRowHeaders": true,
+      "showColHeaders": false,
+      "includeVariance": false,
+      "includeVariancePct": false,
+      "pinned": [
+        {
+          "dimension": "Metric",
+          "member": "Net Profit"
+        },
+        {
+          "dimension": "Variation",
+          "member": "$LIST$"
+        }
+      ],
+      "rows": [
+        {
+          "dimension": "Department",
+          "member": "Marketing",
+          "rows": [
+            {
+              "dimension": "Account",
+              "member": "40000 - REVENUE",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "46FAC - FACILITY RENTAL",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "46PAT - PATENTS/ROYALTIES",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "49001 - TRANSFERS",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "50000 - TOTAL EXPENSES",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "500SE - COMPENSATION EXPENSES",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "51100 - SALARY AND WAGES",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "56900 - INDIRECT COSTS",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "ENDFB - ENDING BALANCE",
+              "data entry": false
+            }
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "dimension": "Scenario",
+          "member": "Actual",
+          "columns": [
+            {
+              "dimension": "Time",
+              "member": "2017 Jan",
+              "columns": [
+                {
+                  "dimension": "Product",
+                  "member": "Books",
+                  "data entry": false
+                },
+                {
+                  "dimension": "Product",
+                  "member": "DVDs",
+                  "data entry": false
+                },
+                {
+                  "dimension": "Product",
+                  "member": "Healthcare",
+                  "data entry": false
+                },
+                {
+                  "dimension": "Product",
+                  "member": "Automotive",
+                  "data entry": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rowIndex": 1,
+      "colIndex": 1,
+      "rowDepth": 2,
+      "colDepth": 3,
+      "showRowHeaders": false,
+      "showColHeaders": false,
+      "includeVariance": false,
+      "includeVariancePct": false,
+      "pinned": [
+        {
+          "dimension": "Metric",
+          "member": "Net Profit"
+        },
+        {
+          "dimension": "Variation",
+          "member": "$LIST$"
+        }
+      ],
+      "rows": [
+        {
+          "dimension": "Department",
+          "member": "Marketing",
+          "rows": [
+            {
+              "dimension": "Account",
+              "member": "40000 - REVENUE",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "46FAC - FACILITY RENTAL",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "46PAT - PATENTS/ROYALTIES",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "49001 - TRANSFERS",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "50000 - TOTAL EXPENSES",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "500SE - COMPENSATION EXPENSES",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "51100 - SALARY AND WAGES",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "56900 - INDIRECT COSTS",
+              "data entry": false
+            },
+            {
+              "dimension": "Account",
+              "member": "ENDFB - ENDING BALANCE",
+              "data entry": false
+            }
+          ]
+        }
+      ],
+      "columns": [
+        {
+          "dimension": "Scenario",
+          "member": "Budget",
+          "columns": [
+            {
+              "dimension": "Time",
+              "member": "2017 Feb",
+              "columns": [
+                {
+                  "dimension": "Product",
+                  "member": "Books",
+                  "data entry": false
+                },
+                {
+                  "dimension": "Product",
+                  "member": "DVDs",
+                  "data entry": false
+                },
+                {
+                  "dimension": "Product",
+                  "member": "Healthcare",
+                  "data entry": false
+                },
+                {
+                  "dimension": "Product",
+                  "member": "Automotive",
+                  "data entry": false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
