@@ -4,9 +4,11 @@ const express = require('express');
 const cors = require('cors');
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
+const safeEval = require('safe-eval');
 const { Client } = require('pg');
 const { makeQuery } = require('./transforms');
 const { seekElements } = require('./util');
+const { uniqBy } = require('lodash');
 
 const app = express();
 const client = new Client({
@@ -50,30 +52,65 @@ app.get('/ping', async (req, res) => {
 
       fs.readFile('./manifests/manifest.json', (err, data) => {
         const manifest = JSON.parse(data);
-        let extracted = [];
+        let extractedColumns = [];
         manifest.regions.forEach(region => {
-          extracted.push({
+          extractedColumns.push({
+            columns: seekElements(region, 'columns')
+          });
+        });
+
+        let extractedRows = [];
+        manifest.regions.forEach(region => {
+          extractedRows.push({
             rows: seekElements(region, 'rows'),
             metric: region.pinned[0].member
           });
         });
-        let output = [];
-        extracted.forEach(extraction => {
-          extraction.rows.forEach(item => {
-            let metricValue = dbData.rows.find(
-              row =>
-                row.department === item.department &&
-                row.account === item.account
-            );
-            output.push({
-              ...item,
-              [extraction.metric]: metricValue
-                ? metricValue[extraction['metric']]
-                : 0
+
+        const interestedColumns = extractedColumns[0];
+        const interestedRows = extractedRows[0];
+
+        let rowDefs = [];
+        let colDefs = [];
+        interestedRows.rows.forEach(row => {
+          let rootRow = {
+            ...row
+          };
+          interestedColumns.columns.forEach(column => {
+            let rootColumn = {
+              ...column
+            };
+            const columnKeys = Object.keys(column);
+            const rowKeys = Object.keys(row);
+            let keyString = '';
+            let compareString = '';
+            columnKeys.forEach((key, i) => {
+              i === columnKeys.length - 1
+                ? (keyString += `${column[key]}`)
+                : (keyString += `${column[key]}_`);
+              compareString += `dbRow.${key} === column.${key} && `;
             });
+            rowKeys.forEach((key, i) => {
+              compareString += `dbRow.${key} === row.${key}`;
+              i === rowKeys.length - 1
+                ? (compareString += '')
+                : (compareString += ' && ');
+            });
+
+            rootColumn['field'] = keyString;
+
+            rootRow[keyString] = dbData.rows.find(dbRow => eval(compareString))[
+              interestedRows['metric']
+            ];
+
+            colDefs.push(rootColumn);
           });
+          rowDefs.push(rootRow);
         });
-        return res.json({ output });
+        return res.json({
+          colDefs: uniqBy(colDefs, 'field'),
+          rowDefs
+        });
       });
     });
   });
@@ -103,6 +140,23 @@ app.get('/manifest', (req, res) => {
     }
     const manifest = JSON.parse(data);
     res.json({ manifest });
+  });
+});
+
+app.get('/data', (req, res) => {
+  fs.readFile('./transforms/sales-by-product.json', (err, data) => {
+    if (err) {
+      return res.json({ error });
+    }
+
+    const query = makeQuery(data);
+
+    client.query(query, (error, data) => {
+      if (error) {
+        return res.json({ error });
+      }
+      res.json({ data });
+    });
   });
 });
 
