@@ -35,7 +35,7 @@ const checkJwt = jwt({
 app.use(cors());
 // app.use(checkJwt);
 
-app.get('/ping', async (req, res) => {
+app.post('/ping', async (req, res) => {
   fs.readFile('./transforms/sales-by-product.json', (err, data) => {
     if (err) {
       return res.json({ error });
