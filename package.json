@@ -9,11 +9,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/simpulton/canopy-epm-server.git"
+    "url": "git+ssh://git@bitbucket.org/canopyepm/canopy-epm-server.git"
   },
   "author": "Ryan Chenkie <ryan@elevatedigital.io>",
   "license": "UNLICENSED",
-  "homepage": "https://bitbucket.org/simpulton/canopy-epm-server#readme",
+  "homepage": "https://bitbucket.org/canopyepm/canopy-epm-server#readme",
   "devDependencies": {
     "nodemon": "^1.12.1"
   },
