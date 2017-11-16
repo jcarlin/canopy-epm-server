@@ -90,30 +90,36 @@
         {
           "dimension": "Scenario",
           "member": "Actual",
+          "level": 0,
           "columns": [
             {
               "dimension": "Time",
               "member": "2017 Jan",
+              "level": 1,
               "columns": [
                 {
                   "dimension": "Product",
                   "member": "Books",
-                  "data entry": false
+                  "data entry": false,
+                  "level": 2
                 },
                 {
                   "dimension": "Product",
                   "member": "DVDs",
-                  "data entry": false
+                  "data entry": false,
+                  "level": 2
                 },
                 {
                   "dimension": "Product",
                   "member": "Healthcare",
-                  "data entry": false
+                  "data entry": false,
+                  "level": 2
                 },
                 {
                   "dimension": "Product",
                   "member": "Automotive",
-                  "data entry": false
+                  "data entry": false,
+                  "level": 2
                 }
               ]
             }
@@ -197,30 +203,36 @@
         {
           "dimension": "Scenario",
           "member": "Budget",
+          "level": 0,
           "columns": [
             {
               "dimension": "Time",
               "member": "2017 Feb",
+              "level": 1,
               "columns": [
                 {
                   "dimension": "Product",
                   "member": "Books",
-                  "data entry": true
+                  "data entry": true,
+                  "level": 2
                 },
                 {
                   "dimension": "Product",
                   "member": "DVDs",
-                  "data entry": false
+                  "data entry": false,
+                  "level": 2
                 },
                 {
                   "dimension": "Product",
                   "member": "Healthcare",
-                  "data entry": false
+                  "data entry": false,
+                  "level": 2
                 },
                 {
                   "dimension": "Product",
                   "member": "Automotive",
-                  "data entry": false
+                  "data entry": false,
+                  "level": 2
                 }
               ]
             }
@@ -304,30 +316,36 @@
         {
           "dimension": "Scenario",
           "member": "Actual",
+          "level": 0,
           "columns": [
             {
               "dimension": "Time",
               "member": "2017 Jan",
+              "level": 1,
               "columns": [
                 {
                   "dimension": "Product",
                   "member": "Books",
-                  "data entry": false
+                  "data entry": false,
+                  "level": 2
                 },
                 {
                   "dimension": "Product",
                   "member": "DVDs",
-                  "data entry": false
+                  "data entry": false,
+                  "level": 2
                 },
                 {
                   "dimension": "Product",
                   "member": "Healthcare",
-                  "data entry": false
+                  "data entry": false,
+                  "level": 2
                 },
                 {
                   "dimension": "Product",
                   "member": "Automotive",
-                  "data entry": false
+                  "data entry": false,
+                  "level": 2
                 }
               ]
             }
@@ -411,30 +429,36 @@
         {
           "dimension": "Scenario",
           "member": "Budget",
+          "level": 0,
           "columns": [
             {
               "dimension": "Time",
               "member": "2017 Feb",
+              "level": 1,
               "columns": [
                 {
                   "dimension": "Product",
                   "member": "Books",
-                  "data entry": false
+                  "data entry": false,
+                  "level": 2
                 },
                 {
                   "dimension": "Product",
                   "member": "DVDs",
-                  "data entry": false
+                  "data entry": false,
+                  "level": 2
                 },
                 {
                   "dimension": "Product",
                   "member": "Healthcare",
-                  "data entry": false
+                  "data entry": false,
+                  "level": 2
                 },
                 {
                   "dimension": "Product",
                   "member": "Automotive",
-                  "data entry": false
+                  "data entry": false,
+                  "level": 2
                 }
               ]
             }

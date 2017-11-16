@@ -18,7 +18,19 @@ const extractFields = elements => {
   });
 };
 
-const buildElements = (oldElements, newElements) => {
+const extractColumns = columns => {
+  return columns.map(column => {
+    if (!column.dimension || !column.member) return;
+    return {
+      [makeLowerCase(column.dimension)]: {
+        value: column.member,
+        level: column.level
+      }
+    };
+  });
+};
+
+const buildElements = (oldElements, newElements, count) => {
   let output = [];
   newElements.forEach(newElement => {
     oldElements.forEach(oldElement => {
@@ -28,20 +40,29 @@ const buildElements = (oldElements, newElements) => {
       });
     });
   });
+
   return output;
 };
 
-const seekElements = (elements, type, built = []) => {
+const seekElements = (elements, type, built = [], count = 0) => {
   let children = elements[type];
   let builtElements;
+  let newBuild;
   if (children) {
-    builtElements = buildElements(built, extractFields(children));
-    const newBuild = [
-      Object.assign({}, ...extractFields(children), ...builtElements)
-    ];
+    if (type === 'columns') {
+      builtElements = buildElements(built, extractColumns(children), count);
+      newBuild = [
+        Object.assign({}, ...extractColumns(children), ...builtElements)
+      ];
+    } else {
+      builtElements = buildElements(built, extractFields(children), count);
+      newBuild = [
+        Object.assign({}, ...extractFields(children), ...builtElements)
+      ];
+    }
     for (var i = 0, len = children.length; i < len; i++) {
       if (children[i].hasOwnProperty(type)) {
-        return seekElements(children[i], type, newBuild);
+        return seekElements(children[i], type, newBuild, ++count);
       } else {
         return builtElements;
       }

@@ -33,7 +33,7 @@ const checkJwt = jwt({
 });
 
 app.use(cors());
-app.use(checkJwt);
+// app.use(checkJwt);
 
 app.get('/ping', async (req, res) => {
   fs.readFile('./transforms/sales-by-product.json', (err, data) => {
@@ -73,6 +73,7 @@ app.get('/ping', async (req, res) => {
         let rowDefs = [];
         let colDefs = [];
         interestedRows.rows.forEach(row => {
+          let rowKeys = Object.keys(row);
           let rootRow = {
             ...row
           };
@@ -86,9 +87,9 @@ app.get('/ping', async (req, res) => {
             let compareString = '';
             columnKeys.forEach((key, i) => {
               i === columnKeys.length - 1
-                ? (keyString += `${column[key]}`)
-                : (keyString += `${column[key]}_`);
-              compareString += `dbRow.${key} === column.${key} && `;
+                ? (keyString += `${column[key].value}`)
+                : (keyString += `${column[key].value}_`);
+              compareString += `dbRow.${key} === column.${key}.value && `;
             });
             rowKeys.forEach((key, i) => {
               compareString += `dbRow.${key} === row.${key}`;
@@ -103,10 +104,22 @@ app.get('/ping', async (req, res) => {
               interestedRows['metric']
             ];
 
-            colDefs.push(rootColumn);
+            let emptyKeys = columnKeys.map((key, i) => {
+              return '';
+            });
+
+            let finalRowKeys = rowKeys.map(key => {
+              return {
+                ...emptyKeys,
+                field: key
+              };
+            });
+
+            colDefs.push(...finalRowKeys, rootColumn);
           });
           rowDefs.push(rootRow);
         });
+
         return res.json({
           colDefs: uniqBy(colDefs, 'field'),
           rowDefs
