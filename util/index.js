@@ -12,21 +12,42 @@ const makeLowerCase = word => {
 const extractFields = elements => {
   return elements.map(element => {
     if (!element.dimension || !element.member) return;
-    return {
-      [makeLowerCase(element.dimension)]: element.member
-    };
+    let output = {};
+    if (element.hasOwnProperty('data entry')) {
+      output = {
+        [makeLowerCase(element.dimension)]: element.member,
+        editable: element['data entry']
+      };
+    } else {
+      output = {
+        [makeLowerCase(element.dimension)]: element.member
+      };
+    }
+    return output;
   });
 };
 
 const extractColumns = columns => {
   return columns.map(column => {
     if (!column.dimension || !column.member) return;
-    return {
-      [makeLowerCase(column.dimension)]: {
-        value: column.member,
-        level: column.level
-      }
-    };
+    let output;
+    if (column.hasOwnProperty('data entry')) {
+      output = {
+        [makeLowerCase(column.dimension)]: {
+          value: column.member,
+          level: column.level
+        },
+        editable: column['data entry']
+      };
+    } else {
+      output = {
+        [makeLowerCase(column.dimension)]: {
+          value: column.member,
+          level: column.level
+        }
+      };
+    }
+    return output;
   });
 };
 
@@ -70,4 +91,30 @@ const seekElements = (elements, type, built = [], count = 0) => {
   }
 };
 
-module.exports = { capitalize, extractFields, buildElements, seekElements };
+const getExtractedElements = (manifest, type) => {
+  if (!manifest) throw new Error('A manifest must be supplied');
+  if (!manifest.hasOwnProperty('regions'))
+    throw new Error('Manifest must have regions');
+  let output = [];
+  manifest.regions.forEach(region => {
+    if (type === 'columns') {
+      output.push({
+        [type]: seekElements(region, type)
+      });
+    } else if (type === 'rows') {
+      output.push({
+        [type]: seekElements(region, type),
+        metric: region.pinned[0].member
+      });
+    }
+  });
+  return output;
+};
+
+module.exports = {
+  capitalize,
+  extractFields,
+  buildElements,
+  seekElements,
+  getExtractedElements
+};

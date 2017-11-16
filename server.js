@@ -7,7 +7,7 @@ const jwksRsa = require('jwks-rsa');
 const safeEval = require('safe-eval');
 const { Client } = require('pg');
 const { makeQuery } = require('./transforms');
-const { seekElements } = require('./util');
+const { seekElements, getExtractedElements } = require('./util');
 const { uniqBy } = require('lodash');
 
 const app = express();
@@ -52,20 +52,8 @@ app.post('/ping', async (req, res) => {
 
       fs.readFile('./manifests/manifest.json', (err, data) => {
         const manifest = JSON.parse(data);
-        let extractedColumns = [];
-        manifest.regions.forEach(region => {
-          extractedColumns.push({
-            columns: seekElements(region, 'columns')
-          });
-        });
-
-        let extractedRows = [];
-        manifest.regions.forEach(region => {
-          extractedRows.push({
-            rows: seekElements(region, 'rows'),
-            metric: region.pinned[0].member
-          });
-        });
+        let extractedColumns = getExtractedElements(manifest, 'columns');
+        let extractedRows = getExtractedElements(manifest, 'rows');
 
         const interestedColumns = extractedColumns[0];
         const interestedRows = extractedRows[0];
@@ -77,6 +65,7 @@ app.post('/ping', async (req, res) => {
           let rootRow = {
             ...row
           };
+
           interestedColumns.columns.forEach(column => {
             let rootColumn = {
               ...column
@@ -86,34 +75,44 @@ app.post('/ping', async (req, res) => {
             let keyString = '';
             let compareString = '';
             columnKeys.forEach((key, i) => {
-              i === columnKeys.length - 1
-                ? (keyString += `${column[key].value}`)
-                : (keyString += `${column[key].value}_`);
+              if (key !== 'editable')
+                i === columnKeys.length - 1
+                  ? (keyString += `${column[key].value}`)
+                  : (keyString += `${column[key].value}_`);
               compareString += `dbRow.${key} === column.${key}.value && `;
             });
             rowKeys.forEach((key, i) => {
-              compareString += `dbRow.${key} === row.${key}`;
-              i === rowKeys.length - 1
-                ? (compareString += '')
-                : (compareString += ' && ');
+              if (key !== 'editable') {
+                compareString += `dbRow.${key} === row.${key}`;
+                i === rowKeys.length - 1
+                  ? (compareString += '')
+                  : (compareString += ' && ');
+              }
             });
 
             rootColumn['field'] = keyString;
 
-            rootRow[keyString] = dbData.rows.find(dbRow => eval(compareString))[
-              interestedRows['metric']
-            ];
+            rootRow[keyString] = {
+              value: dbData.rows.find(dbRow => eval(compareString))[
+                interestedRows['metric']
+              ],
+              editable: !!column.editable && !!row.editable
+            };
 
-            let emptyKeys = columnKeys.map((key, i) => {
-              return '';
-            });
+            let emptyKeys = columnKeys
+              .filter(key => key !== 'editable')
+              .map((key, i) => {
+                return '';
+              });
 
-            let finalRowKeys = rowKeys.map(key => {
-              return {
-                ...emptyKeys,
-                field: key
-              };
-            });
+            let finalRowKeys = rowKeys
+              .filter(key => key !== 'editable')
+              .map(key => {
+                return {
+                  ...emptyKeys,
+                  field: key
+                };
+              });
 
             colDefs.push(...finalRowKeys, rootColumn);
           });

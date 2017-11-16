@@ -41,12 +41,12 @@
             {
               "dimension": "Account",
               "member": "40000 - REVENUE",
-              "data entry": false
+              "data entry": true
             },
             {
               "dimension": "Account",
               "member": "46FAC - FACILITY RENTAL",
-              "data entry": false
+              "data entry": true
             },
             {
               "dimension": "Account",
