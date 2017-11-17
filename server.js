@@ -61,10 +61,10 @@ app.post('/ping', async (req, res) => {
         let rowDefs = [];
         let colDefs = [];
         interestedRows.rows.forEach(row => {
-          let rowKeys = Object.keys(row);
           let rootRow = {
             ...row
           };
+
           interestedColumns.columns.forEach(column => {
             const allColumns = Object.keys(column);
             let finalColumns = [];
@@ -78,7 +78,7 @@ app.post('/ping', async (req, res) => {
             };
 
             const columnKeys = Object.keys(column);
-            const rowKeys = Object.keys(row);
+            const rowKeys = Object.keys(row).reverse();
             let keyString = '';
             let compareString = '';
             columnKeys.forEach((key, i) => {
