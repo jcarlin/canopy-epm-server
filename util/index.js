@@ -99,12 +99,20 @@ const getExtractedElements = (manifest, type) => {
   manifest.regions.forEach(region => {
     if (type === 'columns') {
       output.push({
-        [type]: seekElements(region, type)
+        [type]: seekElements(region, type),
+        rowIndex: region.rowIndex,
+        colIndex: region.colIndex,
+        showRowHeaders: region.showRowHeaders,
+        showColHeaders: region.showColHeaders,
+        metric: region.pinned[0].member
       });
     } else if (type === 'rows') {
       output.push({
         [type]: seekElements(region, type),
-        metric: region.pinned[0].member
+        rowIndex: region.rowIndex,
+        colIndex: region.colIndex,
+        showRowHeaders: region.showRowHeaders,
+        showColHeaders: region.showColHeaders
       });
     }
   });
