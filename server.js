@@ -65,11 +65,18 @@ app.post('/ping', async (req, res) => {
           let rootRow = {
             ...row
           };
-
           interestedColumns.columns.forEach(column => {
+            const allColumns = Object.keys(column);
+            let finalColumns = [];
+            finalColumns = allColumns
+              .map(finalColumn => {
+                return column[finalColumn];
+              })
+              .filter(column => column !== false);
             let rootColumn = {
-              ...column
+              columns: finalColumns
             };
+
             const columnKeys = Object.keys(column);
             const rowKeys = Object.keys(row);
             let keyString = '';
@@ -90,7 +97,10 @@ app.post('/ping', async (req, res) => {
               }
             });
 
-            rootColumn['field'] = keyString;
+            rootColumn.properties = {
+              field: keyString,
+              editable: !!column.editable && !!row.editable
+            };
 
             rootRow[keyString] = {
               value: dbData.rows.find(dbRow => eval(compareString))[
@@ -102,15 +112,18 @@ app.post('/ping', async (req, res) => {
             let emptyKeys = columnKeys
               .filter(key => key !== 'editable')
               .map((key, i) => {
-                return '';
+                return { value: '', level: i };
               });
 
             let finalRowKeys = rowKeys
               .filter(key => key !== 'editable')
               .map(key => {
                 return {
-                  ...emptyKeys,
-                  field: key
+                  columns: [...emptyKeys],
+                  properties: {
+                    field: key,
+                    editable: !!column.editable && !!row.editable
+                  }
                 };
               });
 
@@ -120,7 +133,7 @@ app.post('/ping', async (req, res) => {
         });
 
         return res.json({
-          colDefs: uniqBy(colDefs, 'field'),
+          colDefs: uniqBy(colDefs, 'properties.field'),
           rowDefs
         });
       });
