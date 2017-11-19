@@ -8,7 +8,18 @@ const safeEval = require('safe-eval');
 const { Client } = require('pg');
 const { makeQuery } = require('./transforms');
 const { seekElements, getExtractedElements } = require('./util');
-const { uniqBy, merge } = require('lodash');
+const {
+  _,
+  uniqBy,
+  merge,
+  keyBy,
+  chain,
+  mapValues,
+  pluck,
+  flattenDeep,
+  groupBy,
+  map
+} = require('lodash');
 
 const app = express();
 const client = new Client({
@@ -65,7 +76,6 @@ app.post('/ping', async (req, res) => {
           let mergedRows = [];
           rows.forEach(row => mergedRows.push(...row));
 
-          // console.log('merged rows', mergedRows);
           return {
             ...column,
             rows: mergedRows
@@ -81,7 +91,6 @@ app.post('/ping', async (req, res) => {
         let colDefs = [];
 
         finalMergedElements.forEach(element => {
-          console.log('the elements', element);
           element.rows.forEach(row => {
             let rootRow = {
               ...row
@@ -159,9 +168,16 @@ app.post('/ping', async (req, res) => {
             rowDefs.push(rootRow);
           });
         });
+
+        let testFinalRows = colDefs.map(colDef => {
+          return {
+            [colDef.properties.field]: 'foo'
+          };
+        });
+
         return res.json({
           colDefs: uniqBy(colDefs, 'properties.field'),
-          rowDefs
+          rowDefs: rowDefs
         });
       });
     });
@@ -223,86 +239,3 @@ async function connect() {
 }
 
 connect();
-
-// extractedRows.forEach(extractedRow => {
-//   extractedColumns.forEach(extractedColumn => {
-//     extractedRow.rows.forEach(row => {
-//       let rootRow = {
-//         ...row
-//       };
-
-//       extractedColumn.columns.forEach(column => {
-//         const allColumns = Object.keys(column);
-//         let finalColumns = [];
-//         finalColumns = allColumns
-//           .map(finalColumn => {
-//             return column[finalColumn];
-//           })
-//           .filter(column => column !== false);
-//         let rootColumn = {
-//           columns: finalColumns
-//         };
-
-//         const columnKeys = Object.keys(column);
-//         const rowKeys = Object.keys(row).reverse();
-//         let keyString = '';
-//         let compareString = '';
-//         columnKeys.forEach((key, i) => {
-//           if (key !== 'editable')
-//             i === columnKeys.length - 1
-//               ? (keyString += `${column[key].value}`)
-//               : (keyString += `${column[key].value}_`);
-//           compareString += `dbRow.${key} === column.${key}.value && `;
-//         });
-//         rowKeys.forEach((key, i) => {
-//           if (key !== 'editable') {
-//             compareString += `dbRow.${key} === row.${key}`;
-//             i === rowKeys.length - 1
-//               ? (compareString += '')
-//               : (compareString += ' && ');
-//           }
-//         });
-
-//         rootColumn.properties = {
-//           field: keyString,
-//           editable: !!column.editable && !!row.editable
-//         };
-
-//         let dbIntersect = dbData.rows.find(dbRow =>
-//           eval(compareString)
-//         );
-//         let value;
-//         if (dbIntersect) {
-//           value = dbIntersect[extractedRow['metric']];
-//         } else {
-//           value = null;
-//         }
-
-//         rootRow[keyString] = {
-//           value,
-//           editable: !!column.editable && !!row.editable
-//         };
-
-//         let emptyKeys = columnKeys
-//           .filter(key => key !== 'editable')
-//           .map((key, i) => {
-//             return { value: '', level: i };
-//           });
-
-//         let finalRowKeys = rowKeys
-//           .filter(key => key !== 'editable')
-//           .map(key => {
-//             return {
-//               columns: [...emptyKeys],
-//               properties: {
-//                 field: key,
-//                 editable: !!column.editable && !!row.editable
-//               }
-//             };
-//           });
-
-//         colDefs.push(...finalRowKeys, rootColumn);
-//       });
-//       rowDefs.push(rootRow);
-//     });
-//   });
