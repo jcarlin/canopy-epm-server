@@ -23,9 +23,9 @@ const {
 
 const app = express();
 const client = new Client({
-  user: 'ryanchenkie',
-  host: 'localhost',
-  database: 'template1',
+  user: 'canopy_db_admin',
+  host: 'canopy-epm-test.cxuldttnrpns.us-east-2.rds.amazonaws.com',
+  database: 'canopy_test',
   port: 5432
 });
 
