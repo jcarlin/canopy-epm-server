@@ -230,7 +230,7 @@ app.get('/data', (req, res) => {
 
 async function connect() {
   try {
-    await client.connect();
+    // await client.connect();
     app.listen(port);
     console.log(`Express app started on port ${port}`);
   } catch (err) {
