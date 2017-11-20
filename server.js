@@ -22,14 +22,14 @@ const {
 } = require('lodash');
 
 const app = express();
-
-pg.defaults.poolIdleTimeout = 60000;
 const client = new pg.Client({
   user: 'canopy_db_admin',
   host: 'canopy-epm-test.cxuldttnrpns.us-east-2.rds.amazonaws.com',
   database: 'canopy_test',
   password: process.env.DB_PASSWORD,
-  port: 5432
+  port: 5432,
+  idleTimeoutMillis: 600000,
+  connectionTimeoutMillis: 2000
 });
 
 const port = process.env.PORT || 8080;
