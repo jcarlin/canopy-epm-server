@@ -41,8 +41,8 @@ const buildDynamicColumns = (columns, depth) => {
   return builtColumns;
 };
 
-const buildColumnsForRegion = region => {
-  const transformedColumns = buildDynamicColumns(region.columns, this.colDepth);
+const buildColumnsForRegion = (region, colDepth) => {
+  const transformedColumns = buildDynamicColumns(region.columns, colDepth);
   return completelyFlatten(transformedColumns);
 };
 

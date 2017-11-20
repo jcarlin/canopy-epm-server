@@ -9,12 +9,14 @@ const addFieldToRows = (rowDefs, rowKeys) => {
     const field = rowKeys.map(key => rowDef[key]).join('_');
     return Object.assign({}, rowDef, { field });
   });
-  // console.log(addedFields);
   return addedFields;
 };
 
 const buildRowDef = columnDefs => {
+  console.log('column defs', columnDefs[2]);
   return columnDefs.reduce((acc, cur) => {
+    console.log('acc', acc);
+    console.log('cur', cur);
     return Object.assign(acc, {
       [cur.properties.field]: {
         value: 12345,

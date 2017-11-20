@@ -24,29 +24,27 @@ const transformRows = (columnDefs, regions, columnRowDefs, rowDepth) => {
   const rowDef = buildRowDef(columnDefs);
   let rowDefs = buildRows(regions, rowDef, rowDepth);
 
-  // console.log('row before', rowDefs);
   const rowKeys = getRowKeys(columnRowDefs);
-  console.log('row keys', rowKeys);
   // NOTE: This is a bit procedural which I am still working out how I feel about it ~LR
   rowDefs = addFieldToRows(rowDefs, rowKeys);
   const dataMap = buildDataMap(rowDefs);
-  // console.log('row after', rowDefs);
   return {
     colDefs: columnDefs,
     rowDefs: rowDefs
   };
 };
 
-const processRegion = region => {
+const processRegion = (region, colDepth) => {
+  console.log('process', region.columns)
   const innnerColumns = getInnermostColumns(region.columns);
   const variantColumns = addVariationColumns(region, innnerColumns);
-  return buildColumnsForRegion(region);
+  return buildColumnsForRegion(region, colDepth);
 };
 
 const transformColumns = (regions, colDepth, rowDepth) => {
   const uniqueRegions = getUniqueRegions(regions, 'colIndex');
   const columnRowDefs = buildRowColumns(uniqueRegions[0], colDepth, rowDepth);
-  const columns = uniqueRegions.map(region => processRegion(region));
+  const columns = uniqueRegions.map(region => processRegion(region, colDepth));
 
   // ALL THE COLUMNS
   const columnDefs = [...columnRowDefs, ...flatten(columns, 1)];
