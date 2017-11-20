@@ -5,7 +5,7 @@ const cors = require('cors');
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
 const safeEval = require('safe-eval');
-const { Client } = require('pg');
+const pg = require('pg');
 const { makeQuery } = require('./transforms');
 const { seekElements, getExtractedElements } = require('./util');
 const {
@@ -22,7 +22,9 @@ const {
 } = require('lodash');
 
 const app = express();
-const client = new Client({
+
+pg.defaults.poolIdleTimeout = 60000;
+const client = new pg.Client({
   user: 'canopy_db_admin',
   host: 'canopy-epm-test.cxuldttnrpns.us-east-2.rds.amazonaws.com',
   database: 'canopy_test',
