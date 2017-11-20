@@ -41,12 +41,12 @@
             {
               "dimension": "Account",
               "member": "40000 - REVENUE",
-              "data entry": true
+              "data entry": false
             },
             {
               "dimension": "Account",
               "member": "46FAC - FACILITY RENTAL",
-              "data entry": true
+              "data entry": false
             },
             {
               "dimension": "Account",
@@ -90,36 +90,30 @@
         {
           "dimension": "Scenario",
           "member": "Actual",
-          "level": 0,
           "columns": [
             {
               "dimension": "Time",
               "member": "2017 Jan",
-              "level": 1,
               "columns": [
                 {
                   "dimension": "Product",
                   "member": "Books",
-                  "data entry": false,
-                  "level": 2
+                  "data entry": false
                 },
                 {
                   "dimension": "Product",
                   "member": "DVDs",
-                  "data entry": false,
-                  "level": 2
+                  "data entry": false
                 },
                 {
                   "dimension": "Product",
                   "member": "Healthcare",
-                  "data entry": false,
-                  "level": 2
+                  "data entry": false
                 },
                 {
                   "dimension": "Product",
                   "member": "Automotive",
-                  "data entry": false,
-                  "level": 2
+                  "data entry": false
                 }
               ]
             }
@@ -203,36 +197,30 @@
         {
           "dimension": "Scenario",
           "member": "Budget",
-          "level": 0,
           "columns": [
             {
               "dimension": "Time",
               "member": "2017 Feb",
-              "level": 1,
               "columns": [
                 {
                   "dimension": "Product",
                   "member": "Books",
-                  "data entry": true,
-                  "level": 2
+                  "data entry": true
                 },
                 {
                   "dimension": "Product",
                   "member": "DVDs",
-                  "data entry": false,
-                  "level": 2
+                  "data entry": false
                 },
                 {
                   "dimension": "Product",
                   "member": "Healthcare",
-                  "data entry": false,
-                  "level": 2
+                  "data entry": false
                 },
                 {
                   "dimension": "Product",
                   "member": "Automotive",
-                  "data entry": false,
-                  "level": 2
+                  "data entry": false
                 }
               ]
             }
@@ -316,36 +304,30 @@
         {
           "dimension": "Scenario",
           "member": "Actual",
-          "level": 0,
           "columns": [
             {
               "dimension": "Time",
               "member": "2017 Jan",
-              "level": 1,
               "columns": [
                 {
                   "dimension": "Product",
                   "member": "Books",
-                  "data entry": false,
-                  "level": 2
+                  "data entry": false
                 },
                 {
                   "dimension": "Product",
                   "member": "DVDs",
-                  "data entry": false,
-                  "level": 2
+                  "data entry": false
                 },
                 {
                   "dimension": "Product",
                   "member": "Healthcare",
-                  "data entry": false,
-                  "level": 2
+                  "data entry": false
                 },
                 {
                   "dimension": "Product",
                   "member": "Automotive",
-                  "data entry": false,
-                  "level": 2
+                  "data entry": false
                 }
               ]
             }
@@ -429,36 +411,30 @@
         {
           "dimension": "Scenario",
           "member": "Budget",
-          "level": 0,
           "columns": [
             {
               "dimension": "Time",
               "member": "2017 Feb",
-              "level": 1,
               "columns": [
                 {
                   "dimension": "Product",
                   "member": "Books",
-                  "data entry": false,
-                  "level": 2
+                  "data entry": false
                 },
                 {
                   "dimension": "Product",
                   "member": "DVDs",
-                  "data entry": false,
-                  "level": 2
+                  "data entry": false
                 },
                 {
                   "dimension": "Product",
                   "member": "Healthcare",
-                  "data entry": false,
-                  "level": 2
+                  "data entry": false
                 },
                 {
                   "dimension": "Product",
                   "member": "Automotive",
-                  "data entry": false,
-                  "level": 2
+                  "data entry": false
                 }
               ]
             }
