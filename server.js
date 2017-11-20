@@ -26,6 +26,7 @@ const client = new Client({
   user: 'canopy_db_admin',
   host: 'canopy-epm-test.cxuldttnrpns.us-east-2.rds.amazonaws.com',
   database: 'canopy_test',
+  password: process.env.DB_PASSWORD,
   port: 5432
 });
 
