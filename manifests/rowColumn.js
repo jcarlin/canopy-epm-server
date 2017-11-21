@@ -21,15 +21,17 @@ const buildRowColumn = (depth, field) => {
   for (let i = 0; i < depth; ++i) {
     colDef.columns.push({ value: '', level: i });
   }
-
-  colDef.properties = Object.assign({}, { field, editable: false });
+  colDef.properties = Object.assign(
+    {},
+    { field: field['dimension'], editable: field['data entry'] }
+  );
 
   return colDef;
 };
 
 const buildRowColumns = (region, colDepth, rowDepth) => {
   return getFirstRows(region, rowDepth).map(row =>
-    buildRowColumn(colDepth, row.dimension)
+    buildRowColumn(colDepth, row)
   );
 };
 

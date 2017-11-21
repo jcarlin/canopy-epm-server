@@ -1,0 +1,188 @@
+{
+  "page": [
+    {
+      "list": [
+        {
+          "dimension": "Scenario",
+          "member": "Actual"
+        },
+        {
+          "dimension": "Scenario",
+          "member": "Budget"
+        }
+      ]
+    },
+    {
+      "list": [
+        {
+          "dimension": "Time",
+          "member": "2017 Jan"
+        },
+        {
+          "dimension": "Time",
+          "member": "2017 Feb"
+        }
+      ]
+    },
+    {
+      "list": [
+        {
+          "dimension": "Variation",
+          "member": "Periodic"
+        },
+        {
+          "dimension": "Variation",
+          "member": "YTD"
+        }
+      ]
+    }
+  ],
+  "regions": [
+    {
+      "rowIndex": 0,
+      "colIndex": 0,
+      "rowDepth": 1,
+      "colDepth": 1,
+      "showRowHeaders": true,
+      "showColHeaders": true,
+      "includeVariance": false,
+      "includeVariancePct": false,
+      "pinned": [
+        {
+          "dimension": "Metric",
+          "member": "Net Profit"
+        },
+        {
+          "dimension": "Department",
+          "member": "Sales"
+        },
+        {
+          "dimension": "Scenario",
+          "member": "$LIST$"
+        },
+        {
+          "dimension": "Time",
+          "member": "$LIST$"
+        },
+        {
+          "dimension": "Variation",
+          "member": "$LIST$"
+        }
+      ],
+      "rows": [
+        {
+          "dimension": "Account",
+          "member": "40000 - REVENUE",
+          "data entry": false
+        },
+        {
+          "dimension": "Account",
+          "member": "43001 - GIFT REVENUE",
+          "data entry": false
+        },
+        {
+          "dimension": "Account",
+          "member": "44001 - INVESTMENT INCOME",
+          "data entry": false
+        },
+        {
+          "dimension": "Account",
+          "member": "48001 - INTERDEPT REVENUE",
+          "data entry": false
+        },
+        {
+          "dimension": "Account",
+          "member": "46FAC - FACILITY RENTAL",
+          "data entry": false
+        },
+        {
+          "dimension": "Account",
+          "member": "46PAT - PATENTS/ROYALTIES",
+          "data entry": false
+        },
+        {
+          "dimension": "Account",
+          "member": "49001 - TRANSFERS",
+          "data entry": false
+        },
+        {
+          "dimension": "Account",
+          "member": "50000 - TOTAL EXPENSES",
+          "data entry": false
+        },
+        {
+          "dimension": "Account",
+          "member": "500SE - COMPENSATION EXPENSES",
+          "data entry": false
+        },
+        {
+          "dimension": "Account",
+          "member": "51100 - SALARY AND WAGES",
+          "data entry": true
+        },
+        {
+          "dimension": "Account",
+          "member": "51700 - FRINGE BENEFITS",
+          "data entry": false
+        },
+        {
+          "dimension": "Account",
+          "member": "51900 - OTHER COMPENSATION",
+          "data entry": false
+        },
+        {
+          "dimension": "Account",
+          "member": "51BON - BONUS EXPENSE",
+          "data entry": false
+        },
+        {
+          "dimension": "Account",
+          "member": "56900 - INDIRECT COSTS",
+          "data entry": false
+        },
+        {
+          "dimension": "Account",
+          "member": "ENDFB - ENDING BALANCE",
+          "data entry": false
+        }
+      ],
+      "columns": [
+        {
+          "dimension": "Product",
+          "member": "Books",
+          "data entry": false
+        },
+        {
+          "dimension": "Product",
+          "member": "DVDs",
+          "data entry": true
+        },
+        {
+          "dimension": "Product",
+          "member": "Healthcare",
+          "data entry": true
+        },
+        {
+          "dimension": "Product",
+          "member": "Automotive",
+          "data entry": true
+        },
+        {
+          "dimension": "Product",
+          "member": "Electronics",
+          "data entry": false
+        },
+        {
+          "dimension": "Product",
+          "member": "Sporting Goods",
+          "data entry": false
+        },
+        {
+          "dimension": "Product",
+          "member": "Apparel",
+          "data entry": false
+        }
+      ]
+    }
+  ]
+}

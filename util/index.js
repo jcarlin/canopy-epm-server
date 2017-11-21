@@ -121,6 +121,7 @@ const getExtractedElements = (manifest, type) => {
 
 module.exports = {
   capitalize,
+  makeLowerCase,
   extractFields,
   buildElements,
   seekElements,

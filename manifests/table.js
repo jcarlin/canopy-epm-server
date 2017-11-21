@@ -35,7 +35,6 @@ const transformRows = (columnDefs, regions, columnRowDefs, rowDepth) => {
 };
 
 const processRegion = (region, colDepth) => {
-  console.log('process', region.columns)
   const innnerColumns = getInnermostColumns(region.columns);
   const variantColumns = addVariationColumns(region, innnerColumns);
   return buildColumnsForRegion(region, colDepth);
@@ -67,14 +66,6 @@ const buildTableData = manifest => {
   const rowDepth = firstRegion.rowDepth;
 
   return transformColumns(regions, colDepth, rowDepth);
-};
-
-const setTableData = tableData => {
-  this.tableData = tableData;
-};
-
-const getTableData = () => {
-  return this.tableData;
 };
 
 module.exports = { buildTableData };

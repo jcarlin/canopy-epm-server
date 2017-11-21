@@ -7,19 +7,7 @@ const jwksRsa = require('jwks-rsa');
 const safeEval = require('safe-eval');
 const pg = require('pg');
 const { makeQuery } = require('./transforms');
-const { seekElements, getExtractedElements } = require('./util');
-const {
-  _,
-  uniqBy,
-  merge,
-  keyBy,
-  chain,
-  mapValues,
-  pluck,
-  flattenDeep,
-  groupBy,
-  map
-} = require('lodash');
+const { makeLowerCase } = require('./util');
 
 const { buildTableData } = require('./manifests');
 
@@ -66,19 +54,49 @@ app.post('/ping', async (req, res) => {
 
       const dbData = data;
 
-      fs.readFile('./manifests/manifest.json', (err, data) => {
+      const findRow = (data, compareString, key) => {
+        return data.rows.find(row => {
+          return eval(`${compareString} && row.product === key`);
+        });
+      };
+
+      const getCompareString = (def, key) => {
+        return `row.${makeLowerCase(key)} === '${def[key]}'`;
+      };
+
+      fs.readFile('./manifests/sales-by-product.json', (err, data) => {
         if (err) {
           return res.json(err);
         }
         const tableData = buildTableData(JSON.parse(data));
+        tableData.rowDefs.forEach(def => {
+          const keys = Object.keys(def);
+          keys.forEach(key => {
+            if (typeof def[key] !== 'object' && key !== 'field') {
+              def.compareString = getCompareString(def, key);
+            }
+          });
+        });
+        tableData.rowDefs.forEach(def => {
+          const keys = Object.keys(def);
+          keys.forEach(key => {
+            const dbRow = findRow(dbData, def.compareString, key);
+            if (dbRow && dbRow['Net Profit']) {
+              def[key].value = dbRow['Net Profit'];
+            } else {
+              def[key].value = null;
+            }
+          });
+        });
         return res.json(tableData);
+        // return res.json(dbData.rows);
       });
     });
   });
 });
 
 app.get('/pong', async (req, res) => {
-  fs.readFile('./transforms/sales-by-product.json', (err, data) => {
+  fs.readFile('./transforms/periodic-vs-ytd-periodic.json', (err, data) => {
     if (err) {
       return res.json({ error });
     }
@@ -97,7 +115,7 @@ app.get('/pong', async (req, res) => {
 app.get('/manifest', (req, res) => {
   fs.readFile('./manifests/manifest.json', (err, data) => {
     if (err) {
-      return res.json({ error });
+      return res.json({ error: err });
     }
     const manifest = JSON.parse(data);
     res.json({ manifest });

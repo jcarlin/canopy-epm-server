@@ -1,6 +1,6 @@
 {
-  "transfer_id": "1",
-  "transfer_name": "Sales by Product",
+  "transfer_id": "2",
+  "transfer_name": "Periodic vs YTD - Periodic",
   "table": "ledger",
   "dimensions": [
     "Department",
@@ -17,16 +17,20 @@
       "values": ["Sales"]
     },
     {
-      "dim": "Scenario",
-      "values": ["Actual"]
+      "dim": "Product",
+      "values": ["Automotive"]
     },
     {
       "dim": "Time",
-      "values": ["2017 Jan"]
+      "values": ["2017 Feb"]
     },
     {
       "dim": "Variation",
-      "values": ["YTD"]
+      "values": ["Periodic"]
+    },
+    {
+      "dim": "Scenario",
+      "values": ["Actual", "Budget"]
     },
     {
       "dim": "Account",
