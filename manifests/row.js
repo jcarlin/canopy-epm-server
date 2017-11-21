@@ -6,7 +6,9 @@ const getRowKeys = columnRowDefs => {
 
 const addFieldToRows = (rowDefs, rowKeys) => {
   const addedFields = rowDefs.map(rowDef => {
-    const field = rowKeys.map(key => rowDef[key]).join('_');
+    let field = rowKeys.map(key => rowDef[key]).join('_');
+    // Add dimension to field key
+    field = `${rowKeys.join('_')}__${field}`;
     return Object.assign({}, rowDef, { field });
   });
   return addedFields;
