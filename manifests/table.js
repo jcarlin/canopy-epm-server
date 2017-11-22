@@ -7,28 +7,16 @@ const {
 } = require('./column');
 const { buildRowColumns } = require('./rowColumn');
 
-const buildDataMap = rowDefs => {
-  return rowDefs.reduce((acc, cur) => {
-    acc[cur.field] = {};
-    Object.keys(cur).map(key => {
-      if (typeof cur[key] === 'object') {
-        return (acc[cur.field][key] = cur[key]);
-      }
-    });
-
-    return acc;
-  }, {});
-};
-
 const transformRows = (columnDefs, regions, columnRowDefs, rowDepth) => {
   const rowDef = buildRowDef(columnDefs);
   let rowDefs = buildRows(regions, rowDef, rowDepth);
 
   const rowKeys = getRowKeys(columnRowDefs);
   // NOTE: This is a bit procedural which I am still working out how I feel about it ~LR
-  rowDefs = addFieldToRows(rowDefs, rowKeys);
+  addFieldToRows(rowDefs, rowKeys);
   addRowKeysToRows(rowDefs);
-  buildDataMap(rowDefs);
+
+  console.log(JSON.stringify(rowDefs, null, 4));
 
   return {
     colDefs: columnDefs,

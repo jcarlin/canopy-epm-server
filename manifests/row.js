@@ -5,21 +5,20 @@ const getRowKeys = columnRowDefs => {
 };
 
 const addRowKeysToRows = rowDefs => {
-  return rowDefs.map(rowDef => {
-    return Object.keys(rowDef).map(key => {
+  rowDefs.forEach(rowDef => {
+    Object.keys(rowDef).forEach(key => {
       if (typeof rowDef[key] === 'object') {
-        return rowDef[key]['rowKey'] = rowDef.field;
+        rowDef[key]['rowKey'] = rowDef.field;
       }
     });
-  })
+  });
 };
 
 const addFieldToRows = (rowDefs, rowKeys) => {
-  const addedFields = rowDefs.map(rowDef => {
+  rowDefs.forEach(rowDef => {
     let field = generateRowKey(rowKeys, rowDef);
-    return Object.assign({}, rowDef, { field });
+    rowDef.field = field;
   });
-  return addedFields;
 };
 
 const buildRowDef = columnDefs => {
@@ -47,7 +46,10 @@ const buildRowDefs = (rows, rowDef) => {
   return rows
     .map(rows => rows.map(row => ({ [row.dimension]: row.member })))
     .map(rows =>
-      rows.reduce((acc, cur) => Object.assign({}, rowDef, acc, cur), {})
+      rows.reduce((acc, cur) => {
+        const row = Object.assign({}, rowDef, acc, cur);
+        return JSON.parse(JSON.stringify(row)); // Deep clone
+      }, {})
     );
 };
 
