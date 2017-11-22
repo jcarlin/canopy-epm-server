@@ -49,6 +49,12 @@ app.use(cors());
 // app.use(checkJwt);
 
 app.post('/ping', async (req, res) => {
+  if (!req.body.manifest) {
+    return res.status(400).json({ error: 'You must supply a manifest' });
+  }
+
+  const tableData = buildTableData(req.body.manifest);
+
   fs.readFile('./transforms/sales-by-product.json', (err, data) => {
     if (err) {
       return res.json({ error });
@@ -73,50 +79,53 @@ app.post('/ping', async (req, res) => {
         return `row.${makeLowerCase(key)} === '${def[key]}'`;
       };
 
-      fs.readFile('./manifests/periodic-vs-ytd.json', (err, data) => {
-        if (err) {
-          return res.json(err);
-        }
-        const tableData = buildTableData(JSON.parse(data));
+      tableData.rowDefs.forEach(def => {
+        const keys = Object.keys(def);
 
-        tableData.rowDefs.forEach(def => {
-          const keys = Object.keys(def);
+        keys.forEach(key => {
+          if (typeof def[key] === 'object') {
+            const columnKeys = extractKeySet(def[key].columnKey);
+            const rowKeys = extractKeySet(def[key].rowKey);
 
-          keys.forEach(key => {
-            if (typeof def[key] === 'object') {
-              const columnKey = extractKeySet(def[key].columnKey);
-              const rowKey = extractKeySet(def[key].rowKey);
-              // def[key].value = dbData.rows.filter(row => {
-              //   return (
-              //     row[makeLowerCase(columnKey[0])] === columnKey[1] &&
-              //     row[makeLowerCase(rowKey[0])] === rowKey[1]
-              //   );
-              // });
-            }
-          });
+            let rowKeyStrings = rowKeys.map(key => {
+              return `row.${key.dimension} === '${key.member}'`;
+            });
+
+            let columnKeyStrings = columnKeys.map(key => {
+              return `row.${key.dimension} === "${key.member}"`;
+            });
+
+            const joinedColumnKeys = columnKeyStrings.join(' && ');
+            const joinedRowKeys = rowKeyStrings.join(' && ');
+            const totalMatchString = `${joinedColumnKeys} && ${joinedRowKeys}`;
+
+            def[key].value = dbData.rows.find(row => {
+              return eval(totalMatchString);
+            })['Net Profit'];
+          }
         });
-        // tableData.rowDefs.forEach(def => {
-        //   const keys = Object.keys(def);
-        //   keys.forEach(key => {
-        //     if (typeof def[key] !== 'object' && key !== 'field') {
-        //       def.compareString = getCompareString(def, key);
-        //     }
-        //   });
-        // });
-        // tableData.rowDefs.forEach(def => {
-        //   const keys = Object.keys(def);
-        //   keys.forEach(key => {
-        //     const dbRow = findRow(dbData, def.compareString, key);
-        //     if (dbRow && dbRow['Net Profit']) {
-        //       def[key].value = dbRow['Net Profit'];
-        //     } else {
-        //       def[key].value = null;
-        //     }
-        //   });
-        // });
-        return res.json(tableData);
-        // return res.json(dbData.rows);
       });
+      // tableData.rowDefs.forEach(def => {
+      //   const keys = Object.keys(def);
+      //   keys.forEach(key => {
+      //     if (typeof def[key] !== 'object' && key !== 'field') {
+      //       def.compareString = getCompareString(def, key);
+      //     }
+      //   });
+      // });
+      // tableData.rowDefs.forEach(def => {
+      //   const keys = Object.keys(def);
+      //   keys.forEach(key => {
+      //     const dbRow = findRow(dbData, def.compareString, key);
+      //     if (dbRow && dbRow['Net Profit']) {
+      //       def[key].value = dbRow['Net Profit'];
+      //     } else {
+      //       def[key].value = null;
+      //     }
+      //   });
+      // });
+      return res.json(tableData);
+      // return res.json(dbData.rows);
     });
   });
 });

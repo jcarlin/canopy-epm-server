@@ -39,7 +39,9 @@ const generateRowKey = (rowKeys, rowDef) => {
 };
 
 const generateColumnKey = columns => {
-  return columns.map(column => `${column.dimension}_${column.value}`).join('__');
+  return columns
+    .map(column => `${column.dimension}_${column.value}`)
+    .join('__');
 };
 
 const buildRowDefs = (rows, rowDef) => {
@@ -76,4 +78,10 @@ const buildRows = (regions, rowDef, depth) => {
   return completelyFlatten(builtRows);
 };
 
-module.exports = { addRowKeysToRows, addFieldToRows, buildRowDef, buildRows, getRowKeys };
+module.exports = {
+  addRowKeysToRows,
+  addFieldToRows,
+  buildRowDef,
+  buildRows,
+  getRowKeys
+};

@@ -23,8 +23,6 @@ const transformRows = (columnDefs, regions, columnRowDefs, rowDepth) => {
   addFieldToRows(rowDefs, rowKeys);
   addRowKeysToRows(rowDefs);
 
-  console.log(JSON.stringify(rowDefs, null, 4));
-
   return {
     colDefs: columnDefs,
     rowDefs: rowDefs
