@@ -10,7 +10,7 @@ const pg = require('pg');
 const { makeQuery } = require('./transforms');
 const { makeLowerCase } = require('./util');
 
-const { buildTableData } = require('./manifests');
+const { buildTableData, extractKeySet } = require('./manifests');
 
 const app = express();
 
@@ -73,30 +73,47 @@ app.post('/ping', async (req, res) => {
         return `row.${makeLowerCase(key)} === '${def[key]}'`;
       };
 
-      fs.readFile('./manifests/sales-by-product.json', (err, data) => {
+      fs.readFile('./manifests/periodic-vs-ytd.json', (err, data) => {
         if (err) {
           return res.json(err);
         }
         const tableData = buildTableData(JSON.parse(data));
+
         tableData.rowDefs.forEach(def => {
           const keys = Object.keys(def);
+
           keys.forEach(key => {
-            if (typeof def[key] !== 'object' && key !== 'field') {
-              def.compareString = getCompareString(def, key);
+            if (typeof def[key] === 'object') {
+              const columnKey = extractKeySet(def[key].columnKey);
+              const rowKey = extractKeySet(def[key].rowKey);
+              // def[key].value = dbData.rows.filter(row => {
+              //   return (
+              //     row[makeLowerCase(columnKey[0])] === columnKey[1] &&
+              //     row[makeLowerCase(rowKey[0])] === rowKey[1]
+              //   );
+              // });
             }
           });
         });
-        tableData.rowDefs.forEach(def => {
-          const keys = Object.keys(def);
-          keys.forEach(key => {
-            const dbRow = findRow(dbData, def.compareString, key);
-            if (dbRow && dbRow['Net Profit']) {
-              def[key].value = dbRow['Net Profit'];
-            } else {
-              def[key].value = null;
-            }
-          });
-        });
+        // tableData.rowDefs.forEach(def => {
+        //   const keys = Object.keys(def);
+        //   keys.forEach(key => {
+        //     if (typeof def[key] !== 'object' && key !== 'field') {
+        //       def.compareString = getCompareString(def, key);
+        //     }
+        //   });
+        // });
+        // tableData.rowDefs.forEach(def => {
+        //   const keys = Object.keys(def);
+        //   keys.forEach(key => {
+        //     const dbRow = findRow(dbData, def.compareString, key);
+        //     if (dbRow && dbRow['Net Profit']) {
+        //       def[key].value = dbRow['Net Profit'];
+        //     } else {
+        //       def[key].value = null;
+        //     }
+        //   });
+        // });
         return res.json(tableData);
         // return res.json(dbData.rows);
       });
