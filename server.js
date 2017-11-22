@@ -1,6 +1,7 @@
 require('dotenv').config();
 const fs = require('fs');
 const express = require('express');
+var bodyParser = require('body-parser');
 const cors = require('cors');
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
@@ -12,6 +13,14 @@ const { makeLowerCase } = require('./util');
 const { buildTableData } = require('./manifests');
 
 const app = express();
+
+app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+);
+
 const client = new pg.Client({
   user: 'canopy_db_admin',
   host: 'canopy-epm-test.cxuldttnrpns.us-east-2.rds.amazonaws.com',
@@ -120,6 +129,17 @@ app.get('/manifest', (req, res) => {
     const manifest = JSON.parse(data);
     res.json({ manifest });
   });
+});
+
+app.post('/manifest', (req, res) => {
+  const { manifest } = req.body;
+
+  if (!req.body.manifest) {
+    return res.status(400).json({ error: 'You must supply a manifest' });
+  }
+
+  const tableData = buildTableData(req.body.manifest);
+  return res.json(tableData);
 });
 
 app.get('/data', (req, res) => {
