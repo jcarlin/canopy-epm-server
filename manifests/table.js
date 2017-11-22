@@ -1,11 +1,18 @@
 const { flatten, getUniqueRegions } = require('./util');
-const { addRowKeysToRows, addFieldToRows, buildRowDef, buildRows, getRowKeys } = require('./row');
+const {
+  addRowKeysToRows,
+  addFieldToRows,
+  buildRowDef,
+  buildRows,
+  getRowKeys
+} = require('./row');
 const {
   buildColumnsForRegion,
   getInnermostColumns,
   addVariationColumns
 } = require('./column');
 const { buildRowColumns } = require('./rowColumn');
+const { makeLowerCase } = require('./../util');
 
 const transformRows = (columnDefs, regions, columnRowDefs, rowDepth) => {
   const rowDef = buildRowDef(columnDefs);
@@ -58,4 +65,14 @@ const buildTableData = manifest => {
   return transformColumns(regions, colDepth, rowDepth);
 };
 
-module.exports = { buildTableData };
+const extractKeySet = rawKey => {
+  return rawKey.split('__').map(keyGroup => {
+    const keySet = keyGroup.split('_');
+    return {
+      dimension: makeLowerCase(keySet[0]),
+      member: keySet[1]
+    };
+  });
+};
+
+module.exports = { buildTableData, extractKeySet };
