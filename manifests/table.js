@@ -14,7 +14,13 @@ const {
 const { buildRowColumns } = require('./rowColumn');
 const { makeLowerCase } = require('./../util');
 
-const transformRows = (columnDefs, regions, columnRowDefs, rowDepth) => {
+const transformRows = (
+  columnDefs,
+  regions,
+  columnRowDefs,
+  rowDepth,
+  transforms
+) => {
   const rowDef = buildRowDef(columnDefs);
   let rowDefs = buildRows(regions, rowDef, rowDepth);
 
@@ -25,7 +31,8 @@ const transformRows = (columnDefs, regions, columnRowDefs, rowDepth) => {
 
   return {
     colDefs: columnDefs,
-    rowDefs: rowDefs
+    rowDefs: rowDefs,
+    transforms
   };
 };
 
@@ -35,7 +42,7 @@ const processRegion = (region, colDepth) => {
   return buildColumnsForRegion(region, colDepth);
 };
 
-const transformColumns = (regions, colDepth, rowDepth) => {
+const transformColumns = (regions, colDepth, rowDepth, transforms) => {
   const uniqueRegions = getUniqueRegions(regions, 'colIndex');
   const columnRowDefs = buildRowColumns(uniqueRegions[0], colDepth, rowDepth);
   const columns = uniqueRegions.map(region => processRegion(region, colDepth));
@@ -46,7 +53,19 @@ const transformColumns = (regions, colDepth, rowDepth) => {
   // PERIODIC LAYOUT
   // this.columnDefs  = [...columns[0], ...this.columnRowDefs, ...columns[1]];
 
-  return transformRows(columnDefs, regions, columnRowDefs, rowDepth);
+  return transformRows(
+    columnDefs,
+    regions,
+    columnRowDefs,
+    rowDepth,
+    transforms
+  );
+};
+
+const getNecessaryTransforms = (regions, colDepth, rowDepth) => {
+  let transforms = [];
+  regions.forEach(region => transforms.push(region.transform));
+  return transformColumns(regions, colDepth, rowDepth, transforms);
 };
 
 const buildTableData = manifest => {
@@ -60,7 +79,7 @@ const buildTableData = manifest => {
   const colDepth = firstRegion.colDepth;
   const rowDepth = firstRegion.rowDepth;
 
-  return transformColumns(regions, colDepth, rowDepth);
+  return getNecessaryTransforms(regions, colDepth, rowDepth);
 };
 
 const extractKeySet = rawKey => {

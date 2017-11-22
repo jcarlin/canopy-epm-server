@@ -55,7 +55,7 @@ app.post('/ping', async (req, res) => {
 
   const tableData = buildTableData(req.body.manifest);
 
-  fs.readFile('./transforms/sales-by-product.json', (err, data) => {
+  fs.readFile(`./transforms/${tableData.transforms[0]}`, (err, data) => {
     if (err) {
       return res.json({ error });
     }
@@ -105,25 +105,6 @@ app.post('/ping', async (req, res) => {
           }
         });
       });
-      // tableData.rowDefs.forEach(def => {
-      //   const keys = Object.keys(def);
-      //   keys.forEach(key => {
-      //     if (typeof def[key] !== 'object' && key !== 'field') {
-      //       def.compareString = getCompareString(def, key);
-      //     }
-      //   });
-      // });
-      // tableData.rowDefs.forEach(def => {
-      //   const keys = Object.keys(def);
-      //   keys.forEach(key => {
-      //     const dbRow = findRow(dbData, def.compareString, key);
-      //     if (dbRow && dbRow['Net Profit']) {
-      //       def[key].value = dbRow['Net Profit'];
-      //     } else {
-      //       def[key].value = null;
-      //     }
-      //   });
-      // });
       return res.json(tableData);
       // return res.json(dbData.rows);
     });
