@@ -122,12 +122,18 @@ app.get('/pong', async (req, res) => {
 });
 
 app.get('/manifest', (req, res) => {
-  fs.readFile('./manifests/manifest.json', (err, data) => {
+  const manifestType = req.query.manifestType;
+
+  if (!manifestType) {
+    return res.status(400).json({ error: 'You must supply a manifest type' });
+  }
+
+  fs.readFile(`./manifests/${manifestType}.json`, (err, data) => {
     if (err) {
-      return res.json({ error: err });
+      return res.status(400).json({ error: 'Manifest not found' });
     }
     const manifest = JSON.parse(data);
-    res.json({ manifest });
+    return res.json({ manifest });
   });
 });
 
