@@ -50,7 +50,10 @@ app.use(cors());
 
 app.post('/ping', async (req, res) => {
   if (!req.body.manifest) {
-    return res.status(400).json({ error: 'You must supply a manifest' });
+    return res.status(400).json({
+      error:
+        'You must supply a manifest. Send it on an object with a `manfifest` key: { manifest: ... }'
+    });
   }
 
   const tableData = buildTableData(req.body.manifest);
@@ -148,7 +151,12 @@ app.post('/manifest', (req, res) => {
   const { manifest } = req.body;
 
   if (!req.body.manifest) {
-    return res.status(400).json({ error: 'You must supply a manifest' });
+    return res
+      .status(400)
+      .json({
+        error:
+          'You must supply a manifest. Send it on an object with a `manfifest` key: { manifest: ... }'
+      });
   }
 
   const tableData = buildTableData(req.body.manifest);
