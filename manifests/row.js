@@ -4,9 +4,19 @@ const getRowKeys = columnRowDefs => {
   return columnRowDefs.map(rowDef => rowDef.properties.field);
 };
 
+const addRowKeysToRows = rowDefs => {
+  return rowDefs.map(rowDef => {
+    return Object.keys(rowDef).map(key => {
+      if (typeof rowDef[key] === 'object') {
+        return rowDef[key]['rowKey'] = rowDef.field;
+      }
+    });
+  })
+};
+
 const addFieldToRows = (rowDefs, rowKeys) => {
   const addedFields = rowDefs.map(rowDef => {
-    let field = rowKeys.map(key => `${key}_${rowDef[key]}`).join('__');
+    let field = generateRowKey(rowKeys, rowDef);
     return Object.assign({}, rowDef, { field });
   });
   return addedFields;
@@ -17,11 +27,16 @@ const buildRowDef = columnDefs => {
     return Object.assign(acc, {
       [cur.properties.field]: {
         value: 0,
+        rowKey: '',
         columnKey: generateColumnKey(cur.columns),
         editable: cur.properties.editable
       }
     });
   }, {});
+};
+
+const generateRowKey = (rowKeys, rowDef) => {
+  return rowKeys.map(key => `${key}_${rowDef[key]}`).join('__');
 };
 
 const generateColumnKey = columns => {
@@ -59,4 +74,4 @@ const buildRows = (regions, rowDef, depth) => {
   return completelyFlatten(builtRows);
 };
 
-module.exports = { addFieldToRows, buildRowDef, buildRows, getRowKeys };
+module.exports = { addRowKeysToRows, addFieldToRows, buildRowDef, buildRows, getRowKeys };

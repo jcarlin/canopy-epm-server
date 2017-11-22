@@ -1,5 +1,5 @@
 const { flatten, getUniqueRegions } = require('./util');
-const { addFieldToRows, buildRowDef, buildRows, getRowKeys } = require('./row');
+const { addRowKeysToRows, addFieldToRows, buildRowDef, buildRows, getRowKeys } = require('./row');
 const {
   buildColumnsForRegion,
   getInnermostColumns,
@@ -27,7 +27,9 @@ const transformRows = (columnDefs, regions, columnRowDefs, rowDepth) => {
   const rowKeys = getRowKeys(columnRowDefs);
   // NOTE: This is a bit procedural which I am still working out how I feel about it ~LR
   rowDefs = addFieldToRows(rowDefs, rowKeys);
-  const dataMap = buildDataMap(rowDefs);
+  addRowKeysToRows(rowDefs);
+  buildDataMap(rowDefs);
+
   return {
     colDefs: columnDefs,
     rowDefs: rowDefs
@@ -36,7 +38,7 @@ const transformRows = (columnDefs, regions, columnRowDefs, rowDepth) => {
 
 const processRegion = (region, colDepth) => {
   const innnerColumns = getInnermostColumns(region.columns);
-  const variantColumns = addVariationColumns(region, innnerColumns);
+  addVariationColumns(region, innnerColumns);
   return buildColumnsForRegion(region, colDepth);
 };
 
