@@ -6,9 +6,7 @@ const getRowKeys = columnRowDefs => {
 
 const addFieldToRows = (rowDefs, rowKeys) => {
   const addedFields = rowDefs.map(rowDef => {
-    let field = rowKeys.map(key => rowDef[key]).join('_');
-    // Add dimension to field key
-    field = `${rowKeys.join('_')}__${field}`;
+    let field = rowKeys.map(key => `${key}_${rowDef[key]}`).join('__');
     return Object.assign({}, rowDef, { field });
   });
   return addedFields;
@@ -19,10 +17,15 @@ const buildRowDef = columnDefs => {
     return Object.assign(acc, {
       [cur.properties.field]: {
         value: 0,
+        columnKey: generateColumnKey(cur.columns),
         editable: cur.properties.editable
       }
     });
   }, {});
+};
+
+const generateColumnKey = columns => {
+  return columns.map(column => `${column.dimension}_${column.value}`).join('__');
 };
 
 const buildRowDefs = (rows, rowDef) => {
@@ -32,6 +35,7 @@ const buildRowDefs = (rows, rowDef) => {
       rows.reduce((acc, cur) => Object.assign({}, rowDef, acc, cur), {})
     );
 };
+
 const flattenRowDefs = (rows, depth) => {
   return flatten(rows, depth - 1);
 };

@@ -12,7 +12,7 @@ const buildColumnDef = columns => {
   columns
     .reverse()
     .forEach((column, i) =>
-      colDef.columns.push({ value: column.member, level: i })
+      colDef.columns.push({ dimension: column.dimension, value: column.member, level: i })
     );
   colDef.properties = Object.assign({}, { field, editable });
 
