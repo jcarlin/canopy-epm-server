@@ -48,7 +48,7 @@ const generateColumnKey = columns => {
 
 const buildRowDefs = (rows, rowDef) => {
   return rows
-    .map(rows => rows.map(row => ({ [row.dimension]: row.member })))
+    .map(rows => rows.map(row => ({ [row.dimension]: row.member, editable: row['data entry'] })))
     .map(rows =>
       rows.reduce((acc, cur) => {
         const row = Object.assign({}, rowDef, acc, cur);
