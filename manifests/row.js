@@ -28,6 +28,8 @@ const buildRowDef = columnDefs => {
         value: 0,
         rowKey: '',
         columnKey: generateColumnKey(cur.columns),
+        rowIndex: cur.properties.rowIndex,
+        colIndex: cur.properties.colIndex,
         editable: cur.properties.editable
       }
     });

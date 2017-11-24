@@ -1,6 +1,6 @@
 const { flatten, completelyFlatten } = require('./util');
 
-const buildColumnDef = columns => {
+const buildColumnDef = (columns, region) => {
   const colDef = {
     columns: [],
     properties: {}
@@ -8,19 +8,25 @@ const buildColumnDef = columns => {
 
   const field = columns.map(column => column.member).join('_');
   const editable = columns[columns.length - 1]['data entry']; // Get the last element in the array
+  const rowIndex = region.rowIndex;
+  const colIndex = region.colIndex;
 
   columns
     .reverse()
     .forEach((column, i) =>
-      colDef.columns.push({ dimension: column.dimension, value: column.member, level: i })
+      colDef.columns.push({
+        dimension: column.dimension,
+        value: column.member,
+        level: i
+      })
     );
-  colDef.properties = Object.assign({}, { field, editable });
+  colDef.properties = Object.assign({}, { field, editable, rowIndex, colIndex });
 
   return colDef;
 };
 
-const buildColumnDefs = columns => {
-  return columns.map(c => buildColumnDef(c));
+const buildColumnDefs = (columns, region) => {
+  return columns.map(c => buildColumnDef(c, region));
 };
 
 const transformColumnDefs = columns => {
@@ -33,16 +39,16 @@ const transformColumnDefs = columns => {
   return columns.map(column => transform(column, []));
 };
 
-const buildDynamicColumns = (columns, depth) => {
-  const transformedColumns = transformColumnDefs(columns);
+const buildDynamicColumns = (region, depth) => {
+  const transformedColumns = transformColumnDefs(region.columns);
   const flattenedColumns = flatten(transformedColumns, depth - 1);
-  const builtColumns = buildColumnDefs(flattenedColumns);
+  const builtColumns = buildColumnDefs(flattenedColumns, region);
 
   return builtColumns;
 };
 
 const buildColumnsForRegion = (region, colDepth) => {
-  const transformedColumns = buildDynamicColumns(region.columns, colDepth);
+  const transformedColumns = buildDynamicColumns(region, colDepth);
   return completelyFlatten(transformedColumns);
 };
 
