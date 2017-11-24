@@ -26,9 +26,7 @@ const client = new pg.Client({
   host: 'canopy-epm-test.cxuldttnrpns.us-east-2.rds.amazonaws.com',
   database: 'canopy_test',
   password: process.env.DB_PASSWORD,
-  port: 5432,
-  idleTimeoutMillis: 600000,
-  connectionTimeoutMillis: 2000
+  port: 5432
 });
 
 const port = process.env.PORT || 8080;
@@ -56,7 +54,8 @@ app.post('/ping', async (req, res) => {
     });
   }
 
-  const tableData = buildTableData(req.body.manifest);
+  const manifest = req.body.manifest;
+  const tableData = buildTableData(manifest);
 
   fs.readFile(`./transforms/${tableData.transforms[0]}`, (err, data) => {
     if (err) {
@@ -87,8 +86,13 @@ app.post('/ping', async (req, res) => {
 
         keys.forEach(key => {
           if (typeof def[key] === 'object') {
+            const colIndex = def[key].colIndex;
+            const rowIndex = def[key].rowIndex
             const columnKeys = extractKeySet(def[key].columnKey);
             const rowKeys = extractKeySet(def[key].rowKey);
+            const pinned = manifest.regions.find(region => {
+              return region.colIndex === colIndex && region.rowIndex === rowIndex;
+            }).pinned;
 
             let rowKeyStrings = rowKeys.map(key => {
               return `row.${key.dimension} === '${key.member}'`;
@@ -104,7 +108,7 @@ app.post('/ping', async (req, res) => {
 
             def[key].value = dbData.rows.find(row => {
               return eval(totalMatchString);
-            })['Net Profit'];
+            })[pinned[0].member];
           }
         });
       });
