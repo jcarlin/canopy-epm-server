@@ -82,7 +82,6 @@ app.post('/ping', async (req, res) => {
       };
 
       tableData.rowDefs.forEach(def => {
-        // console.log('the def', def)
         const keys = Object.keys(def);
 
         keys.forEach(key => {
@@ -146,9 +145,9 @@ app.patch('/ping', (req, res) => {
 
   const keys = Object.keys(ice);
 
-  const rowIndex = ice[keys[0]].rowIndex;
-  const colIndex = ice[keys[0]].colIndex;
-  const newValue = ice[keys[0]].value;
+  const rowIndex = ice.rowIndex;
+  const colIndex = ice.colIndex;
+  const newValue = ice.value;
 
   const region = manifest.regions.find(
     region => region.colIndex === colIndex && region.rowIndex === rowIndex

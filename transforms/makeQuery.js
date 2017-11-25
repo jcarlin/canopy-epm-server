@@ -12,8 +12,8 @@ const buildFilterStatement = filters => {
 const makeUpdateQuery = (transform, ice) => {
   const keys = Object.keys(ice);
   const keySets = [
-    ...extractKeySet(ice[keys[0]].rowKey),
-    ...extractKeySet(ice[keys[0]].columnKey)
+    ...extractKeySet(ice.rowKey),
+    ...extractKeySet(ice.columnKey)
   ];
   const table = transform.table;
   const metric = transform.metrics[0];
