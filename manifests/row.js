@@ -47,11 +47,14 @@ const generateColumnKey = columns => {
 };
 
 const buildRowDefs = (rows, rowDef) => {
+  // console.log('rows', rows)
   return rows
     .map(rows => rows.map(row => ({ [row.dimension]: row.member, editable: row['data entry'] })))
     .map(rows =>
       rows.reduce((acc, cur) => {
-        const row = Object.assign({}, rowDef, acc, cur);
+        console.log('rowDef', rowDef)
+        const row = Object.assign({}, acc, rowDef, cur);
+        // console.log('the row', row)
         return JSON.parse(JSON.stringify(row)); // Deep clone
       }, {})
     );
@@ -76,6 +79,7 @@ const buildRows = (regions, rowDef, depth) => {
   const transformedRows = transformRowDefs(regions);
   const flattenedRows = flattenRowDefs(transformedRows, depth);
   const builtRows = buildRowDefs(flattenedRows, rowDef);
+  // console.log('built', builtRows)
 
   return completelyFlatten(builtRows);
 };

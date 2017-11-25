@@ -74,7 +74,7 @@
         {
           "dimension": "Account",
           "member": "40000 - REVENUE",
-          "data entry": false
+          "data entry": true
         },
         {
           "dimension": "Account",
@@ -151,7 +151,7 @@
         {
           "dimension": "Product",
           "member": "Books",
-          "data entry": false
+          "data entry": true
         },
         {
           "dimension": "Product",

@@ -7,7 +7,7 @@ const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
 const safeEval = require('safe-eval');
 const pg = require('pg');
-const { makeQuery } = require('./transforms');
+const { makeQuery, makeUpdateQuery } = require('./transforms');
 const { makeLowerCase } = require('./util');
 
 const { buildTableData, extractKeySet } = require('./manifests');
@@ -62,7 +62,7 @@ app.post('/ping', async (req, res) => {
       return res.json({ error });
     }
 
-    const query = makeQuery(data);
+    const query = makeQuery(JSON.parse(data));
 
     client.query(query, (error, data) => {
       if (error) {
@@ -82,16 +82,19 @@ app.post('/ping', async (req, res) => {
       };
 
       tableData.rowDefs.forEach(def => {
+        // console.log('the def', def)
         const keys = Object.keys(def);
 
         keys.forEach(key => {
           if (typeof def[key] === 'object') {
             const colIndex = def[key].colIndex;
-            const rowIndex = def[key].rowIndex
+            const rowIndex = def[key].rowIndex;
             const columnKeys = extractKeySet(def[key].columnKey);
             const rowKeys = extractKeySet(def[key].rowKey);
             const pinned = manifest.regions.find(region => {
-              return region.colIndex === colIndex && region.rowIndex === rowIndex;
+              return (
+                region.colIndex === colIndex && region.rowIndex === rowIndex
+              );
             }).pinned;
 
             let rowKeyStrings = rowKeys.map(key => {
@@ -106,14 +109,67 @@ app.post('/ping', async (req, res) => {
             const joinedRowKeys = rowKeyStrings.join(' && ');
             const totalMatchString = `${joinedColumnKeys} && ${joinedRowKeys}`;
 
+            const col = tableData.colDefs.find(colDef => {
+              if (colDef.hasOwnProperty('properties')) {
+                const field = colDef.properties.field;
+                return field === key;
+              }
+            });
+
             def[key].value = dbData.rows.find(row => {
               return eval(totalMatchString);
             })[pinned[0].member];
+
+            // console.log(def[key].columnKey, col.properties.editable, def[key].editable)
+
+            const isEditable = !!col.properties.editable && !!def[key].editable;
+
+            def[key].editable = isEditable;
           }
         });
       });
       return res.json(tableData);
       // return res.json(dbData.rows);
+    });
+  });
+});
+
+app.patch('/ping', (req, res) => {
+  const ice = req.body.ice;
+  const manifest = req.body.manifest;
+
+  if (!ice || !manifest) {
+    return res.status(400).json({
+      error: 'You must send data and manifest for independent change event'
+    });
+  }
+
+  const keys = Object.keys(ice);
+
+  const rowIndex = ice[keys[0]].rowIndex;
+  const colIndex = ice[keys[0]].colIndex;
+  const newValue = ice[keys[0]].value;
+
+  const region = manifest.regions.find(
+    region => region.colIndex === colIndex && region.rowIndex === rowIndex
+  );
+
+  fs.readFile(`./transforms/${region.transform}`, (err, data) => {
+    if (err) {
+      return res.status(400).json({ error: err });
+    }
+
+    const transform = JSON.parse(data);
+
+    transform.new_value = newValue;
+
+    const query = makeUpdateQuery(transform, ice);
+
+    client.query(query, (error, data) => {
+      if (error) {
+        return res.status(400).json({ error: 'Error writing to database' });
+      }
+      return res.json({ data });
     });
   });
 });
@@ -155,12 +211,10 @@ app.post('/manifest', (req, res) => {
   const { manifest } = req.body;
 
   if (!req.body.manifest) {
-    return res
-      .status(400)
-      .json({
-        error:
-          'You must supply a manifest. Send it on an object with a `manfifest` key: { manifest: ... }'
-      });
+    return res.status(400).json({
+      error:
+        'You must supply a manifest. Send it on an object with a `manfifest` key: { manifest: ... }'
+    });
   }
 
   const tableData = buildTableData(req.body.manifest);
