@@ -58,6 +58,10 @@
       "transform": "Net Profit.json",
       "pinned": [
         {
+          "dimension": "Metric",
+          "member": "Net Profit"
+        },
+        {
           "dimension": "Department",
           "member": "Sales"
         },
@@ -183,6 +187,10 @@
       "includeVariancePct": true,
       "transform": "Net Profit.json",
       "pinned": [
+        {
+          "dimension": "Metric",
+          "member": "Net Profit"
+        },
         {
           "dimension": "Department",
           "member": "Sales"

@@ -115,15 +115,19 @@ app.post('/ping', async (req, res) => {
               }
             });
 
-            def[key].value = dbData.rows.find(row => {
+            const match = dbData.rows.find(row => {
               return eval(totalMatchString);
-            })[pinned[0].member];
+            });
+
+            match
+              ? (def[key].value = match[pinned[0].member])
+              : (def[key].value = null);
 
             // console.log(def[key].columnKey, col.properties.editable, def[key].editable)
 
-            const isEditable = !!col.properties.editable && !!def[key].editable;
+            // const isEditable = !!col.properties.editable && !!def[key].editable;
 
-            def[key].editable = isEditable;
+            // def[key].editable = isEditable;
           }
         });
       });
