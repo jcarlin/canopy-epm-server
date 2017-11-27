@@ -47,7 +47,6 @@ const makeQuery = (transform, pinned) => {
   const queryString = `SELECT ${dimensions},${metrics} FROM ${
     table
   } WHERE ${filterStatements.join(' AND ')}`;
-  console.log('the query string', queryString);
   return queryString;
 };
 

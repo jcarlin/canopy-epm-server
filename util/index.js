@@ -8,7 +8,7 @@ const makeLowerCase = word => {
 
 // Given a dataset containing rows,
 // extract the dimension and member
-// give give dimension:member
+// to give dimension:member
 const extractFields = elements => {
   return elements.map(element => {
     if (!element.dimension || !element.member) return;

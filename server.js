@@ -86,6 +86,8 @@ app.post('/ping', async (req, res) => {
 
     const pinned = manifest.regions[0].pinned;
     const query = makeQuery(JSON.parse(data), pinned);
+    const includeVariance = manifest.regions[0].includeVariance;
+    const includeVariancePct = manifest.regions[0].includeVariancePct;
 
     client.query(query, (error, data) => {
       if (error) {
@@ -154,8 +156,25 @@ app.post('/ping', async (req, res) => {
           }
         });
       });
+
+      if (includeVariance && includeVariancePct) {
+        tableData.rowDefs.forEach(def => {
+          const keys = Object.keys(def);
+          let keyBag = [];
+          keys.forEach((key, i) => {
+            keyBag.push(key);
+            if (/Variance/.test(def[key].columnKey)) {
+              def[key].value =
+                def[keyBag[i - 1]].value - def[keyBag[i - 2]].value;
+            }
+            if (/Variance %/.test(def[key].columnKey)) {
+              def[key].value =
+                def[keyBag[i - 1]].value / def[keyBag[i - 2]].value * 100;
+            }
+          });
+        });
+      }
       return res.json(tableData);
-      // return res.json(dbData.rows);
     });
   });
 });
