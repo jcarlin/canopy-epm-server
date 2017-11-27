@@ -1,19 +1,30 @@
-const { capitalize } = require('./../util');
+const { capitalize, makeLowerCase } = require('./../util');
 const { extractKeySet } = require('./../manifests');
 
-const buildFilterStatement = filters => {
-  return filters.map(filter => {
-    return `${capitalize(filter.dim)} IN (${filter.values
-      .map(val => `'${val}'`)
-      .join(',')})`;
+const getPinnedSet = pinned => {
+  return pinned.filter(pin => pin.dimension !== 'Metric').map(pin => {
+    return {
+      dimension: makeLowerCase(pin.dimension),
+      member: pin.member
+    };
   });
 };
 
-const makeUpdateQuery = (transform, ice) => {
+const buildFilterStatement = filters => {
+  return filters.map(filter => {
+    return `${capitalize(filter.dimension)} IN ('${filter.member}')`;
+  });
+};
+
+const makeUpdateQuery = (transform, ice, pinned) => {
   const keys = Object.keys(ice);
+
+  const pinnedSet = getPinnedSet(pinned);
+
   const keySets = [
     ...extractKeySet(ice.rowKey),
-    ...extractKeySet(ice.columnKey)
+    ...extractKeySet(ice.columnKey),
+    ...pinnedSet
   ];
   const table = transform.table;
   const metric = transform.metrics[0];
@@ -27,15 +38,17 @@ const makeUpdateQuery = (transform, ice) => {
   )}`;
 };
 
-const makeQuery = transform => {
+const makeQuery = (transform, pinned) => {
+  const pinnedSet = getPinnedSet(pinned);
   const table = transform.table;
   const dimensions = transform.dimensions.join(',');
   const metrics = transform.metrics.map(metric => `"${metric}"`).join(',');
-  const filterStatements = buildFilterStatement(transform.filters);
-  const query = `SELECT ${dimensions},${metrics} FROM ${
+  const filterStatements = buildFilterStatement(pinnedSet);
+  const queryString = `SELECT ${dimensions},${metrics} FROM ${
     table
   } WHERE ${filterStatements.join(' AND ')}`;
-  return query;
+  console.log('the query string', queryString);
+  return queryString;
 };
 
 module.exports = { makeQuery, makeUpdateQuery };

@@ -57,12 +57,35 @@ app.post('/ping', async (req, res) => {
   const manifest = req.body.manifest;
   const tableData = buildTableData(manifest);
 
+  // const getData = async transform => {
+  //   console.log(transform);
+  //   const file = fs.readFileSync(`./transforms/${transform}`);
+  //   const query = makeQuery(JSON.parse(file));
+  //   return await client.query(query);
+  // try {
+  //   const file = await Promise.resolve(
+  //     fs.readFile(`./transforms/${transform}`)
+  //   );
+  //   const query = makeQuery(JSON.parse(file));
+  //   return await Promise.resolve(client.query(query));
+  // } catch (err) {
+  //   return err;
+  // }
+  // };
+
+  // let dbData = [];
+  // tableData.transforms.forEach(transform => {
+  //   dbData.push({ [transform]: getData(transform) });
+  // });
+  // console.log(getData(tableData.transforms[0]));
+
   fs.readFile(`./transforms/${tableData.transforms[0]}`, (err, data) => {
     if (err) {
       return res.json({ error });
     }
 
-    const query = makeQuery(JSON.parse(data));
+    const pinned = manifest.regions[0].pinned;
+    const query = makeQuery(JSON.parse(data), pinned);
 
     client.query(query, (error, data) => {
       if (error) {
@@ -166,7 +189,9 @@ app.patch('/ping', (req, res) => {
 
     transform.new_value = newValue;
 
-    const query = makeUpdateQuery(transform, ice);
+    const pinned = region.pinned;
+
+    const query = makeUpdateQuery(transform, ice, pinned);
 
     client.query(query, (error, data) => {
       if (error) {

@@ -1,3 +1,3 @@
-const { makeQuery, makeUpdateQuery } = require('./makeQuery');
+const { makeQuery, makeUpdateQuery } = require('./query');
 
 module.exports = { makeQuery, makeUpdateQuery };
