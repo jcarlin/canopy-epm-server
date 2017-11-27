@@ -46,12 +46,7 @@ const transformColumns = (regions, colDepth, rowDepth, transforms) => {
   const uniqueRegions = getUniqueRegions(regions, 'colIndex');
   const columnRowDefs = buildRowColumns(uniqueRegions[0], colDepth, rowDepth);
   const columns = uniqueRegions.map(region => processRegion(region, colDepth));
-
-  // ALL THE COLUMNS
-  const columnDefs = [...columnRowDefs, ...flatten(columns, 1)];
-
-  // PERIODIC LAYOUT
-  // this.columnDefs  = [...columns[0], ...this.columnRowDefs, ...columns[1]];
+  const columnDefs = assembleColumns(columnRowDefs, columns, uniqueRegions[0]);
 
   return transformRows(
     columnDefs,
@@ -60,6 +55,17 @@ const transformColumns = (regions, colDepth, rowDepth, transforms) => {
     rowDepth,
     transforms
   );
+};
+
+// NOTE: This is a placeholder function that will evolve
+const assembleColumns = (columnRowDefs, columns, firstRegion) => {
+  if(firstRegion.includeVariance) {
+    // PERIODIC LAYOUT
+    return [...columns[0], ...columnRowDefs, ...columns[1]];
+  } else {
+    // ALL THE COLUMNS
+    return [...columnRowDefs, ...flatten(columns, 1)];
+  }
 };
 
 const getNecessaryTransforms = (regions, colDepth, rowDepth) => {
