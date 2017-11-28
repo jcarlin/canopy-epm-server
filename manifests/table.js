@@ -85,8 +85,6 @@ const buildTableData = manifest => {
   const colDepth = firstRegion.colDepth;
   const rowDepth = firstRegion.rowDepth;
 
-  console.log(firstRegion.colDepth);
-
   return getNecessaryTransforms(regions, colDepth, rowDepth);
 };
 
