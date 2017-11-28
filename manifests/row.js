@@ -49,10 +49,12 @@ const generateColumnKey = columns => {
 const buildRowDefs = (rows, rowDef) => {
   return rows
     .map(rows =>
-      rows.map(row => ({
-        [row.dimension]: row.member,
-        editable: row['data entry']
-      }))
+      rows.map(row => {
+        return {
+          [row.dimension]: row.member,
+          editable: row['data entry']
+        };
+      })
     )
     .map(rows =>
       rows.reduce((acc, cur) => {
@@ -77,11 +79,24 @@ const transformRowDefs = regions => {
   return rows.map(row => transform(row, []));
 };
 
+const calculateEditableCells = rows => rows.forEach(row => {
+  Object.keys(row).forEach(key => {
+    if (typeof row[key] === 'object') {
+      // Doing this longhand for documentation purposes ~LR
+      const colEditable = row[key]['editable'];
+      const rowEditable = row['editable'];
+      row[key]['editable'] = colEditable && rowEditable;
+    }
+  });
+});
+
 const buildRows = (regions, rowDef, depth) => {
   const transformedRows = transformRowDefs(regions);
   const flattenedRows = flattenRowDefs(transformedRows, depth);
   const builtRows = buildRowDefs(flattenedRows, rowDef);
-  // console.log('built', builtRows)
+
+  // Set the editable field based on row and column definitions
+  calculateEditableCells(builtRows);
 
   return completelyFlatten(builtRows);
 };
