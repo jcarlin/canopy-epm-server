@@ -1,19 +1,22 @@
 require('dotenv').config();
 const fs = require('fs');
 const express = require('express');
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
 const safeEval = require('safe-eval');
 const pg = require('pg');
-const { makeQuery, makeUpdateQuery } = require('./transforms');
-const { makeLowerCase } = require('./util');
 
-const { buildTableData, extractKeySet } = require('./manifests');
+const { makeQuery, makeUpdateQuery } = require('./transforms');
+const { buildTableData } = require('./manifests');
+const { stitchDatabaseData, produceVariance } = require('./grid');
+const { makeLowerCase } = require('./util');
 
 const app = express();
 
+// Necessary for express to be able
+// to read the request body
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -43,10 +46,20 @@ const checkJwt = jwt({
   algorithms: ['RS256']
 });
 
+// Allow cross-origin resource sharing
+// NOTE: limit this to your own domain
+// for prod use
 app.use(cors());
-// app.use(checkJwt);
 
-app.post('/ping', async (req, res) => {
+// Use the checJwt middleware defined
+// to ensure the user sends a valid
+// access token produced by Auth0
+app.use(checkJwt);
+
+// In response to the client app sending
+// a hydrated manifest, send back the completely
+// built table data ready to be consumed by ag-grid
+app.post('/grid', async (req, res) => {
   if (!req.body.manifest) {
     return res.status(400).json({
       error:
@@ -56,28 +69,6 @@ app.post('/ping', async (req, res) => {
 
   const manifest = req.body.manifest;
   const tableData = buildTableData(manifest);
-
-  // const getData = async transform => {
-  //   console.log(transform);
-  //   const file = fs.readFileSync(`./transforms/${transform}`);
-  //   const query = makeQuery(JSON.parse(file));
-  //   return await client.query(query);
-  // try {
-  //   const file = await Promise.resolve(
-  //     fs.readFile(`./transforms/${transform}`)
-  //   );
-  //   const query = makeQuery(JSON.parse(file));
-  //   return await Promise.resolve(client.query(query));
-  // } catch (err) {
-  //   return err;
-  // }
-  // };
-
-  // let dbData = [];
-  // tableData.transforms.forEach(transform => {
-  //   dbData.push({ [transform]: getData(transform) });
-  // });
-  // console.log(getData(tableData.transforms[0]));
 
   fs.readFile(`./transforms/${tableData.transforms[0]}`, (err, data) => {
     if (err) {
@@ -94,92 +85,19 @@ app.post('/ping', async (req, res) => {
         return res.json({ error });
       }
 
-      const dbData = data;
-
-      const findRow = (data, compareString, key) => {
-        return data.rows.find(row => {
-          return eval(`${compareString} && row.product === key`);
-        });
-      };
-
-      const getCompareString = (def, key) => {
-        return `row.${makeLowerCase(key)} === '${def[key]}'`;
-      };
-
-      tableData.rowDefs.forEach(def => {
-        const keys = Object.keys(def);
-
-        keys.forEach(key => {
-          if (typeof def[key] === 'object') {
-            const colIndex = def[key].colIndex;
-            const rowIndex = def[key].rowIndex;
-            const columnKeys = extractKeySet(def[key].columnKey);
-            const rowKeys = extractKeySet(def[key].rowKey);
-            const pinned = manifest.regions.find(region => {
-              return (
-                region.colIndex === colIndex && region.rowIndex === rowIndex
-              );
-            }).pinned;
-
-            let rowKeyStrings = rowKeys.map(key => {
-              return `row.${key.dimension} === '${key.member}'`;
-            });
-
-            let columnKeyStrings = columnKeys.map(key => {
-              return `row.${key.dimension} === "${key.member}"`;
-            });
-
-            const joinedColumnKeys = columnKeyStrings.join(' && ');
-            const joinedRowKeys = rowKeyStrings.join(' && ');
-            const totalMatchString = `${joinedColumnKeys} && ${joinedRowKeys}`;
-
-            const col = tableData.colDefs.find(colDef => {
-              if (colDef.hasOwnProperty('properties')) {
-                const field = colDef.properties.field;
-                return field === key;
-              }
-            });
-
-            const match = dbData.rows.find(row => {
-              return eval(totalMatchString);
-            });
-
-            match
-              ? (def[key].value = match[pinned[0].member])
-              : (def[key].value = null);
-
-            // console.log(def[key].columnKey, col.properties.editable, def[key].editable)
-
-            // const isEditable = !!col.properties.editable && !!def[key].editable;
-
-            // def[key].editable = isEditable;
-          }
-        });
-      });
+      const producedData = stitchDatabaseData(manifest, tableData, data);
 
       if (includeVariance && includeVariancePct) {
-        tableData.rowDefs.forEach(def => {
-          const keys = Object.keys(def);
-          let keyBag = [];
-          keys.forEach((key, i) => {
-            keyBag.push(key);
-            if (/Variance/.test(def[key].columnKey)) {
-              def[key].value =
-                def[keyBag[i - 1]].value - def[keyBag[i - 2]].value;
-            }
-            if (/Variance %/.test(def[key].columnKey)) {
-              def[key].value =
-                def[keyBag[i - 1]].value / def[keyBag[i - 2]].value * 100;
-            }
-          });
-        });
+        const finalData = produceVariance(producedData);
+        return res.json(finalData);
       }
-      return res.json(tableData);
+      return res.json(producedData);
     });
   });
 });
 
-app.patch('/ping', (req, res) => {
+// Edit a cell by based on an ICE
+app.patch('/grid', (req, res) => {
   const ice = req.body.ice;
   const manifest = req.body.manifest;
 
@@ -221,23 +139,9 @@ app.patch('/ping', (req, res) => {
   });
 });
 
-app.get('/pong', async (req, res) => {
-  fs.readFile('./transforms/periodic-vs-ytd-periodic.json', (err, data) => {
-    if (err) {
-      return res.json({ error });
-    }
-
-    const query = makeQuery(data);
-
-    client.query(query, (error, data) => {
-      if (error) {
-        return res.json({ error });
-      }
-      res.json({ data: data.rows });
-    });
-  });
-});
-
+// Get an unhydrated manifest from the filesystem.
+// You must specify the type which corresponds to the
+// filename of the manifest on disk
 app.get('/manifest', (req, res) => {
   const manifestType = req.query.manifestType;
 
@@ -254,7 +158,10 @@ app.get('/manifest', (req, res) => {
   });
 });
 
-app.post('/manifest', (req, res) => {
+// Utility endpoint which you can send
+// a manifest to and receive the column and row defs
+// produce by running it through `buildTableData`
+app.post('/test-manifest', (req, res) => {
   const { manifest } = req.body;
 
   if (!req.body.manifest) {
@@ -268,23 +175,8 @@ app.post('/manifest', (req, res) => {
   return res.json(tableData);
 });
 
-app.get('/data', (req, res) => {
-  fs.readFile('./transforms/sales-by-product.json', (err, data) => {
-    if (err) {
-      return res.json({ error });
-    }
-
-    const query = makeQuery(data);
-
-    client.query(query, (error, data) => {
-      if (error) {
-        return res.json({ error });
-      }
-      res.json({ data });
-    });
-  });
-});
-
+// Establish a connection to postgres
+// and fire up the node server
 async function connect() {
   try {
     await client.connect();

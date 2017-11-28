@@ -1,5 +1,5 @@
 const { capitalize, makeLowerCase } = require('./../util');
-const { extractKeySet } = require('./../manifests');
+const { extractKeySet } = require('./../grid');
 
 const getPinnedSet = pinned => {
   return pinned.filter(pin => pin.dimension !== 'Metric').map(pin => {

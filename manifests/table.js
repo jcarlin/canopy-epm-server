@@ -59,7 +59,7 @@ const transformColumns = (regions, colDepth, rowDepth, transforms) => {
 
 // NOTE: This is a placeholder function that will evolve
 const assembleColumns = (columnRowDefs, columns, firstRegion) => {
-  if(firstRegion.includeVariance) {
+  if (firstRegion.includeVariance) {
     // PERIODIC LAYOUT
     return [...columns[0], ...columnRowDefs, ...columns[1]];
   } else {
@@ -85,17 +85,9 @@ const buildTableData = manifest => {
   const colDepth = firstRegion.colDepth;
   const rowDepth = firstRegion.rowDepth;
 
+  console.log(firstRegion.colDepth);
+
   return getNecessaryTransforms(regions, colDepth, rowDepth);
 };
 
-const extractKeySet = rawKey => {
-  return rawKey.split('__').map(keyGroup => {
-    const keySet = keyGroup.split('_');
-    return {
-      dimension: makeLowerCase(keySet[0]),
-      member: keySet[1]
-    };
-  });
-};
-
-module.exports = { buildTableData, extractKeySet };
+module.exports = { buildTableData };

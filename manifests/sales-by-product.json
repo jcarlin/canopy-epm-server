@@ -161,7 +161,7 @@
         {
           "dimension": "Product",
           "member": "Healthcare",
-          "data entry": true
+          "data entry": false
         },
         {
           "dimension": "Product",

@@ -1,3 +1,3 @@
-const { buildTableData, extractKeySet } = require('./table');
+const { buildTableData } = require('./table');
 
-module.exports = { buildTableData, extractKeySet };
+module.exports = { buildTableData };
