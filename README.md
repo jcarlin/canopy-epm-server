@@ -1,5 +1,14 @@
 # Canopy EPM Server
 
+## `.env` File
+
+A `.env` file is used to hold environment-specific keys such as a database
+password. This file should not be committed to souce control.
+
+Copy the `.env.example` file provided at the root of the project and rename it
+to `.env`. Populate it with an necessary variables such as the database
+password.
+
 ## Installation
 
 Install the dependencies in the `packege.json` file.
