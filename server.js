@@ -5,10 +5,9 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
-const safeEval = require('safe-eval');
 const pg = require('pg');
 
-const { makeQuery, makeUpdateQuery } = require('./transforms');
+const { makeQueryString, makeUpdateQueryString } = require('./transforms');
 const { buildTableData } = require('./manifests');
 const { stitchDatabaseData, produceVariance } = require('./grid');
 const { makeLowerCase } = require('./util');
@@ -54,12 +53,12 @@ app.use(cors());
 // Use the checJwt middleware defined
 // to ensure the user sends a valid
 // access token produced by Auth0
-app.use(checkJwt);
+// app.use(checkJwt);
 
 // In response to the client app sending
 // a hydrated manifest, send back the completely
 // built table data ready to be consumed by ag-grid
-app.post('/grid', async (req, res) => {
+app.post('/grid', (req, res) => {
   if (!req.body.manifest) {
     return res.status(400).json({
       error:
@@ -68,7 +67,7 @@ app.post('/grid', async (req, res) => {
   }
 
   const manifest = req.body.manifest;
-  const tableData = buildTableData(manifest);
+  const tableData = buildTableData(manifest); // manifest -> something ag-grid can use
 
   fs.readFile(`./transforms/${tableData.transforms[0]}`, (err, data) => {
     if (err) {
@@ -76,7 +75,7 @@ app.post('/grid', async (req, res) => {
     }
 
     const pinned = manifest.regions[0].pinned;
-    const query = makeQuery(JSON.parse(data), pinned);
+    const query = makeQueryString(JSON.parse(data), pinned);
     const includeVariance = manifest.regions[0].includeVariance;
     const includeVariancePct = manifest.regions[0].includeVariancePct;
 
@@ -128,7 +127,7 @@ app.patch('/grid', (req, res) => {
 
     const pinned = region.pinned;
 
-    const query = makeUpdateQuery(transform, ice, pinned);
+    const query = makeUpdateQueryString(transform, ice, pinned);
 
     client.query(query, (error, data) => {
       if (error) {
