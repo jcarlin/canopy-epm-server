@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
-const safeEval = require('safe-eval');
 const pg = require('pg');
 
 const { makeQueryString, makeUpdateQueryString } = require('./transforms');
