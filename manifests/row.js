@@ -1,24 +1,45 @@
 const { flatten, completelyFlatten, getUniqueRegions } = require('./util');
 
-const getRowKeys = columnRowDefs => {
-  return columnRowDefs.map(rowDef => rowDef.properties.field);
+const buildRows = (regions, rowDef, depth) => {
+  const transformedRows = transformRowDefs(regions);
+  const flattenedRows   = flatten(transformedRows, depth - 1);
+  const builtRows       = buildRowDefs(flattenedRows, rowDef);
+
+  // Set the editable field based on row and column definitions
+  calculateEditableCells(builtRows);
+
+  return completelyFlatten(builtRows);
 };
 
-const addRowKeysToRows = rowDefs => {
-  rowDefs.forEach(rowDef => {
-    Object.keys(rowDef).forEach(key => {
-      if (typeof rowDef[key] === 'object') {
-        rowDef[key]['rowKey'] = rowDef.field;
-      }
+const transformRowDefs = regions => {
+  const newRegions = getUniqueRegions(regions, 'rowIndex');
+  const rows = completelyFlatten(newRegions.map(region => region.rows));
+
+  const transform = (row, parents) => {
+    parents = [...parents, row];
+    return row.rows ? row.rows.map(r => transform(r, parents)) : parents;
+  };
+
+  return rows.map(row => transform(row, []));
+};
+
+const buildRowDefs = (rows, rowDef) => {
+  return rows
+    .map(rows =>
+      rows.map(row => {
+        return {
+          [row.dimension]: row.member,
+          editable: row['data entry']
+        };
+      })
+    )
+    .map(rows => [Object.assign(...rows)]) // This is some serious ES6 voodoo
+    .map(rows => {
+      return rows.reduce((acc, cur) => {
+        const row = Object.assign({}, acc, rowDef, cur);
+        return JSON.parse(JSON.stringify(row)); // Deep clone
+      }, {});
     });
-  });
-};
-
-const addFieldToRows = (rowDefs, rowKeys) => {
-  rowDefs.forEach(rowDef => {
-    let field = generateRowKey(rowKeys, rowDef);
-    rowDef.field = field;
-  });
 };
 
 const buildRowDef = columnDefs => {
@@ -36,49 +57,9 @@ const buildRowDef = columnDefs => {
   }, {});
 };
 
-const generateRowKey = (rowKeys, rowDef) => {
-  return rowKeys.map(key => `${key}_${rowDef[key]}`).join('__');
-};
-
-const generateColumnKey = columns => {
-  return columns
-    .map(column => `${column.dimension}_${column.value}`)
-    .join('__');
-};
-
-const buildRowDefs = (rows, rowDef) => {
-  return rows
-    .map(rows =>
-      rows.map(row => {
-        return {
-          [row.dimension]: row.member,
-          editable: row['data entry']
-        };
-      })
-    )
-    .map(rows =>
-      rows.reduce((acc, cur) => {
-        const row = Object.assign({}, acc, rowDef, cur);
-        return JSON.parse(JSON.stringify(row)); // Deep clone
-      }, {})
-    );
-};
-
-const flattenRowDefs = (rows, depth) => {
-  return flatten(rows, depth - 1);
-};
-
-const transformRowDefs = regions => {
-  const newRegions = getUniqueRegions(regions, 'rowIndex');
-  const rows = completelyFlatten(newRegions.map(region => region.rows));
-  const transform = (row, parents) => {
-    parents = [...parents, row];
-    return row.rows ? row.rows.map(r => transform(r, parents)) : parents;
-  };
-
-  return rows.map(row => transform(row, []));
-};
-
+// -------------------------------------------------------------------
+// UTILITY FUNCTIONS
+// -------------------------------------------------------------------
 const calculateEditableCells = rows => rows.forEach(row => {
   Object.keys(row).forEach(key => {
     if (typeof row[key] === 'object') {
@@ -90,15 +71,37 @@ const calculateEditableCells = rows => rows.forEach(row => {
   });
 });
 
-const buildRows = (regions, rowDef, depth) => {
-  const transformedRows = transformRowDefs(regions);
-  const flattenedRows = flattenRowDefs(transformedRows, depth);
-  const builtRows = buildRowDefs(flattenedRows, rowDef);
+const addFieldToRows = (rowDefs, rowKeys) => {
+  rowDefs.forEach(rowDef => {
+    let field = generateRowKey(rowKeys, rowDef);
+    rowDef.field = field;
+  });
+};
 
-  // Set the editable field based on row and column definitions
-  calculateEditableCells(builtRows);
+const generateRowKey = (rowKeys, rowDef) => {
+  return rowKeys.map(key => `${key}_${rowDef[key]}`).join('__');
+};
 
-  return completelyFlatten(builtRows);
+const generateColumnKey = columns => {
+  return columns
+    .map(column => `${column.dimension}_${column.value}`)
+    .join('__');
+};
+
+const getRowKeys = columnRowDefs => {
+  return columnRowDefs.map(rowDef => rowDef.properties.field);
+};
+
+const addRowKeysToRows = rowDefs => {
+  rowDefs.forEach(rowDef => {
+    Object
+      .keys(rowDef)
+      .forEach(key => {
+        if (typeof rowDef[key] === 'object') {
+          rowDef[key]['rowKey'] = rowDef.field;
+        }
+      });
+  });
 };
 
 module.exports = {

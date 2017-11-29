@@ -23,7 +23,7 @@ const buildRowColumn = (depth, field) => {
   }
   colDef.properties = Object.assign(
     {},
-    { field: field['dimension'], editable: field['data entry'] }
+    { field: field['dimension'], editable: field['data entry'] || false }
   );
 
   return colDef;

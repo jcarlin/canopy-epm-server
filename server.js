@@ -72,7 +72,7 @@ app.post('/grid', async (req, res) => {
 
   fs.readFile(`./transforms/${tableData.transforms[0]}`, (err, data) => {
     if (err) {
-      return res.json({ error });
+      return res.json({ err });
     }
 
     const pinned = manifest.regions[0].pinned;
