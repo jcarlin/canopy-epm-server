@@ -16,7 +16,7 @@ const buildFilterStatement = filters => {
   });
 };
 
-const makeUpdateQuery = (transform, ice, pinned) => {
+const makeUpdateQueryString = (transform, ice, pinned) => {
   const keys = Object.keys(ice);
 
   const pinnedSet = getPinnedSet(pinned);
@@ -38,7 +38,7 @@ const makeUpdateQuery = (transform, ice, pinned) => {
   )}`;
 };
 
-const makeQuery = (transform, pinned) => {
+const makeQueryString = (transform, pinned) => {
   const pinnedSet = getPinnedSet(pinned);
   const table = transform.table;
   const dimensions = transform.dimensions.join(',');
@@ -50,4 +50,4 @@ const makeQuery = (transform, pinned) => {
   return queryString;
 };
 
-module.exports = { makeQuery, makeUpdateQuery };
+module.exports = { makeQueryString, makeUpdateQueryString };
