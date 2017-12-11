@@ -140,7 +140,7 @@
 			"data entry": false
 		}, {
 			"dimension": "Object Code",
-			"member": "4inst",
+			"member": "4instr",
 			"data entry": false
 		}, {
 			"dimension": "Object Code",
