@@ -1,0 +1,532 @@
+{
+	"page": [{
+		"list": [{
+			"dimension": "Scenario",
+			"member": "actual"
+		}, {
+			"dimension": "Scenario",
+			"member": "booked_budget"
+		}]
+	}, {
+		"list": [{
+			"dimension": "Organization",
+			"member": "level_1_2_node"
+		}, {
+			"dimension": "Organization",
+			"member": "level_2_83307_node"
+		}, {
+			"dimension": "Organization",
+			"member": "level_2_3_node"
+		}]
+	}, {
+		"list": [{
+			"dimension": "Time",
+			"member": "2016_fy"
+		}, {
+			"dimension": "Time",
+			"member": "2017_fy"
+		}, {
+			"dimension": "Time",
+			"member": "2018_fy"
+		}]
+	}, {
+		"list": [{
+			"dimension": "Variation",
+			"member": "periodic"
+		}, {
+			"dimension": "Variation",
+			"member": "fy_ytd"
+		}]
+	}],
+	"regions": [{
+		"rowIndex": 0,
+		"colIndex": 0,
+		"rowDepth": 1,
+		"colDepth": 1,
+		"showRowHeaders": true,
+		"showColHeaders": true,
+		"includeVariance": false,
+		"includeVariancePct": false,
+		"transform": "net_rev_trans_exp_balance.json",
+		"pinned": [{
+			"dimension": "Metric",
+			"member": "a1"
+		}, {
+			"dimension": "Currency",
+			"member": "lc"
+		}, {
+			"dimension": "Datasrc",
+			"member": "assigned"
+		}, {
+			"dimension": "Organization",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Scenario",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Time",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Variation",
+			"member": "$LIST$"
+		}],
+		"rows": [{
+			"dimension": "Object Code",
+			"member": "40000",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "400rv",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "40001",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "41001",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "42001",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "43001",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "44001",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "45001",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "48001",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "48inf",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "48otr",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "otrin",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "46aff",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "46fac",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "46pat",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "46pub",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "4conf",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "4instr",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "4othr",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "49001",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "49700",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "49gen",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "49base",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "49111",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "49211",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "49nbase",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "49110",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "49210",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "49otr",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "4900b",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "49100",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "49200",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "50000",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "500se",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "51100",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "51101",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "511rb",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "51102",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "51302",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "51202",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "51352",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "51402",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "51501",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "515co",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "51572",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "51582",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "515rb",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "51oth",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "51552",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "51700",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "51900",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "51bon",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "51spc",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "51tui",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "52100",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "53000",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "53101",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "53201",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "56900",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "57000",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "57100",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "57300",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "57gsp",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "57gti",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "57600",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "57601",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "57640",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "57801",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "58000",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "58901",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "58dbt",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "58otr",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "59000",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "5othr",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "53rep",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "54sub",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "5equip",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "5prof",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "5rent",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "5supl",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "5trvl",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "5util",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "49int",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "499in",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "499ot",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "49inn",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "49out",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "rv-ep",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "49300",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "chgcf",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "30001",
+			"data entry": false
+		}, {
+			"dimension": "Object Code",
+			"member": "endfb",
+			"data entry": false
+		}],
+		"columns": [{
+			"dimension": "Product",
+			"member": "all_products",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "electronics",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "televisions",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "home_audio",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "cameras",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "cell_phones",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "car_electronics",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "video_games",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "bluetooth_speakers",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "headphones",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "instruments",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "wearable_technology",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "photo_video",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "monitors",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "accessories",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "movies",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "home_garden",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "grocery",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "healthcare",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "toys",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "clothing",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "sports_equipment",			
+			"data entry": false
+		}]
+	}]
+}
