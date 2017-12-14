@@ -10,10 +10,18 @@ const getPinnedSet = pinned => {
   });
 };
 
-const buildFilterStatement = filters => {
-  return filters.map(filter => {
-    return `${capitalize(filter.dimension)} IN ('${filter.member}')`;
-  });
+const buildFilterStatement = (filters, tableName) => {
+  // TODO: replace this hack that was created to rectify Nile vs public and manifest naming conventions.
+  if (tableName === "elt.app_net_rev") {
+    return filters.map(filter => {
+      return `${makeLowerCase(filter.dimension)}_id = ('${filter.member}')`;
+    });  
+  }
+  else {
+    return filters.map(filter => {
+      return `${capitalize(filter.dimension)} IN ('${filter.member}')`;
+    });
+  }
 };
 
 const makeUpdateQueryString = (transform, ice, pinned) => {
@@ -43,10 +51,12 @@ const makeQueryString = (transform, pinned) => {
   const table = transform.table;
   const dimensions = transform.dimensions.join(',');
   const metrics = transform.metrics.map(metric => `"${metric}"`).join(',');
-  const filterStatements = buildFilterStatement(pinnedSet);
+  const filterStatements = buildFilterStatement(pinnedSet, transform.table);
   const queryString = `SELECT ${dimensions},${metrics} FROM ${
     table
   } WHERE ${filterStatements.join(' AND ')}`;
+
+  // console.log("makeQueryString: ", queryString);
   return queryString;
 };
 

@@ -6,7 +6,7 @@ const buildColumnDef = (columns, region) => {
     properties: {}
   };
 
-  const field = columns.map(column => column.member).join('_');
+  const field = columns.map(column => column.member).join('__');
   const editable = columns[columns.length - 1]['data entry']; // Get the last element in the array
   const rowIndex = region.rowIndex;
   const colIndex = region.colIndex;

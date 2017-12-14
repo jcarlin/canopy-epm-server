@@ -1,8 +1,8 @@
 const { makeLowerCase } = require('./../util');
 
 const extractKeySet = rawKey => {
-  return rawKey.split('__').map(keyGroup => {
-    const keySet = keyGroup.split('_');
+  return rawKey.split('___').map(keyGroup => {
+    const keySet = keyGroup.split('__');
     return {
       dimension: makeLowerCase(keySet[0]),
       member: keySet[1]
