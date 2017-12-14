@@ -157,6 +157,23 @@ app.get('/manifest', (req, res) => {
   });
 });
 
+app.post('/statistics', (req, res) => {
+  /*if (!req.body.manifest) {
+    return res.status(400).json({
+      error: 'You must supply a manifest. Send it on an object with a `manfifest` key: { manifest: ... }'
+    });
+  }*/
+
+  // TODO: replace below with database query
+  const stats = {
+    dimensionCount: 3,
+    metricCount: 4,
+    startTime: new Date()
+  };
+
+  return res.json(stats);
+});
+
 // Utility endpoint which you can send
 // a manifest to and receive the column and row defs
 // produce by running it through `buildTableData`
