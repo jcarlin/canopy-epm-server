@@ -50,7 +50,7 @@
 		"transform": "net_rev_trans_exp_balance.json",
 		"pinned": [{
 			"dimension": "Metric",
-			"member": "a1"
+			"member": "app_net_rev"
 		}, {
 			"dimension": "Currency",
 			"member": "lc"
@@ -71,460 +71,460 @@
 			"member": "$LIST$"
 		}],
 		"rows": [{
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "40000",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "400rv",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "40001",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "41001",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "42001",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "43001",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "44001",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "45001",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "48001",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "48inf",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "48otr",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "otrin",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "46aff",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "46fac",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "46pat",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "46pub",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "4conf",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "4instr",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "4othr",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "49001",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "49700",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "49gen",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "49base",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "49111",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "49211",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "49nbase",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "49110",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "49210",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "49otr",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "4900b",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "49100",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "49200",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "50000",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "500se",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "51100",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "51101",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "511rb",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "51102",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "51302",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "51202",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "51352",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "51402",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "51501",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "515co",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "51572",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "51582",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "515rb",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "51oth",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "51552",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "51700",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "51900",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "51bon",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "51spc",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "51tui",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "52100",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "53000",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "53101",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "53201",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "56900",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "57000",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "57100",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "57300",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "57gsp",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "57gti",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "57600",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "57601",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "57640",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "57801",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "58000",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "58901",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "58dbt",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "58otr",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "59000",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "5othr",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "53rep",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "54sub",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "5equip",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "5prof",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "5rent",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "5supl",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "5trvl",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "5util",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "49int",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "499in",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "499ot",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "49inn",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "49out",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "rv-ep",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "49300",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "chgcf",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "30001",
 			"data entry": false
 		}, {
-			"dimension": "Object Code",
+			"dimension": "objectcode_id",
 			"member": "endfb",
 			"data entry": false
 		}],
 		"columns": [{
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "all_products",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "electronics",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "televisions",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "home_audio",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "cameras",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "cell_phones",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "car_electronics",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "video_games",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "bluetooth_speakers",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "headphones",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "instruments",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "wearable_technology",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "photo_video",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "monitors",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "accessories",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "movies",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "home_garden",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "grocery",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "healthcare",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "toys",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "clothing",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "sports_equipment",			
 			"data entry": false
 		}]

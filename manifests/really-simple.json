@@ -1,0 +1,57 @@
+{
+	"page": [{
+		"list": [{
+			"dimension": "Organization",
+			"member": "level_1_2_node"
+		}, {
+			"dimension": "Organization",
+			"member": "level_2_83307_node"
+		}, {
+			"dimension": "Organization",
+			"member": "level_2_3_node"
+		}]
+	}],
+	"regions": [{
+		"rowIndex": 0,
+		"colIndex": 0,
+		"rowDepth": 1,
+		"colDepth": 1,
+		"showRowHeaders": true,
+		"showColHeaders": true,
+		"includeVariance": false,
+		"includeVariancePct": false,
+		"transform": "net_rev_trans_exp_balance.json",
+		"pinned": [{
+			"dimension": "Metric",
+			"member": "app_net_rev"
+		}, {
+			"dimension": "Currency",
+			"member": "lc"
+		}, {
+			"dimension": "Datasrc",
+			"member": "assigned"
+		}, {
+			"dimension": "Organization",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Scenario",
+			"member": "actual"
+		}, {
+			"dimension": "Time",
+			"member": "2017_fy"
+		}, {
+			"dimension": "Variation",
+			"member": "periodic"
+		}],
+		"rows": [{
+			"dimension": "objectcode_id",
+			"member": "40000",
+			"data entry": false
+		}],
+		"columns": [{
+			"dimension": "product_id",
+			"member": "electronics",
+			"data entry": false
+		}]
+	}]
+}
