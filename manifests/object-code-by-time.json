@@ -1,0 +1,153 @@
+{
+	"page": [{
+		"list": [{
+			"dimension": "Scenario",
+			"member": "actual",
+			"description": "Actual"
+		}, {
+			"dimension": "Scenario",
+			"member": "booked_budget",
+			"description": "Booked Budget"
+		}]
+	}],
+	"regions": [{
+		"rowIndex": 0,
+		"colIndex": 0,
+		"rowDepth": 1,
+		"colDepth": 1,
+		"showRowHeaders": true,
+		"showColHeaders": true,
+		"includeVariance": false,
+		"includeVariancePct": false,
+		"transform": "net_rev_trans_exp_balance.json",
+		"pinned": [{
+			"dimension": "Metric",
+			"member": "app_net_rev"
+		}, {
+			"dimension": "Currency",
+			"member": "lc"
+		}, {
+			"dimension": "Datasrc",
+			"member": "edw_gl_activity"
+		}, {
+			"dimension": "Organization",
+			"member": "level_10_99460_leaf"
+		}, {
+			"dimension": "Scenario",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Product",
+			"member": "televisions"
+		}, {
+			"dimension": "Variation",
+			"member": "periodic"
+		}],
+		"rows": [{
+			"dimension": "objectcode_id",
+			"member": "52310",
+			"description": "52310 - ALCOHOLIC BEVERAGES",
+			"data entry": true
+		}, {
+			"dimension": "objectcode_id",
+			"member": "52315",
+			"description": "52315 - ENTERTAINMENT",
+			"data entry": true
+		}, {
+			"dimension": "objectcode_id",
+			"member": "52355",
+			"description": "52355 - MEALS",
+			"data entry": true
+		}, {
+			"dimension": "objectcode_id",
+			"member": "52410",
+			"description": "52410 - DOMESTIC TRAVEL/LODGING",
+			"data entry": true
+		}, {
+			"dimension": "objectcode_id",
+			"member": "52420",
+			"description": "52420 - FOREIGN TRAVEL/LOGDING",
+			"data entry": true
+		}, {
+			"dimension": "objectcode_id",
+			"member": "52455",
+			"description": "52455 - GROUND TRANSPORTATION",
+			"data entry": true
+		}, {
+			"dimension": "objectcode_id",
+			"member": "52510",
+			"description": "52510 - CONFERENCE FEES",
+			"data entry": true
+		}, {
+			"dimension": "objectcode_id",
+			"member": "5trvl",
+			"description": "5TRVL - TOTAL TRAVEL",
+			"data entry": false
+		}],
+		"columns": [{
+			"dimension": "time_id",
+			"member": "20160900",
+			"description": "2016 Sep",
+			"data entry": true
+		}, {
+			"dimension": "time_id",
+			"member": "20161000",
+			"description": "2016 Oct",
+			"data entry": true
+		}, {
+			"dimension": "time_id",
+			"member": "20161100",
+			"description": "2016 Nov",
+			"data entry": true
+		}, {
+			"dimension": "time_id",
+			"member": "20161200",
+			"description": "2016 Dec",
+			"data entry": true
+		}, {
+			"dimension": "time_id",
+			"member": "20170100",
+			"description": "2017 Jan",
+			"data entry": true
+		}, {
+			"dimension": "time_id",
+			"member": "20170200",
+			"description": "2017 Feb",
+			"data entry": true
+		}, {
+			"dimension": "time_id",
+			"member": "20170300",
+			"description": "2017 Mar",
+			"data entry": true
+		}, {
+			"dimension": "time_id",
+			"member": "20170400",
+			"description": "2017 Apr",
+			"data entry": true
+		}, {
+			"dimension": "time_id",
+			"member": "20170500",
+			"description": "2017 May",
+			"data entry": true
+		}, {
+			"dimension": "time_id",
+			"member": "20170600",
+			"description": "2017 Jun",
+			"data entry": true
+		}, {
+			"dimension": "time_id",
+			"member": "20170700",
+			"description": "2016 Jul",
+			"data entry": true
+		}, {
+			"dimension": "time_id",
+			"member": "20170800",
+			"description": "2017 Aug",
+			"data entry": true
+		}, {
+			"dimension": "time_id",
+			"member": "2017_fy",
+			"description": "FY 2017",
+			"data entry": false
+		}]
+	}]
+}
