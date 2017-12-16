@@ -19,10 +19,10 @@
 		"showColHeaders": true,
 		"includeVariance": false,
 		"includeVariancePct": false,
-		"transform": "net_rev_trans_exp_balance.json",
+		"transform": "expense_balance.json",
 		"pinned": [{
 			"dimension": "Metric",
-			"member": "app_net_rev"
+			"member": "r6"
 		}, {
 			"dimension": "Currency",
 			"member": "lc"
