@@ -1,3 +1,4 @@
+const debug = require('debug')('log');
 const { capitalize, makeLowerCase } = require('./../util');
 const { extractKeySet } = require('./../grid');
 
@@ -37,13 +38,16 @@ const makeUpdateQueryString = (transform, ice, pinned) => {
   const table = transform.table;
   const metric = transform.metrics[0];
   const value = transform.new_value;
-  const queryString = keySets.map(key => {
+  const whereClause = keySets.map(key => {
     return `${key.dimension} = '${key.member}'`;
   });
-
-  return `UPDATE ${table} SET "${metric}" = ${value} WHERE ${queryString.join(
+  const queryString = `UPDATE ${table} SET "${metric}" = ${value} WHERE ${whereClause.join(
     ' AND '
   )}`;
+
+  debug('makeUpdateQueryString: ' + queryString);
+
+  return queryString;
 };
 
 const makeQueryString = (transform, pinned) => {
@@ -56,7 +60,7 @@ const makeQueryString = (transform, pinned) => {
     table
   } WHERE ${filterStatements.join(' AND ')}`;
 
-  // console.log("makeQueryString: ", queryString);
+  debug('makeQueryString: ' + queryString);
   return queryString;
 };
 

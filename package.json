@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "DEBUG=log nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -15,7 +15,9 @@
   "license": "UNLICENSED",
   "homepage": "https://bitbucket.org/canopyepm/canopy-epm-server#readme",
   "devDependencies": {
-    "nodemon": "^1.12.1"
+    "debug": "^3.1.0",
+    "nodemon": "^1.12.1",
+    "supports-color": "^5.1.0"
   },
   "dependencies": {
     "body-parser": "^1.18.2",

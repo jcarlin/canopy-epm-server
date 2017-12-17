@@ -84,7 +84,7 @@ const generateRowKey = (rowKeys, rowDef) => {
 
 const generateColumnKey = columns => {
   return columns
-    .map(column => `${column.dimension}__${column.value}`)
+    .map(column => `${column.dimension}__${column.member}`)
     .join('___');
 };
 
