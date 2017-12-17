@@ -19,7 +19,7 @@
 		"showColHeaders": true,
 		"includeVariance": false,
 		"includeVariancePct": false,
-		"transform": "expense_balance.json",
+		"transform": "net_rev_trans_exp_balance.json",
 		"pinned": [{
 			"dimension": "Metric",
 			"member": "r6"

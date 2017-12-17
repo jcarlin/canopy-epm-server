@@ -16,7 +16,8 @@ const buildColumnDef = (columns, region) => {
     .forEach((column, i) =>
       colDef.columns.push({
         dimension: column.dimension,
-        value: column.member,
+        value: column.description || column.member, // in case description is not a key present in the manifest, use member
+        member: column.member,
         level: i
       })
     );
