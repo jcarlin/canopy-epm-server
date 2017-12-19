@@ -1,8 +1,9 @@
+const debug = require('debug')('log');
 const { makeLowerCase } = require('./../util');
 
 const extractKeySet = rawKey => {
-  return rawKey.split('__').map(keyGroup => {
-    const keySet = keyGroup.split('_');
+  return rawKey.split('___').map(keyGroup => {
+    const keySet = keyGroup.split('__');
     return {
       dimension: makeLowerCase(keySet[0]),
       member: keySet[1]
@@ -41,6 +42,8 @@ const findPinned = (regions, colIndex, rowIndex) => {
 };
 
 const stitchDatabaseData = (manifest, tableData, dbData) => {
+  let loggedToConsole = false;
+
   tableData.rowDefs.forEach(def => {
     const keys = Object.keys(def);
 
@@ -55,6 +58,22 @@ const stitchDatabaseData = (manifest, tableData, dbData) => {
         const joinedColumnKeys = columnKeyStrings.join(' && ');
         const joinedRowKeys = rowKeyStrings.join(' && ');
         const totalMatchString = `${joinedColumnKeys} && ${joinedRowKeys}`;
+
+        // debug
+        if (!loggedToConsole) {
+          debug('stitchDataBaseData() ... ');
+          debug('colIndex: ' + JSON.stringify(colIndex));
+          debug('rowIndex: ' + JSON.stringify(rowIndex));
+          debug('columnKeys: ' + JSON.stringify(columnKeys));
+          debug('rowKeys: ' + JSON.stringify(rowKeys));
+          debug('rowKeyStrings: ' + JSON.stringify(rowKeyStrings));
+          debug('columnKeyStrings: ' + JSON.stringify(columnKeyStrings));
+          debug('joinedColumnKeys: ' + JSON.stringify(joinedColumnKeys));
+          debug('joinedRowKeys: ' + JSON.stringify(joinedRowKeys));
+          debug('totalMatchString: ' + JSON.stringify(totalMatchString));
+          loggedToConsole = true;
+        }
+
         const pinned = findPinned(manifest.regions, colIndex, rowIndex);
 
         const match = dbData.rows.find(row => {
