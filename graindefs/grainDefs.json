@@ -1,4 +1,72 @@
-﻿{
+{
+  "dimKeys": [
+    {
+      "id": 1,
+      "name": "category",
+      "description": "Category",
+      "byte": 2
+    },
+    {
+      "id": 2,
+      "name": "product",
+      "description": "Product",
+      "byte": 2
+    },
+    {
+      "id": 3,
+      "name": "currency",
+      "description": "Currency",
+      "byte": 2
+    },
+    {
+      "id": 4,
+      "name": "datasrc",
+      "description": "Datasrc",
+      "byte": 2
+    },
+    {
+      "id": 5,
+      "name": "objectcode",
+      "description": "Object Code",
+      "byte": 2
+    },
+    {
+      "id": 6,
+      "name": "organization",
+      "description": "Organization",
+      "byte": 4
+    },
+    {
+      "id": 7,
+      "name": "position",
+      "description": "Position",
+      "byte": 4
+    },
+    {
+      "id": 8,
+      "name": "scenario",
+      "description": "Scenario",
+      "byte": 2
+    },
+    {
+      "id": 9,
+      "name": "time",
+      "description": "Time",
+      "byte": 2
+    },
+    {
+      "id": 10,
+      "name": "transfer",
+      "description": "Transfer",
+      "byte": 4
+    },
+    {
+      "id": 11,
+      "name": "variation",
+      "description": "Variation",
+      "byte": 2
+    }
+  ],
   "grainDefs": [
     {
       "id":201,

@@ -84,45 +84,51 @@ const makeGrainQueryStrings = (params) => {
   const grainSerName = params.grainSerName;
   const dimNumber = params.dimNumber;
   const dimIdName = `d${dimNumber}_id`;
+  const dimByte = params.dimByte;
   const dimTableName = `dim_${dimNumber}`;
   const grainViewName = `grain_${params.grainDefName}`;
-
-  const setSearchPath = 'SET search_path TO elt;';
   
   const grainTableSql =
-    `DROP TABLE IF EXISTS ${grainTableName} CASCADE;
-    CREATE TABLE IF NOT EXISTS ${grainTableName} (
-      epoch_id     SMALLINT DEFAULT 1,
-      ${grainSerName}  SERIAL,
-      ${dimIdName} SMALLINT NOT NULL);`;
+    ` DROP TABLE IF EXISTS ${grainTableName} CASCADE;
+      CREATE TABLE IF NOT EXISTS ${grainTableName} (
+        epoch_id     SMALLINT DEFAULT 1,
+        ${grainSerName}  SERIAL,
+        ${dimIdName} ${dimByte} NOT NULL);`;
 
   const addPrimaryKeySql = 
-    `ALTER TABLE ${grainTableName} ADD PRIMARY KEY (${dimIdName});
-    CREATE UNIQUE INDEX id${grainTableName} ON ${grainTableName} (${grainSerName});
-    ANALYZE ${grainTableName};
-    SELECT * FROM ${grainTableName};`;
+    ` ALTER TABLE ${grainTableName} ADD PRIMARY KEY (${dimIdName});
+      CREATE UNIQUE INDEX id${grainTableName} ON ${grainTableName} (${grainSerName});
+      ANALYZE ${grainTableName};`;
 
   const grainTableInsertSql =
-    `INSERT INTO ${grainTableName} (${dimIdName})
-          SELECT ${dimIdName}
-            FROM ${dimTableName}
-    NATURAL JOIN (SELECT row_number() over() AS oid, unnest AS d${dimNumber}_name FROM (SELECT unnest(string_to_array(${members}, ','))) a) a
-        ORDER BY oid;`;
+    ` INSERT INTO ${grainTableName} (${dimIdName})
+      SELECT ${dimIdName}
+      FROM ${dimTableName}
+        NATURAL JOIN (SELECT (row_number() over())::smallint AS oid, unnest AS d${dimNumber}_name FROM (SELECT unnest(string_to_array(${members}, ','))) a) a
+      ORDER BY oid;`;
+
+  const grainTableSelectSql = 
+    ` SELECT * FROM ${grainTableName};`;
 
   const grainViewSql = 
-    `CREATE OR REPLACE VIEW ${grainViewName} AS
-    SELECT ${grainSerName}, b.${dimIdName}, r.d${dimNumber}_name as scenario_id
+    ` CREATE OR REPLACE VIEW ${grainViewName} AS
+      SELECT ${grainSerName}, b.${dimIdName}, r.d${dimNumber}_name as scenario_id
       FROM ${grainTableName} b
-      JOIN ${dimTableName} r on r.${dimIdName} = b.${dimIdName}
-  ORDER BY ${grainSerName};`;
+        JOIN ${dimTableName} r on r.${dimIdName} = b.${dimIdName}
+      ORDER BY ${grainSerName};`;
 
-  return [ `${setSearchPath}${grainTableSql}${addPrimaryKeySql}${grainTableInsertSql}${grainViewSql}` ];
-  /*return {
-    "grainTableSql": grainTableSql,
-    "grainTableInsertSql": grainTableInsertSql,
-    "addPrimaryKeySql": addPrimaryKeySql,
-    "grainViewSql": grainViewSql
-  };*/
+  // return them all as one string with some line breaks in between for debuging
+  return [ `${grainTableSql}
+
+            ${addPrimaryKeySql}
+
+            ${grainTableInsertSql}
+
+            ${grainTableSelectSql}
+
+            ${grainViewSql}
+            
+            ` ];
 };
 
 module.exports = { 
