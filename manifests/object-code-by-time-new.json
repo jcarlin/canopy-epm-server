@@ -1,0 +1,37 @@
+{
+	"page": [{
+		"list": [
+			{"grainRef":"scen_act_budget"}
+		]
+	}],
+	"regions": [{
+		"rowIndex": 0,
+		"colIndex": 0,
+		"rowDepth": 1,
+		"colDepth": 1,
+		"showRowHeaders": true,
+		"showColHeaders": true,
+		"includeVariance": false,
+		"includeVariancePct": false,
+		"transform": "net_rev_trans_exp_balance.json",
+		"dataEntry":[
+			{"grainRef":"objc_leaves"},
+			{"grainRef":"time_leaves"}
+		],
+		"pinned": [
+		  {"metric":"r6"},
+			{"grainRef":"curr_lc"},
+			{"grainRef":"dats_edw_gl_activity"},
+			{"grainRef":"orga_level_10_99460_leaf"},
+			{"dimension": "Scenario","member": "$LIST$"},
+			{"grainRef":"prod_televisions"},
+			{"grainRef":"vari_periodic"}
+		],
+		"rows": [
+			{"grainRef":"objc_subtree_travel"}
+		],
+		"columns": [
+			{"grainRef":"time_2017_fy_with_leaves"}
+		]
+	}]
+}

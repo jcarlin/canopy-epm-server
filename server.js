@@ -7,8 +7,9 @@ const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
 const pg = require('pg');
 const debug = require('debug')('log');
+const async = require('async');
 
-const { makeQueryString, makeUpdateQueryString } = require('./transforms');
+const { makeQueryString, makeUpdateQueryString, makeGrainDimQueryString, makeGrainQueryStrings } = require('./transforms');
 const { buildTableData } = require('./manifests');
 const { stitchDatabaseData, produceVariance } = require('./grid');
 const { makeLowerCase } = require('./util');
@@ -78,6 +79,7 @@ app.post('/grid', (req, res) => {
       return res.json({ err });
     }
 
+    debug("data: " + JSON.parse(data));
     const pinned = manifest.regions[0].pinned;
     const query = makeQueryString(JSON.parse(data), pinned);
     const includeVariance = manifest.regions[0].includeVariance;
@@ -99,6 +101,168 @@ app.post('/grid', (req, res) => {
   });
 });
 
+app.get('/graintest', (req, res) => {
+  debug('/graintest');
+  // Get the grainDefs.json file
+  fs.readFile(`./graindefs/grainDefsNew.json`, (err, data) => {
+    if (err) {
+      return res.json({ err });
+    }
+
+    const grainDefs = JSON.parse(data).grainDefs;
+    const dimKeys = JSON.parse(data).dimKeys;
+    let allQueryStrings = "";
+
+    debug("grainDefs", grainDefs);
+
+    grainDefs.map(grainDef => {
+      const grainTableName = `grain_${grainDef.id}`;
+      const grainSerName = `br${grainDef.id}_oid`;
+      const grainDefName = grainDef.name;
+
+      grainDef.memberSet.map(members => {
+        let queryStrings = makeGrainQueryStrings({
+          members: `'${member.members}'`,
+          grainTableName: grainTableName,
+          grainSerName: grainSerName,
+          dimNumber: dimNumber,
+          grainDefName: grainDefName
+        });
+        allQueryStrings.concat(queryStrings);
+      })
+    })
+  })
+});
+
+app.get('/grain', (req, res) => {
+  debug('/grain');
+  // Get the grainDefs.json file
+  fs.readFile(`./graindefs/grainDefsNew.json`, (err, data) => {
+    if (err) {
+      return res.json({ err });
+    }
+
+    const grainDefs = JSON.parse(data).grainDefs;
+    const dimKeys = JSON.parse(data).dimKeys;
+    let allQueryStrings = "";
+
+    debug("grainDefs", grainDefs);
+
+    /* async.waterfall([
+      *     myFirstFunction,
+      *     mySecondFunction,
+      *     myLastFunction,
+      * ], function (err, result) {
+      *     // result now equals 'done'
+      * });
+      * function myFirstFunction(callback) {
+      *     callback(null, 'one', 'two');
+      * }
+      * function mySecondFunction(arg1, arg2, callback) {
+      *     // arg1 now equals 'one' and arg2 now equals 'two'
+      *     callback(null, 'three');
+      * }
+      * function myLastFunction(arg1, callback) {
+      *     // arg1 now equals 'three'
+      *     callback(null, 'done');
+      * }*/
+    
+    async.waterfall([
+      function(callback) {
+        let obj = [];
+        grainDefs.map(grainDef => {
+          grainDef.map(member => {
+            member.grainTableName = `grain_${grainDef.id}`;
+            member.grainSerName = `br${grainDef.id}_oid`;
+            member.grainDefName = grainDef.name;
+          });
+        });
+
+        callback(null, grainDefs);
+      },
+      function(gd, callback) {
+        debug("gd: ", gd);
+        callback(null, gd);
+      }
+      //execGrainSql
+    ], function (err, result) {
+      debug("waterfall result: ", result);
+      debug("err: ", err);
+      return res.json({});
+    });
+
+    function mapGrainDefs(cb) {
+      params = [1, 2, 3];
+      cb(null, params)
+    }
+
+    function mapMemberSets(params, cb) {
+      params.push(4);
+
+      function m(callback) {
+        params.map(param => {
+          param * 2
+        });
+      }
+      cb(null, params.map(param => {
+        param * 2
+      }));
+      //cb(null, params);
+    }
+
+    /*function mapGrainDefs(cb) {
+      let params = [];
+      async.map(grainDefs, function(grainDef, callback) {
+        params.memberSet = grainDef.memberSet;
+        params.grainTableName = `grain_${grainDef.id}`;
+        params.grainSerName = `br${grainDef.id}_oid`;
+        params.grainDefName = grainDef.name;
+        
+        if (err) return callback(err);
+        callback(null, params);
+      }, function(err, results) {
+        //debug("mapGrainDefs results: ", results);
+
+        if (err) return cb(err);
+        cb(null, results);
+      });
+    }
+
+    function mapMemberSets(params, cb) {
+      let allQueryStrings = "";
+      debug("params: ", params);
+      const memberSet = params.memberSet;
+
+      // Cycle through each memberSet for a grainDef
+      async.map(memberSet, function(member, callback) {
+        debug("here");
+        let queryStrings = makeGrainQueryStrings({
+          members: `'${member.members}'`,
+          grainTableName: params.grainTableName,
+          grainSerName: params.grainSerName,
+          dimNumber: dimKeys[member.dimension],
+          grainDefName: params.grainDefName
+        });
+
+        allQueryStrings.concat(queryStrings);
+        debug("allQueryStrings: ", allQueryStrings);
+        if (err) return callback(err);
+        callback(null, allQueryStrings);
+      }, function(err, results) {
+        debug("async.map memberset results: ", results);
+
+        if (err) return cb(err);
+        cb(null, results);
+      });
+    }*/
+
+    function execGrainSql(allQueryStrings, callback) {
+      debug("allQueryStrings: ", allQueryStrings);
+      callback(null, allQueryStrings);
+    }
+  });
+});
+
 // Edit a cell by based on an ICE
 app.patch('/grid', (req, res) => {
   const ice = req.body.ice;
@@ -111,7 +275,6 @@ app.patch('/grid', (req, res) => {
   }
 
   const keys = Object.keys(ice);
-
   const rowIndex = ice.rowIndex;
   const colIndex = ice.colIndex;
   const newValue = ice.value;

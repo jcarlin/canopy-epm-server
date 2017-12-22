@@ -1,0 +1,33 @@
+{
+  "grainDefs": [
+    {
+      "id":201,
+      "name":"prod_all",
+      "cached":true,
+      "memberSet":[
+        {"dimension":"product","members":["all_products","electronics","televisions","home_audio","cameras","cell_phones","car_electronics","video_games","bluetooth_speakers","headphones","instruments","wearable_technology","photo_video","monitors","accessories","movies","home_garden","grocery","healthcare","toys","clothing","sports_equipment"]}
+      ]
+    },
+    {
+      "id":202,
+      "name":"prod_televisions",
+      "cached":true,
+      "memberSet":[
+        {"dimension":"product","members":["televisions"]}
+      ]
+    }
+  ],
+  "dimKeys": {
+    "category": 1,
+    "currency": 3,
+    "datasrc": 4,
+    "objectcode": 5,
+    "organization": 6,
+    "position": 7,
+    "scenario": 8,
+    "time": 9,
+    "transfer": 10,
+    "variation": 11,
+    "product": 2
+  }
+}
