@@ -2,6 +2,8 @@ branch-defaults:
   master:
     environment: canopy-epm-server-test
     group_suffix: null
+  development:
+    environment: canopy-epm-server-dev
 global:
   application_name: canopy-epm-server-test
   branch: null
