@@ -101,7 +101,7 @@ app.post('/grid', (req, res) => {
   });
 });
 
-app.get('/grain', (req, res) => {
+app.post('/grain', (req, res) => {
   // Get the grainDefs.json file
   fs.readFile(`./graindefs/grainDefs.json`, (err, data) => {
     if (err) {
@@ -111,6 +111,7 @@ app.get('/grain', (req, res) => {
     const grainDefs = JSON.parse(data).grainDefs;
     const dimKeys = JSON.parse(data).dimKeys;
     let allQueryStrings = 'SET search_path TO elt;';
+    let tableCount = 0;
 
     // Cycle through the grainDefs array of grainDef objects and for each, cycle through it's memberSet array
     const grainDefsMap = () => {
@@ -128,6 +129,7 @@ app.get('/grain', (req, res) => {
     const mapMemberSets = (grainDef, params) => {
       // Get diminfo from the dimInfo key, matched by memberSet's dimension
       grainDef.memberSet.map(member => {
+        tableCount++;
         const dimInfo = dimKeys.find(dimKey => {
           return dimKey.name === member.dimension;
         });
@@ -157,16 +159,24 @@ app.get('/grain', (req, res) => {
       });
     };
     
+    // Async/await function that calls the above 3 functions
     const executeGrainDefSql = async () => {
-      const gd = await grainDefsMap();
-      const log = await debug("allQueryStrings: " + allQueryStrings);
-      const dbResults = await execGrainSql(allQueryStrings, (results) => {
-        debug("results: " + results);
-        if (results == "error") {
-          return res.json({});    
-        }
-      });
-      return res.json({});
+      try {
+        const gd = await grainDefsMap();
+        // const log = await debug("allQueryStrings: " + allQueryStrings);
+        const dbResults = await execGrainSql(allQueryStrings, (results) => {
+          // debug("results: " + results);
+          if (results == "error") {
+            return res.status(400).json({ error: err });   
+          }
+        });
+
+        return res.json({"tableCount": tableCount});
+      }
+      catch(err) {
+        console.log("/grain executeGrainDefSql error: ", err);
+        return res.status(400).json({ error: err });
+      }
     };
 
     executeGrainDefSql();
