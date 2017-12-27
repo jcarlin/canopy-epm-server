@@ -2,12 +2,14 @@ const {
   makeQueryString,
   makeUpdateQueryString,
   makeGrainDimQueryString, 
-  makeGrainQueryStrings
+  makeGrainBrickQueryStrings,
+  makeGrainBlockQueryStrings
 } = require('./query');
 
 module.exports = {
   makeQueryString,
   makeUpdateQueryString,
   makeGrainDimQueryString, 
-  makeGrainQueryStrings
+  makeGrainBrickQueryStrings,
+  makeGrainBlockQueryStrings
 };

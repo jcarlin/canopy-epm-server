@@ -9,7 +9,7 @@ const pg = require('pg');
 const debug = require('debug')('log');
 const async = require('async');
 
-const { makeQueryString, makeUpdateQueryString, makeGrainDimQueryString, makeGrainQueryStrings } = require('./transforms');
+const { makeQueryString, makeUpdateQueryString, makeGrainBrickQueryStrings, makeGrainBlockQueryStrings } = require('./transforms');
 const { buildTableData } = require('./manifests');
 const { stitchDatabaseData, produceVariance } = require('./grid');
 const { makeLowerCase } = require('./util');
@@ -101,6 +101,22 @@ app.post('/grid', (req, res) => {
   });
 });
 
+app.get('/grain', (req, res) => {
+  try {
+    // Get the grainDefs.json file
+    fs.readFile(`./graindefs/grainDefs_new.json`, (err, data) => {
+      if (err) {
+        return res.json({ err });
+      }
+
+      const ret = JSON.parse(data);
+      return res.json({ret});
+    });
+  } catch (err) {
+    return res.json({err});
+  }
+});
+
 app.post('/grain', (req, res) => {
   // Get the grainDefs.json file
   fs.readFile(`./graindefs/grainDefs.json`, (err, data) => {
@@ -108,41 +124,64 @@ app.post('/grain', (req, res) => {
       return res.json({ err });
     }
 
-    const grainDefs = JSON.parse(data).grainDefs;
+    const grainSack = JSON.parse(data).grainSack;
     const dimKeys = JSON.parse(data).dimKeys;
+    const hierKeys = JSON.parse(data).hierKeys;
     let allQueryStrings = 'SET search_path TO elt;';
     let tableCount = 0;
 
     // Cycle through the grainDefs array of grainDef objects and for each, cycle through it's memberSet array
     const grainDefsMap = () => {
-      grainDefs.map(grainDef => {
-        const params = {
-          grainTableName: `grain_${grainDef.id}`,
-          grainDefName: grainDef.name,
-          grainSerName: `br${grainDef.id}_oid`
-        };
-        const memberSets = mapMemberSets(grainDef, params);
+      grainSack.map(grainDef => {
+        const memberSets = mapMemberSets(grainDef);
       });
     };
 
     // Cycle through each memberSet array object
-    const mapMemberSets = (grainDef, params) => {
+    const mapMemberSets = (grainDef) => {
       // Get diminfo from the dimInfo key, matched by memberSet's dimension
-      grainDef.memberSet.map(member => {
+      grainDef.memberSets.map(member => {
         tableCount++;
+        // Get dimension info
         const dimInfo = dimKeys.find(dimKey => {
           return dimKey.name === member.dimension;
         });
 
-        // Assemble all of the sql
-        let queryStrings = makeGrainQueryStrings({
+        // params for the sql generation for this grainDef
+        const sqlParams = {
           members: `'${member.members}'`,
-          grainTableName: params.grainTableName,
-          grainDefName: params.grainDefName,
-          grainSerName: params.grainSerName,
+          grainTableName: `grain_${grainDef.id}`,
+          grainDefName: grainDef.name,
+          grainDefId: grainDef.id,
+          grainSerName: `gr${grainDef.id}_oid`,
           dimNumber: dimInfo.id,
           dimByte: dimInfo.byte === 2 ? 'SMALLINT' : 'INTEGER'
-        });
+        };
+
+        // Get hierarchy info
+        if (member.hierarchy) {
+          const hierInfo = hierKeys.find(hierKey => {
+            return hierKey.name === member.hierarchy;
+          });
+
+          sqlParams.hierNumber = hierInfo.id;
+          sqlParams.hierName = member.hierarchy;
+        }
+
+        let queryStrings = "";
+        
+        if (grainDef.grainType === "brick" && member.memberSetType === "evaluated") {
+          queryStrings = makeGrainBrickQueryStrings(sqlParams);
+        } else if (grainDef.grainType === "block") {
+          // Extract object with database postgres
+          if (member.memberSetType === "compute") {
+            member.memberSetCode = member.memberSetCode.find(msc => {
+              return msc.database === "postgres";
+            });
+          }
+          queryStrings = makeGrainBlockQueryStrings(sqlParams, {"memberSet": member});
+        }
+        
         // Why didn't allQueryStrings.concat(queryStrings); work here?
         allQueryStrings = `${allQueryStrings}${queryStrings}`;
       });
@@ -163,15 +202,15 @@ app.post('/grain', (req, res) => {
     const executeGrainDefSql = async () => {
       try {
         const gd = await grainDefsMap();
-        // const log = await debug("allQueryStrings: " + allQueryStrings);
+        const log = await debug("allQueryStrings: " + allQueryStrings);
         const dbResults = await execGrainSql(allQueryStrings, (results) => {
-          // debug("results: " + results);
+          debug("results: " + results);
           if (results == "error") {
             return res.status(400).json({ error: err });   
           }
-        });
 
-        return res.json({"tableCount": tableCount});
+          return res.json({"tableCount": tableCount});
+        });
       }
       catch(err) {
         console.log("/grain executeGrainDefSql error: ", err);
