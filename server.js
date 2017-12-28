@@ -104,12 +104,12 @@ app.post('/grid', (req, res) => {
 app.get('/grain', (req, res) => {
   try {
     // Get the grainDefs.json file
-    fs.readFile(`./graindefs/grainDefs_new.json`, (err, data) => {
+    fs.readFile(`./graindefs/grainDefs.json`, (err, data) => {
       if (err) {
         return res.json({ err });
       }
 
-      const ret = JSON.parse(data);
+      const ret = JSON.parse(data).grainSack;
       return res.json({ret});
     });
   } catch (err) {

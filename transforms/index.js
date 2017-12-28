@@ -1,7 +1,6 @@
 const {
   makeQueryString,
   makeUpdateQueryString,
-  makeGrainDimQueryString, 
   makeGrainBrickQueryStrings,
   makeGrainBlockQueryStrings
 } = require('./query');
@@ -9,7 +8,6 @@ const {
 module.exports = {
   makeQueryString,
   makeUpdateQueryString,
-  makeGrainDimQueryString, 
   makeGrainBrickQueryStrings,
   makeGrainBlockQueryStrings
 };
