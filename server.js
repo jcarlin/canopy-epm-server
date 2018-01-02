@@ -166,9 +166,14 @@ app.post('/statistics', (req, res) => {
 
   // TODO: replace below with database query
   const stats = {
-    dimensionCount: 3,
-    metricCount: 4,
-    startTime: new Date()
+    totalEvalRowCount: Math.floor(Math.random() * 20000000),
+    dimSuperSet: Math.floor(Math.random() * 2000000),
+    dimDataSet: Math.floor(Math.random() * 20000),
+    dimQuerySet: Math.floor(Math.random() * 100),
+    startTime: new Date(),
+    queryTime: new Date(),
+    rowsUpdated: 0,
+    downstreamImpact: 0
   };
 
   return res.json(stats);
