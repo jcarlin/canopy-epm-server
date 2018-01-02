@@ -111,9 +111,9 @@ const makeGrainBrickQueryStrings = (params) => {
   // return them all as one string with some line breaks in between for debuging
   return [ `${grainTableSql}
 
-            ${addPrimaryKeySql}
-
             ${grainTableInsertSql}
+
+            ${addPrimaryKeySql}
 
             ${grainTableSelectSql}
 
@@ -195,7 +195,7 @@ const makeGrainBlockQueryStrings = (params, options) => {
           d${dimNumber}h${hierNumber}_oid AS leaf_ord, 
           d${dimNumber}h${hierNumber}_parent_id AS node_id,
           ${dimIdName} AS leaf_id 
-        FROM ${dimTableName} 
+        FROM dim_${dimNumber} 
           NATURAL JOIN (
             SELECT * FROM (
               SELECT ${dimIdName} 
@@ -218,7 +218,7 @@ const makeGrainBlockQueryStrings = (params, options) => {
           JOIN (
             SELECT depth, leaf_ord, ${dimIdName} AS node_id, leaf_id 
             FROM tree t 
-              JOIN ${grainTableName} ON t.node_id = ${goofyDimIdName}
+              JOIN ${options.memberSet.parentTableName} ON t.node_id = ${goofyDimIdName}
           ) t ON d.${dimIdName} = t.node_id )
       SELECT node_id, leaf_id FROM tree ORDER BY depth DESC, node_ord, leaf_ord;`;
 
@@ -285,9 +285,9 @@ const makeGrainBlockQueryStrings = (params, options) => {
   // return them all as one string with some line breaks in between for debuging
   return [ `${grainTableSql}
 
-            ${addPrimaryKeySql}
-
             ${grainTableInsertSql}
+
+            ${addPrimaryKeySql}
 
             ${grainTableSelectSql}
 

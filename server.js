@@ -173,6 +173,12 @@ app.post('/grain', (req, res) => {
         if (grainDef.grainType === "brick" && member.memberSetType === "evaluated") {
           queryStrings = makeGrainBrickQueryStrings(sqlParams);
         } else if (grainDef.grainType === "block") {
+          // TODO: remove this hack (that grabs the parent grainDef (table))
+          if (member.platformType === "node_leaf") {
+            let parentDimNumber = grainDef.id -1;
+            member.parentTableName = `grain_${parentDimNumber}`
+          }
+
           // Extract object with database postgres
           if (member.memberSetType === "compute") {
             member.memberSetCode = member.memberSetCode.find(msc => {
