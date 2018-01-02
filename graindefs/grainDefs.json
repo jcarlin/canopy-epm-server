@@ -119,6 +119,15 @@
       ]
     },
     {
+      "id":406,
+      "name":"dats_edw_ga_activity",
+      "grainType":"brick",
+      "cached":true,
+      "memberSets":[
+        {"memberSetType":"evaluated","dimension":"datasrc","members":["edw_ga_activity"]}
+      ]
+    },
+    {
       "id":501,
       "name":"objc_bal_sheet",
       "grainType":"brick",
@@ -164,14 +173,26 @@
       ]
     },
     {
-      "id":506,
-      "name":"objc_shaper",
+      "id":510,
+      "name":"objc_by_report_type",
       "grainType":"block",
       "cached":true,
       "memberSets":[
-        {	"memberSetType":"compute","dimension":"objectcode","hierarchy":"objectcode","dimColumnName":"objectcode_leaf","goofyColumnName":"objectcode_node",
+        {	"memberSetType":"compute","dimension":"objectcode","dimColumnName":"objectcode_leaf","goofyColumnName":"objectcode_report_type",
           "memberSetCode":[
-            {"database":"postgres","code":"SELECT d5_id, goofy_d5_id FROM ( SELECT 1 AS oid, gr501_oid, goofy_d5_id AS d5_id, d5_id AS goofy_d5_id FROM grain_505 NATURAL JOIN grain_501 UNION SELECT 2 AS oid, gr501_oid, d5_id, d5_id AS goofy_d5_id FROM (SELECT d5_id,gr501_oid FROM grain_501 NATURAL JOIN (SELECT goofy_d5_id AS d5_id FROM grain_505 WHERE d5_id = 1) a) a ) a ORDER BY oid, gr501_oid;"}
+            {"database":"postgres","code":"SELECT d5_id, type_id FROM ( SELECT * FROM ( WITH s_type AS (SELECT type_id FROM s_type WHERE type_group = 'product_reporting' AND type_name = 'summary') SELECT row_number() over() AS ord, type_id, d5_id, d5_name FROM s_type,( SELECT 0 AS o1, row_number() over() AS o2, d5_id, d5_name FROM (SELECT * FROM dim_5 WHERE d5_product_reporting ~* 'summary' AND d5_name NOT IN ('rv-ep','49300','chgcf','30001','endfb') ORDER BY d5h18_oid) a UNION SELECT 1 AS o1, row_number() over() AS o2, d5_id, d5_name FROM (SELECT * FROM dim_5 WHERE d5_product_reporting ~* 'summary' AND d5_name IN ('rv-ep','49300','chgcf','30001','endfb') ORDER BY d5h18_oid DESC) b ORDER BY o1,o2 ) a ORDER BY o1,o2 ) a UNION SELECT row_number() over() AS ord, * FROM ( WITH s_type AS (SELECT type_id FROM s_type WHERE type_group = 'product_reporting' AND type_name = 'all') SELECT type_id, d5_id, d5_name FROM s_type,dim_5 WHERE d5_product_reporting ~* 'all' ORDER BY d5_id ) a UNION SELECT row_number() over() AS ord, * FROM ( WITH s_type AS (SELECT type_id FROM s_type WHERE type_group = 'product_reporting' AND type_name = 'detail') SELECT type_id, d5_id, d5_name FROM s_type,dim_5 WHERE d5_product_reporting ~* 'detail' ORDER BY d5_id ) a UNION SELECT row_number() over() AS ord, * FROM ( WITH s_type AS (SELECT type_id FROM s_type WHERE type_group = 'product_reporting' AND type_name = 'clinops') SELECT type_id, d5_id, d5_name FROM s_type,dim_5 WHERE d5_product_reporting ~* 'clinops' ORDER BY d5_id ) a  ORDER BY type_id, ord ) a;"}
+        ]}
+      ]
+    },
+    {
+      "id":515,
+      "name":"objc_summary_report",
+      "grainType":"block",
+      "cached":true,
+      "memberSets":[
+        {	"memberSetType":"compute","dimension":"objectcode","dimColumnName":"objectcode_leaf","goofyColumnName":"objectcode_summary_node",
+          "memberSetCode":[
+            {"database":"postgres","code":"SELECT grain_505.goofy_d5_id AS d5_id, d5_id AS goofy_d5_id  FROM grain_510 JOIN grain_505 USING (d5_ID) WHERE grain_510.goofy_d5_id = (SELECT type_id FROM s_type WHERE type_name = 'summary' AND type_group = 'product_reporting')  ORDER BY gr510_oid;"}
         ]}
       ]
     },

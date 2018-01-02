@@ -103,6 +103,7 @@ app.post('/grid', (req, res) => {
 
 app.get('/grain', (req, res) => {
   try {
+    console.log('In get /grain route');
     // Get the grainDefs.json file
     fs.readFile(`./graindefs/grainDefs.json`, (err, data) => {
       if (err) {
@@ -196,7 +197,7 @@ app.post('/grain', (req, res) => {
     const execGrainSql = (sql, callback) => {
       client.query(sql, (error, data) => {
         if (error) {
-          debug("error: " + error);
+          debug(error);
           return callback("error");
           //return res.status(400).json({ error: 'Error writing to database.' + `${error}` });
         }
