@@ -6,6 +6,7 @@ const cors = require('cors');
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
 const pg = require('pg');
+const debug = require('debug')('log');
 
 const { makeQueryString, makeUpdateQueryString } = require('./transforms');
 const { buildTableData } = require('./manifests');
@@ -13,6 +14,9 @@ const { stitchDatabaseData, produceVariance } = require('./grid');
 const { makeLowerCase } = require('./util');
 
 const app = express();
+
+// This will log to console if enabled (npm run-script dev)
+debug('booting %o', 'debug');
 
 // Necessary for express to be able
 // to read the request body

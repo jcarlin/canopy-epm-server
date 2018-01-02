@@ -48,10 +48,12 @@
 			"member": "40000",
 			"data entry": false
 		}],
-		"columns": [{
-			"dimension": "product_id",
-			"member": "electronics",
-			"data entry": false
-		}]
+		"columns": [
+      {
+        "dimension": "product_id",
+        "member": "all_products",
+        "data entry": false
+      }
+    ]
 	}]
 }
