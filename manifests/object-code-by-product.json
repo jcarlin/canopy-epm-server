@@ -1,0 +1,656 @@
+{
+	"page": [{
+		"list": [{
+			"dimension": "Scenario",
+			"member": "actual",
+			"description": "Actual"
+		}, {
+			"dimension": "Scenario",
+			"member": "booked_budget",
+			"description": "Booked Budget"
+		}]
+	}, {
+		"list": [{
+			"dimension": "Organization",
+			"member": "level_1_2_node",
+			"description": "AA00"
+		}, {
+			"dimension": "Organization",
+			"member": "level_2_83307_node",
+			"description": "AAAA"
+		}, {
+			"dimension": "Organization",
+			"member": "level_2_3_node",
+			"description": "PAAA"
+		}]
+	}, {
+		"list": [{
+			"dimension": "Time",
+			"member": "2016_fy",
+			"description": "FY 2016"
+		}, {
+			"dimension": "Time",
+			"member": "2017_fy",
+			"description": "FY 2017"
+		}, {
+			"dimension": "Time",
+			"member": "2018_fy",
+			"description": "FY 2018"
+		}]
+	}, {
+		"list": [{
+			"dimension": "Variation",
+			"member": "periodic",
+			"description": "Periodic"
+		}, {
+			"dimension": "Variation",
+			"member": "fy_ytd",
+			"description": "YTD"
+		}]
+	}],
+	"regions": [{
+		"rowIndex": 0,
+		"colIndex": 0,
+		"rowDepth": 1,
+		"colDepth": 1,
+		"showRowHeaders": true,
+		"showColHeaders": true,
+		"includeVariance": false,
+		"includeVariancePct": false,
+		"transform": "net_rev_trans_exp_balance.json",
+		"pinned": [{
+			"dimension": "Metric",
+			"member": "app_net_rev"
+		}, {
+			"dimension": "Currency",
+			"member": "lc"
+		}, {
+			"dimension": "Datasrc",
+			"member": "assigned"
+		}, {
+			"dimension": "Organization",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Scenario",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Time",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Variation",
+			"member": "$LIST$"
+		}],
+		"rows": [{
+			"dimension": "objectcode_id",
+			"member": "40000",
+			"description": "40000 - REVENUE",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "400rv",
+			"description": "400RV - REVENUES",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "40001",
+			"description": "40001 - STUDENT INCOME",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "41001",
+			"description": "41001 - SPONSORED RESEARCH SUPPORT",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "42001",
+			"description": "42001 - HEALTHCARE SERVICES",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "43001",
+			"description": "43001 - GIFT REVENUE",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "44001",
+			"description": "44001 - INVESTMENT INCOME",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "45001",
+			"description": "45001 - ENDOW INC ALLOC",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "48001",
+			"description": "48001 - INTERDEPT REVENUE",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "48inf",
+			"description": "48Inf - INTERDEPT INFRASTRUCTURE CHRG",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "48otr",
+			"description": "48Otr - INTERNAL INCOME OTHER",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "otrin",
+			"description": "OTRIn - OTHER EXTERNAL INCOME",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "46aff",
+			"description": "46AFF - AFFILIATES",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "46fac",
+			"description": "46FAC - FACILITY RENTAL",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "46pat",
+			"description": "46PAT - PATENTS/ROYALTIES",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "46pub",
+			"description": "46PUB - PUBLICATION, PRODUCTION and TECHNICAL SERVICES",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "4conf",
+			"description": "4CONF - CONFERENCES",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "4instr",
+			"description": "4INSTR - OTHER INSTRUCTION FEES",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "4othr",
+			"description": "4OTHR - OTHER SPECIAL PROGRAM FEES",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "49001",
+			"description": "49001 - TRANSFERS",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "49700",
+			"description": "49700 - ISC ON TRANSFERS and RECOV",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "49gen",
+			"description": "49Gen - GENERAL FUNDS TRANSFER",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "49base",
+			"description": "49BASE - BASE GENERAL FUNDS TRANSFERS",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "49111",
+			"description": "49111 - TRANS TO BASE GENERAL FUNDS",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "49211",
+			"description": "49211 - TRANS FROM BASE GENERAL FUNDS",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "49nbase",
+			"description": "49NBASE - NON-BASE GENERAL FUNDS TRANSFERS",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "49110",
+			"description": "49110 - TRANS TO GENERAL",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "49210",
+			"description": "49210 - TRANS FROM GENERAL",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "49otr",
+			"description": "49OTR - OTHER TRANSFERS",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "4900b",
+			"description": "4900B - BDGT FUND TRANSFER",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "49100",
+			"description": "49100 - TRNSFRS OUT - CURRENT FUNDS",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "49200",
+			"description": "49200 - TRNSFRS IN - CURRENT FUNDS",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "50000",
+			"description": "50000 - TOTAL EXPENSES",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "500se",
+			"description": "500SE - TOTAL COMPENSATION EXPENSES",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "51100",
+			"description": "51100 - BDGT SALARY AND WAGES",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "51101",
+			"description": "51101 - BDGT SLRY WGS  ACADEMIC",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "511rb",
+			"description": "511RB - SALARY AND WAGES ACADEMIC RBE",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "51102",
+			"description": "51102 - SLRY WGS  FACULTY",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "51302",
+			"description": "51302 - SLRY WGS ACADEMIC STAFF",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "51202",
+			"description": "51202 - SLRY WGS POST DOC FELLOW",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "51352",
+			"description": "51352 - SLRY WGS CONTINGENT ACADEMIC",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "51402",
+			"description": "51402 - SLRY WGS  STUDENT RA and TA",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "51501",
+			"description": "51501 - BDGT SLRY WGS STAFF",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "515co",
+			"description": "515CO - CONTINGENT AND OTHER STUDENT",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "51572",
+			"description": "51572 - SLRY WGS CONTINGENT STAFF",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "51582",
+			"description": "51582 - SLRY WGS OTHER STUDENT",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "515rb",
+			"description": "515RB - SALARIES AND WAGES STAFF RBE",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "51oth",
+			"description": "51OTH - NON-SALARY COMPENSATION",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "51552",
+			"description": "51552 - SLRY WGS NET VACATION STAFF",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "51700",
+			"description": "51700 - BDGT FRINGE BENEFITS",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "51900",
+			"description": "51900 - OTHER COMPENSATION",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "51bon",
+			"description": "51BON - BONUS EXPENSE",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "51spc",
+			"description": "51SPC - PAYROLL SPECIAL EXPENSE",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "51tui",
+			"description": "51TUI - TUITION ALLOWANCE",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "52100",
+			"description": "52100 - BDGT OTHER OPERATING EXPENSES",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "53000",
+			"description": "53000 - BDGT FIXED ASSETS",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "53101",
+			"description": "53101 - CAP EQUIP SU OWNED",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "53201",
+			"description": "53201 - LIBRARY ASSET ACQUISITNS",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "56900",
+			"description": "56900 - INDIRECT COSTS",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "57000",
+			"description": "57000 - BDGT STUDENT AID",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "57100",
+			"description": "57100 - BDGT UNDGRAD STUDENT AID",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "57300",
+			"description": "57300 - BDGT GRAD STUDENT AID",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "57gsp",
+			"description": "57GSP - GRADUATE STUDENT STIPENDS",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "57gti",
+			"description": "57GTI - GRAD FELLOWSHIP TUTION",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "57600",
+			"description": "57600 - OTHER FINANCIAL AID",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "57601",
+			"description": "57601 - MISCELLANEOUS AID",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "57640",
+			"description": "57640 - GS HEALTH INS RECOVERY",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "57801",
+			"description": "57801 - NON MATRICULATED STU AID",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "58000",
+			"description": "58000 - BDGT INTERNAL COSTS UNIVERSITY",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "58901",
+			"description": "58901 - INTERDEPT INFRASTRUC",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "58dbt",
+			"description": "58Dbt - INTERNAL EXPENSES DEBT SERVICE",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "58otr",
+			"description": "58OTR - OTHER INTERNAL EXPENSE",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "59000",
+			"description": "59000 - BDGT INTERCO COSTS HOSP",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "5othr",
+			"description": "5OTHR - OTHER EXTERNAL EXPENSE",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "53rep",
+			"description": "53REP - REPAIRS and MAINTENANCE",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "54sub",
+			"description": "54SUB - SUBCONTRACTS",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "5equip",
+			"description": "5EQUIP - EQUIPMENT and PROPERTY EXPENSE",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "5prof",
+			"description": "5PROF - PROFESSIONAL SERVICES",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "5rent",
+			"description": "5RENT - RENTAL AND LEASES",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "5supl",
+			"description": "5SUPL - MATERIALS and SUPPLIES",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "5trvl",
+			"description": "5TRVL - TRAVEL AND FOOD",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "5util",
+			"description": "5UTIL - EXTERNAL COMMUNICATIONS AND UTILITIES",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "49int",
+			"description": "49INT - INTERUNIT FUND APPROPRIATED TO COVER EXPENSES",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "499in",
+			"description": "499IN - FUNDS FROM OTHER DEPT TO COVER EXPENSES INCURRED LOCALLY",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "499ot",
+			"description": "499OT - FUNDS APPROPRIATED FOR EXP IN OTHER DEPARTMENTS",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "49inn",
+			"description": "49INN - FUNDS FROM OTHER UNITS TO COVER EXPENSES INCURRED LOCALLY",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "49out",
+			"description": "49OUT - FUNDS APPROPRIATED FOR EXPENSES INCURRED IN OTHER UNITS",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "rv-ep",
+			"description": "RV-EP - REVENUES AND TRANSFERS LESS EXPENSES",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "49300",
+			"description": "49300 - TRNSFRS OTHER",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "chgcf",
+			"description": "CHGCF - NET CHANGE IN CURRENT FUND",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "30001",
+			"description": "30001 - UNRESTRICTED FUND BAL",
+			"data entry": false
+		}, {
+			"dimension": "objectcode_id",
+			"member": "endfb",
+			"description": "ENDFB - ENDING FUND BALANCE",
+			"data entry": false
+		}],
+		"columns": [{
+			"dimension": "product_id",
+			"member": "all_products",
+			"description": "All Products",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "electronics",
+			"description": "Electronics",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "televisions",
+			"description": "Televisions",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "home_audio",
+			"description": "Home Audio",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "cameras",
+			"description": "Cameras",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "cell_phones",
+			"description": "Cell Phones",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "car_electronics",
+			"description": "Car Electronics",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "video_games",
+			"description": "Video Games",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "bluetooth_speakers",
+			"description": "Bluetooth Speakers",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "headphones",
+			"description": "Headphones",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "instruments",
+			"description": "Instruments",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "wearable_technology",
+			"description": "Wearable Technology",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "photo_video",
+			"description": "Photo & Video",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "monitors",
+			"description": "Monitors",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "accessories",
+			"description": "Accessories",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "movies",
+			"description": "Movies",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "home_garden",
+			"description": "Home & Garden",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "grocery",
+			"description": "Grocery",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "healthcare",
+			"description": "Healthcare",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "toys",
+			"description": "Toys",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "clothing",
+			"description": "Clothing",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "sports_equipment",
+			"description": "Sports Equipment",
+			"data entry": false
+		}]
+	}]
+}

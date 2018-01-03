@@ -79,13 +79,13 @@ const addFieldToRows = (rowDefs, rowKeys) => {
 };
 
 const generateRowKey = (rowKeys, rowDef) => {
-  return rowKeys.map(key => `${key}_${rowDef[key]}`).join('__');
+  return rowKeys.map(key => `${key}__${rowDef[key]}`).join('___');
 };
 
 const generateColumnKey = columns => {
   return columns
-    .map(column => `${column.dimension}_${column.value}`)
-    .join('__');
+    .map(column => `${column.dimension}__${column.member}`)
+    .join('___');
 };
 
 const getRowKeys = columnRowDefs => {

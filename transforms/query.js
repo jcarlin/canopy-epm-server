@@ -1,3 +1,4 @@
+const debug = require('debug')('log');
 const { capitalize, makeLowerCase } = require('./../util');
 const { extractKeySet } = require('./../grid');
 
@@ -10,10 +11,18 @@ const getPinnedSet = pinned => {
   });
 };
 
-const buildFilterStatement = filters => {
-  return filters.map(filter => {
-    return `${capitalize(filter.dimension)} IN ('${filter.member}')`;
-  });
+const buildFilterStatement = (filters, tableName) => {
+  // TODO: replace this hack that was created to rectify Nile vs public and manifest naming conventions.
+  if (tableName === "elt.app_net_rev") {
+    return filters.map(filter => {
+      return `${makeLowerCase(filter.dimension)}_id = ('${filter.member}')`;
+    });  
+  }
+  else {
+    return filters.map(filter => {
+      return `${capitalize(filter.dimension)} IN ('${filter.member}')`;
+    });
+  }
 };
 
 const makeUpdateQueryString = (transform, ice, pinned) => {
@@ -29,13 +38,16 @@ const makeUpdateQueryString = (transform, ice, pinned) => {
   const table = transform.table;
   const metric = transform.metrics[0];
   const value = transform.new_value;
-  const queryString = keySets.map(key => {
+  const whereClause = keySets.map(key => {
     return `${key.dimension} = '${key.member}'`;
   });
-
-  return `UPDATE ${table} SET "${metric}" = ${value} WHERE ${queryString.join(
+  const queryString = `UPDATE ${table} SET "${metric}" = ${value} WHERE ${whereClause.join(
     ' AND '
   )}`;
+
+  debug('makeUpdateQueryString: ' + queryString);
+
+  return queryString;
 };
 
 const makeQueryString = (transform, pinned) => {
@@ -43,10 +55,12 @@ const makeQueryString = (transform, pinned) => {
   const table = transform.table;
   const dimensions = transform.dimensions.join(',');
   const metrics = transform.metrics.map(metric => `"${metric}"`).join(',');
-  const filterStatements = buildFilterStatement(pinnedSet);
+  const filterStatements = buildFilterStatement(pinnedSet, transform.table);
   const queryString = `SELECT ${dimensions},${metrics} FROM ${
     table
   } WHERE ${filterStatements.join(' AND ')}`;
+
+  debug('makeQueryString: ' + queryString);
   return queryString;
 };
 

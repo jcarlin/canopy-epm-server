@@ -6,7 +6,7 @@ const buildColumnDef = (columns, region) => {
     properties: {}
   };
 
-  const field = columns.map(column => column.member).join('_');
+  const field = columns.map(column => column.member).join('__');
   const editable = columns[columns.length - 1]['data entry']; // Get the last element in the array
   const rowIndex = region.rowIndex;
   const colIndex = region.colIndex;
@@ -16,7 +16,8 @@ const buildColumnDef = (columns, region) => {
     .forEach((column, i) =>
       colDef.columns.push({
         dimension: column.dimension,
-        value: column.member,
+        value: column.description || column.member, // in case description is not a key present in the manifest, use member
+        member: column.member,
         level: i
       })
     );
