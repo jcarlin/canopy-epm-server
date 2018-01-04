@@ -80,7 +80,6 @@ const buildTableData = manifest => {
   }
 
   const regions = manifest.regions;
-
   const firstRegion = regions[0];
   const colDepth = firstRegion.colDepth;
   const rowDepth = firstRegion.rowDepth;

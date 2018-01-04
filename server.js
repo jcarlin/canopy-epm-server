@@ -7,11 +7,18 @@ const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
 const pg = require('pg');
 const debug = require('debug')('log');
+const async = require('async');
 
-const { makeQueryString, makeUpdateQueryString } = require('./transforms');
+const { makeQueryString, makeUpdateQueryString, cxUpsertQueryString } = require('./transforms');
+const { makeGrainBlockQueryStrings, makeGrainBrickQueryStrings, makeObjectCodeByTimeView, makeAppNetRevView } = require('./graindefs/query.js');
+//const objectCodeByTimeView = require('./graindefs/object-code-by-time.sql');
+//const objectCodeByProductView = require('./graindefs/object-code-by-product.sql');
 const { buildTableData } = require('./manifests');
 const { stitchDatabaseData, produceVariance } = require('./grid');
 const { makeLowerCase } = require('./util');
+
+let grainDefs = {};
+let dimKeys = {};
 
 const app = express();
 
@@ -59,9 +66,11 @@ app.use(cors());
 // access token produced by Auth0
 // app.use(checkJwt);
 
-// In response to the client app sending
-// a hydrated manifest, send back the completely
-// built table data ready to be consumed by ag-grid
+/**
+ * In response to the client app sending
+ * a hydrated manifest, send back the completely
+ * built table data ready to be consumed by ag-grid.
+ */
 app.post('/grid', (req, res) => {
   if (!req.body.manifest) {
     return res.status(400).json({
@@ -73,36 +82,45 @@ app.post('/grid', (req, res) => {
   const manifest = req.body.manifest;
   const tableData = buildTableData(manifest); // manifest -> something ag-grid can use
 
-  fs.readFile(`./transforms/${tableData.transforms[0]}`, (err, data) => {
+  fs.readFile(`./transforms/${tableData.transforms[0]}`, 'utf8', (err, data) => {
     if (err) {
       return res.json({ err });
     }
 
+    const transform = JSON.parse(data);  
     const pinned = manifest.regions[0].pinned;
-    const query = makeQueryString(JSON.parse(data), pinned);
     const includeVariance = manifest.regions[0].includeVariance;
     const includeVariancePct = manifest.regions[0].includeVariancePct;
+    const query = makeQueryString(transform, pinned, dimKeys);
 
+    debug('GET /grid query: ', query);
+  
     client.query(query, (error, data) => {
       if (error) {
+        debug('client.query error: ', error);
         return res.json({ error });
       }
-
+  
       const producedData = stitchDatabaseData(manifest, tableData, data);
-
+  
       if (includeVariance && includeVariancePct) {
         const finalData = produceVariance(producedData);
         return res.json(finalData);
       }
+
+      // debug('producedData: ', producedData);
       return res.json(producedData);
     });
   });
 });
 
-// Edit a cell by based on an ICE
+/**
+ * Edit a cell by based on an ICE
+ */
 app.patch('/grid', (req, res) => {
   const ice = req.body.ice;
   const manifest = req.body.manifest;
+  let query = '';
 
   if (!ice || !manifest) {
     return res.status(400).json({
@@ -111,11 +129,9 @@ app.patch('/grid', (req, res) => {
   }
 
   const keys = Object.keys(ice);
-
   const rowIndex = ice.rowIndex;
   const colIndex = ice.colIndex;
   const newValue = ice.value;
-
   const region = manifest.regions.find(
     region => region.colIndex === colIndex && region.rowIndex === rowIndex
   );
@@ -126,12 +142,16 @@ app.patch('/grid', (req, res) => {
     }
 
     const transform = JSON.parse(data);
-
     transform.new_value = newValue;
-
     const pinned = region.pinned;
 
-    const query = makeUpdateQueryString(transform, ice, pinned);
+    if (transform.table.match("elt.")) {
+      query = cxUpsertQueryString(transform, ice, pinned, dimKeys);
+    } else {
+      query = makeUpdateQueryString(transform, ice, pinned);
+    }
+
+    debug('PATCH /grid query: ', query);
 
     client.query(query, (error, data) => {
       if (error) {
@@ -142,9 +162,11 @@ app.patch('/grid', (req, res) => {
   });
 });
 
-// Get an unhydrated manifest from the filesystem.
-// You must specify the type which corresponds to the
-// filename of the manifest on disk
+/**
+ * Get an unhydrated manifest from the filesystem.
+ * You must specify the type which corresponds to the
+ * filename of the manifest on disk.
+ */
 app.get('/manifest', (req, res) => {
   const manifestType = req.query.manifestType;
 
@@ -178,6 +200,148 @@ app.post('/test-manifest', (req, res) => {
   return res.json(tableData);
 });
 
+app.get('/grain', (req, res) => {
+  try {
+    return res.json({grainDefs});
+  } catch (err) {
+    return res.json({err});
+  }
+});
+
+/**
+ * System admin utility route to handle creation of grain tables
+ * 
+ * 2018-01-03 run time: 5m7s
+ */
+app.post('/grain', (req, res) => {
+  const grainSack = grainDefs.grainSack;
+  const dimKeys = grainDefs.dimKeys;
+  const hierKeys = grainDefs.hierKeys;
+  let allQueryStrings = '';
+  let tableCount = 0;
+
+  // Cycle through the grainDefs array of grainDef objects and for each, cycle through it's memberSet array
+  const grainDefsMap = () => {
+    grainSack.map(grainDef => {
+      const memberSets = mapMemberSets(grainDef);
+    });
+  };
+
+  // Cycle through each memberSet array object
+  const mapMemberSets = (grainDef) => {
+    // Get diminfo from the dimInfo key, matched by memberSet's dimension
+    grainDef.memberSets.map(member => {
+      tableCount++;
+      let queryStrings = "";
+
+      // Get dimension info
+      const dimInfo = dimKeys.find(dimKey => {
+        return dimKey.name === member.dimension;
+      });
+
+      // params for the sql generation for this grainDef
+      const sqlParams = {
+        members: `'${member.members}'`,
+        grainTableName: `grain_${grainDef.id}`,
+        grainDefName: grainDef.name,
+        grainDefId: grainDef.id,
+        grainSerName: `gr${grainDef.id}_oid`,
+        dimNumber: dimInfo.id,
+        dimByte: dimInfo.byte === 2 ? 'SMALLINT' : 'INTEGER'
+      };
+
+      // Get hierarchy info
+      if (member.hierarchy) {
+        const hierInfo = hierKeys.find(hierKey => {
+          return hierKey.name === member.hierarchy;
+        });
+
+        sqlParams.hierNumber = hierInfo.id;
+        sqlParams.hierName = member.hierarchy;
+      }
+      
+      // assemble the sql for the brick/block creation
+      if (grainDef.grainType === "brick" && member.memberSetType === "evaluated") {
+        queryStrings = makeGrainBrickQueryStrings(sqlParams);
+      } else if (grainDef.grainType === "block") {
+        // TODO: remove this hack (that grabs the parent grainDef (table))
+        if (member.platformType === "node_leaf") {
+          let parentDimNumber = grainDef.id -1;
+          member.parentTableName = `grain_${parentDimNumber}`
+        }
+
+        // Extract object with database postgres
+        if (member.memberSetType === "compute") {
+          member.memberSetCode = member.memberSetCode.find(msc => {
+            return msc.database === "postgres";
+          });
+        }
+        queryStrings = makeGrainBlockQueryStrings(sqlParams, {"memberSet": member});
+      }
+      
+      allQueryStrings = `${allQueryStrings}${queryStrings}${makeAppNetRevView()}${makeObjectCodeByTimeView()}`;
+    });
+  };
+
+  const execGrainSql = (sql, callback) => {
+    client.query(sql, (error, data) => {
+      if (error) {
+        console.log(error);
+        return callback("error");
+        //return res.status(400).json({ error: 'Error writing to database.' + `${error}` });
+      }
+      return;
+    });
+  };
+  
+  // Async/await function that calls the above 3 functions
+  const executeGrainDefSql = async () => {
+    try {
+      const gd = await grainDefsMap();
+      const dbResults = await execGrainSql(allQueryStrings, (results) => {
+        if (results == "error") {
+          return res.status(400).json({ error: results });   
+        }
+
+        return res.json({"tableCount": tableCount});
+      });
+    }
+    catch(err) {
+      console.log("/grain executeGrainDefSql error: ", err);
+      return res.status(400).json({ error: err });
+    }
+  };
+
+  executeGrainDefSql();
+});
+
+/**
+ * TODO: move these tasks to another file
+ */
+const startupTasks = () => {
+  fs.readFile('./graindefs/grainDefs.json', 'utf8', (err, data) => {
+    if (err) {
+      console.log("Error reading grainDefs.json");
+      return;
+    }
+    grainDefs = JSON.parse(data);
+    dimKeys = grainDefs.dimKeys;
+  });
+
+  let sqlTasks = [
+    'SET search_path TO elt;',
+    'CREATE EXTENSION IF NOT EXISTS hstore SCHEMA pg_catalog;'
+  ];
+
+  for (let sql of sqlTasks) {
+    client.query(sql, (error, data) => {
+      if (error) {
+        console.log(error);
+      }
+    });
+  }
+}
+
 // Establish a connection to postgres
 // and fire up the node server
 async function connect() {
@@ -185,6 +349,7 @@ async function connect() {
     await client.connect();
     app.listen(port);
     console.log(`Express app started on port ${port}`);
+    startupTasks();
   } catch (err) {
     console.log(err);
   }
