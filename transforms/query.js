@@ -11,9 +11,9 @@ const getPinnedSet = pinned => {
   });
 };
 
-const buildFilterStatement = (filters, tableName, dimKeys) => {
+const buildFilterStatement = (filters, isNile, dimKeys) => {
   // TODO: replace this with an alternative way to distinguish Nile vs v1 manifests.
-  if (tableName.match('elt.')) {
+  if (isNile) {
     return filters.map(filter => {
       // Get dimension info
       const dimInfo = dimKeys.find(dimKey => {
@@ -93,15 +93,11 @@ const cxUpsertQueryString = (transform, ice, pinned, dimKeys) => {
   return queryString;
 };
 
-const makeQueryString = (transform, pinned, dimKeys) => {
+const makeQueryString = (transform, pinned, dimKeys, metrics) => {
   const pinnedSet = getPinnedSet(pinned);
-  const table = transform.table;
-  const dimensions = transform.dimensions.join(',');
-  const metrics = transform.metrics.map(metric => `'${metric}'`).join(',');
-  const filterStatements = buildFilterStatement(pinnedSet, transform.table, dimKeys);
-  const queryString = `SELECT ${dimensions},${metrics} FROM ${
-    table
-  } WHERE ${filterStatements.join(' AND ')};`;
+  const dimensions = transform.dimensions.join(','); 
+  const filterStatements = buildFilterStatement(pinnedSet, transform.isNile, dimKeys);
+  const queryString = `SELECT ${dimensions},${metrics} FROM ${transform.table} WHERE ${filterStatements.join(' AND ')};`;
 
   // debug('makeQueryString: ' + queryString);
   // debug("pinnedSet: " + JSON.stringify(pinnedSet));

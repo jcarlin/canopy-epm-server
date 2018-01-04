@@ -1,8 +1,8 @@
 ﻿--CREATE EXTENSION IF NOT EXISTS hstore SCHEMA pg_catalog;  
 --DROP EXTENSION hstore CASCADE; 
 SET search_path TO 'elt';
--- DROP FUNCTION elt.cx_upsert(HSTORE) 
-CREATE OR REPLACE FUNCTION elt.cx_upsert(hix HSTORE) 
+-- DROP FUNCTION cx_upsert(HSTORE) 
+CREATE OR REPLACE FUNCTION cx_upsert(hix HSTORE) 
 RETURNS hstore AS 
 $$
 

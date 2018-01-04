@@ -18,10 +18,10 @@ const { makeLowerCase } = require('./util');
 
 let grainDefs = {};
 let dimKeys = {};
-
+const port = process.env.PORT || 8080;
 const app = express();
-
 let dbClient = 'pgClient';
+//let dbClient = 'sfClient';
 
 // This will log to console if enabled (npm run-script dev)
 debug('booting %o', 'debug');
@@ -42,41 +42,19 @@ const pgClient = new pg.Client({
   database: 'canopy_test',
   password: process.env.DB_PASSWORD,
   port: 5432
+  // statement_timeout: 120000 // timeout queries after 2 minutes
 });
 
 // Snowflake db connection
 const sfClient = snowflake.createConnection({
   account: 'ge10380', // 'CANOPYEPM',
   username: 'canopyepm',
-  password: 'DBscale2018',
+  password: process.env.DB_PASSWORD_SF,
   region: 'us-east-1',
   database: 'FIVETRAN',
   schema: 'ELT_ELT',
   warehouse: 'FIVETRAN_WAREHOUSE'
 });
-
-sfClient.connect(function(err, conn) {
-  if (err) {
-    console.error('Unable to connect: ' + err.message);
-  } else {
-    console.log('Successfully connected as id: ' + sfClient.getId());
-  }
-});
-
-/* sfClient.execute({
-  sqlText: 'SELECT * FROM s_dim',
-  // binds: [10],
-  complete: function(err, stmt, rows) {
-    if (err) {
-      console.error('Failed to execute statement due to the following error: ' + err.message);
-    } else {
-      console.log('Successfully executed statement: ' + stmt.getSqlText());
-      console.log(rows);
-    }
-  }
-}); */
-
-const port = process.env.PORT || 8080;
 
 const checkJwt = jwt({
   secret: jwksRsa.expressJwtSecret({
@@ -125,48 +103,63 @@ app.post('/grid', (req, res) => {
     const pinned = manifest.regions[0].pinned;
     const includeVariance = manifest.regions[0].includeVariance;
     const includeVariancePct = manifest.regions[0].includeVariancePct;
-    const query = makeQueryString(transform, pinned, dimKeys);
-
+    let metrics;
+    
+    // TODO: remove/improve this hack to handle case differences returned from different dbClients
+    if (dbClient === 'sfClient') {
+      metrics = transform.metrics.map(metric => `"${metric.toUpperCase()}"`).join(',');
+    } else {
+      metrics = transform.metrics.map(metric => `"${metric}"`).join(',');
+    }
+    
+    const query = makeQueryString(transform, pinned, dimKeys, metrics);
     debug('GET /grid query: ', query);
+    
+    // New function to take db data (from pg or sf) and finish remaining work + return
+    const stitchData = dbData => {
+      debug('data: ', dbData);
+      const producedData = stitchDatabaseData(manifest, tableData, dbData);
   
+      if (includeVariance && includeVariancePct) {
+        const finalData = produceVariance(producedData);
+        return res.json(finalData);
+      }
+
+      // debug('producedData: ', producedData);
+      return res.json(producedData);
+    }
+
+    // Handle dbClient type and query db
     if (dbClient === 'pgClient') {
+
       pgClient.query(query, (error, data) => {
         if (error) {
           debug('pgClient.query error: ', error);
           return res.json({ error });
         }
-        debug('data: ', data);
-
-        const producedData = stitchDatabaseData(manifest, tableData, data);
-    
-        if (includeVariance && includeVariancePct) {
-          const finalData = produceVariance(producedData);
-          return res.json(finalData);
-        }
-  
-        // debug('producedData: ', producedData);
-        return res.json(producedData);
+        
+        return stitchData(data.rows);
       });
     } else if (dbClient === 'sfClient') {
+
       sfClient.execute({
         sqlText: query,
-        // binds: [10],
-        complete: function(error, stmt, rows) {
+        // binds: [10], // this should work according to docs but is not. Important to avoid sql injection.
+        complete: function(error, stmt, data) {
           if (error) {
             console.error('Failed to execute statement due to the following error: ' + error.message);
             return res.json({ error });
           } else {
-            console.log('Successfully executed statement: ' + stmt.getSqlText());
-            debug('data: ', rows);
-            
-            const producedData = stitchDatabaseData(manifest, tableData, rows);
-    
-            if (includeVariance && includeVariancePct) {
-              const finalData = produceVariance(producedData);
-              return res.json(finalData);
-            }
-      
-            return res.json(producedData);    
+            // make keys lowercase
+            data = data.map(item => {
+              for (key in item) {
+                item[ key.toLowerCase() ] = item[key];
+                delete item[key];
+              }
+              return item;
+            });
+
+            return stitchData(data);  
           }
         }
       });
@@ -205,7 +198,7 @@ app.patch('/grid', (req, res) => {
     transform.new_value = newValue;
     const pinned = region.pinned;
 
-    if (transform.table.match("elt.")) {
+    if (transform.isNile) {
       query = cxUpsertQueryString(transform, ice, pinned, dimKeys);
     } else {
       query = makeUpdateQueryString(transform, ice, pinned);
@@ -406,7 +399,20 @@ const startupTasks = () => {
 // and fire up the node server
 async function connect() {
   try {
-    await pgClient.connect();
+    await pgClient.connect((err) => {
+      if (err) {
+        console.error('pgClient failed to connect', err.stack)
+      } else {
+        console.log('pgClient connected successfully')
+      }
+    });
+    await sfClient.connect(function(err, conn) {
+      if (err) {
+        console.error('sfClient failed to connect: ' + err.message);
+      } else {
+        console.log('sfClient connected successfully');
+      }
+    });
     app.listen(port);
     console.log(`Express app started on port ${port}`);
     startupTasks();

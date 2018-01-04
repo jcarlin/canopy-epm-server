@@ -229,7 +229,7 @@ const makeGrainBlockQueryStrings = (params, options) => {
 
 const makeObjectCodeByTimeView = () => {
   return `
-    CREATE OR REPLACE VIEW elt.object_code_by_time AS 
+    CREATE OR REPLACE VIEW object_code_by_time AS 
     SELECT dim_2.d2_id,
         dim_2.d2_name AS product_id,
         dim_3.d3_id,
@@ -256,33 +256,33 @@ const makeObjectCodeByTimeView = () => {
                 root_6.d11_id,
                 root_6.d6_id,
                 root_6.r6
-              FROM elt.root_6
-                JOIN elt.grain_202 USING (d2_id)
-                JOIN elt.grain_301 USING (d3_id, epoch_id)
-                JOIN elt.grain_406 USING (epoch_id, d4_id)
-                JOIN elt.grain_503 USING (epoch_id, d5_id)
-                JOIN elt.grain_801 USING (epoch_id, d8_id)
-                JOIN elt.grain_903 USING (epoch_id, d9_id)
-                JOIN elt.grain_1102 USING (epoch_id, d11_id)
-                JOIN elt.grain_602 USING (epoch_id, d6_id)
+              FROM root_6
+                JOIN grain_202 USING (d2_id)
+                JOIN grain_301 USING (d3_id, epoch_id)
+                JOIN grain_406 USING (epoch_id, d4_id)
+                JOIN grain_503 USING (epoch_id, d5_id)
+                JOIN grain_801 USING (epoch_id, d8_id)
+                JOIN grain_903 USING (epoch_id, d9_id)
+                JOIN grain_1102 USING (epoch_id, d11_id)
+                JOIN grain_602 USING (epoch_id, d6_id)
               WHERE root_6.active) a
-        JOIN elt.dim_2 USING (d2_id)
-        JOIN elt.dim_3 USING (d3_id)
-        JOIN elt.dim_4 USING (d4_id)
-        JOIN elt.dim_5 USING (d5_id)
-        JOIN elt.dim_8 USING (d8_id)
-        JOIN elt.dim_9 USING (d9_id)
-        JOIN elt.dim_11 USING (d11_id)
-        JOIN elt.dim_6 USING (d6_id);
+        JOIN dim_2 USING (d2_id)
+        JOIN dim_3 USING (d3_id)
+        JOIN dim_4 USING (d4_id)
+        JOIN dim_5 USING (d5_id)
+        JOIN dim_8 USING (d8_id)
+        JOIN dim_9 USING (d9_id)
+        JOIN dim_11 USING (d11_id)
+        JOIN dim_6 USING (d6_id);
     
-    ALTER TABLE elt.object_code_by_time
+    ALTER TABLE object_code_by_time
       OWNER TO canopy_db_admin;
   `;
 };
 
 const makeAppNetRevView = () => {
   return `
-    CREATE OR REPLACE VIEW elt.app_net_rev AS 
+    CREATE OR REPLACE VIEW app_net_rev AS 
     SELECT dim_2.d2_id,
         dim_2.d2_name AS product_id,
         dim_3.d3_id,
@@ -310,22 +310,22 @@ const makeAppNetRevView = () => {
                 app_20.d11_id,
                 grain_606.goofy_d6_id AS d6_id,
                 sum(app_20.a20) AS a20
-              FROM elt.app_20
-                JOIN elt.grain_206 USING (epoch_id, d2_id)
-                JOIN elt.grain_515 USING (epoch_id, d5_id)
-                JOIN elt.grain_606 USING (epoch_id, d6_id)
+              FROM app_20
+                JOIN grain_206 USING (epoch_id, d2_id)
+                JOIN grain_515 USING (epoch_id, d5_id)
+                JOIN grain_606 USING (epoch_id, d6_id)
               GROUP BY grain_206.goofy_d2_id, app_20.d3_id, app_20.d4_id, grain_515.goofy_d5_id, app_20.d8_id, app_20.d9_id, app_20.d11_id, grain_606.goofy_d6_id) a
-        JOIN elt.dim_2 USING (d2_id)
-        JOIN elt.dim_3 USING (d3_id)
-        JOIN elt.dim_4 USING (d4_id)
-        JOIN elt.dim_5 USING (d5_id)
-        JOIN elt.dim_8 USING (d8_id)
-        JOIN elt.dim_9 USING (d9_id)
-        JOIN elt.dim_11 USING (d11_id)
-        JOIN elt.dim_6 USING (d6_id)
+        JOIN dim_2 USING (d2_id)
+        JOIN dim_3 USING (d3_id)
+        JOIN dim_4 USING (d4_id)
+        JOIN dim_5 USING (d5_id)
+        JOIN dim_8 USING (d8_id)
+        JOIN dim_9 USING (d9_id)
+        JOIN dim_11 USING (d11_id)
+        JOIN dim_6 USING (d6_id)
       ORDER BY dim_5.d5_desc;
     
-    ALTER TABLE elt.app_net_rev
+    ALTER TABLE app_net_rev
       OWNER TO canopy_db_admin;  
   `;
 }
