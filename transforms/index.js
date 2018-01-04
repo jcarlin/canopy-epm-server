@@ -1,13 +1,11 @@
 const {
   makeQueryString,
   makeUpdateQueryString,
-  makeGrainBrickQueryStrings,
-  makeGrainBlockQueryStrings
+  cxUpsertQueryString
 } = require('./query');
 
 module.exports = {
   makeQueryString,
   makeUpdateQueryString,
-  makeGrainBrickQueryStrings,
-  makeGrainBlockQueryStrings
+  cxUpsertQueryString
 };

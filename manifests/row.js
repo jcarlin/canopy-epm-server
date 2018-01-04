@@ -1,3 +1,4 @@
+const debug = require('debug')('log');
 const { flatten, completelyFlatten, getUniqueRegions } = require('./util');
 
 const buildRows = (regions, rowDef, depth) => {
@@ -27,8 +28,10 @@ const buildRowDefs = (rows, rowDef) => {
   return rows
     .map(rows =>
       rows.map(row => {
+        // debug('buildRowDefs row: ', row);
         return {
           [row.dimension]: row.member,
+          description: row.description,
           editable: row['data entry']
         };
       })
@@ -82,9 +85,15 @@ const generateRowKey = (rowKeys, rowDef) => {
   return rowKeys.map(key => `${key}__${rowDef[key]}`).join('___');
 };
 
+// columns:
+// [ { dimension: 'FY 2017',
+// value: 'FY 2017',
+// member: '2017_fy',
+// level: 0 } ]
 const generateColumnKey = columns => {
   return columns
     .map(column => `${column.dimension}__${column.member}`)
+    //.map(column => `${column.dimension}__${column.description}`)
     .join('___');
 };
 
