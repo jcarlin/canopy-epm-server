@@ -97,7 +97,7 @@ const makeQueryString = (transform, pinned, dimKeys) => {
   const pinnedSet = getPinnedSet(pinned);
   const table = transform.table;
   const dimensions = transform.dimensions.join(',');
-  const metrics = transform.metrics.map(metric => `"${metric}"`).join(',');
+  const metrics = transform.metrics.map(metric => `'${metric}'`).join(',');
   const filterStatements = buildFilterStatement(pinnedSet, transform.table, dimKeys);
   const queryString = `SELECT ${dimensions},${metrics} FROM ${
     table

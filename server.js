@@ -6,13 +6,12 @@ const cors = require('cors');
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
 const pg = require('pg');
+const snowflake = require('snowflake-sdk');
 const debug = require('debug')('log');
 const async = require('async');
 
 const { makeQueryString, makeUpdateQueryString, cxUpsertQueryString } = require('./transforms');
 const { makeGrainBlockQueryStrings, makeGrainBrickQueryStrings, makeObjectCodeByTimeView, makeAppNetRevView } = require('./graindefs/query.js');
-//const objectCodeByTimeView = require('./graindefs/object-code-by-time.sql');
-//const objectCodeByProductView = require('./graindefs/object-code-by-product.sql');
 const { buildTableData } = require('./manifests');
 const { stitchDatabaseData, produceVariance } = require('./grid');
 const { makeLowerCase } = require('./util');
@@ -21,6 +20,8 @@ let grainDefs = {};
 let dimKeys = {};
 
 const app = express();
+
+let dbClient = 'pgClient';
 
 // This will log to console if enabled (npm run-script dev)
 debug('booting %o', 'debug');
@@ -34,13 +35,46 @@ app.use(
   })
 );
 
-const client = new pg.Client({
+// PostgreSQL db connection
+const pgClient = new pg.Client({
   user: 'canopy_db_admin',
   host: 'canopy-epm-test.cxuldttnrpns.us-east-2.rds.amazonaws.com',
   database: 'canopy_test',
   password: process.env.DB_PASSWORD,
   port: 5432
 });
+
+// Snowflake db connection
+const sfClient = snowflake.createConnection({
+  account: 'ge10380', // 'CANOPYEPM',
+  username: 'canopyepm',
+  password: 'DBscale2018',
+  region: 'us-east-1',
+  database: 'FIVETRAN',
+  schema: 'ELT_ELT',
+  warehouse: 'FIVETRAN_WAREHOUSE'
+});
+
+sfClient.connect(function(err, conn) {
+  if (err) {
+    console.error('Unable to connect: ' + err.message);
+  } else {
+    console.log('Successfully connected as id: ' + sfClient.getId());
+  }
+});
+
+/* sfClient.execute({
+  sqlText: 'SELECT * FROM s_dim',
+  // binds: [10],
+  complete: function(err, stmt, rows) {
+    if (err) {
+      console.error('Failed to execute statement due to the following error: ' + err.message);
+    } else {
+      console.log('Successfully executed statement: ' + stmt.getSqlText());
+      console.log(rows);
+    }
+  }
+}); */
 
 const port = process.env.PORT || 8080;
 
@@ -95,22 +129,48 @@ app.post('/grid', (req, res) => {
 
     debug('GET /grid query: ', query);
   
-    client.query(query, (error, data) => {
-      if (error) {
-        debug('client.query error: ', error);
-        return res.json({ error });
-      }
-  
-      const producedData = stitchDatabaseData(manifest, tableData, data);
-  
-      if (includeVariance && includeVariancePct) {
-        const finalData = produceVariance(producedData);
-        return res.json(finalData);
-      }
+    if (dbClient === 'pgClient') {
+      pgClient.query(query, (error, data) => {
+        if (error) {
+          debug('pgClient.query error: ', error);
+          return res.json({ error });
+        }
+        debug('data: ', data);
 
-      // debug('producedData: ', producedData);
-      return res.json(producedData);
-    });
+        const producedData = stitchDatabaseData(manifest, tableData, data);
+    
+        if (includeVariance && includeVariancePct) {
+          const finalData = produceVariance(producedData);
+          return res.json(finalData);
+        }
+  
+        // debug('producedData: ', producedData);
+        return res.json(producedData);
+      });
+    } else if (dbClient === 'sfClient') {
+      sfClient.execute({
+        sqlText: query,
+        // binds: [10],
+        complete: function(error, stmt, rows) {
+          if (error) {
+            console.error('Failed to execute statement due to the following error: ' + error.message);
+            return res.json({ error });
+          } else {
+            console.log('Successfully executed statement: ' + stmt.getSqlText());
+            debug('data: ', rows);
+            
+            const producedData = stitchDatabaseData(manifest, tableData, rows);
+    
+            if (includeVariance && includeVariancePct) {
+              const finalData = produceVariance(producedData);
+              return res.json(finalData);
+            }
+      
+            return res.json(producedData);    
+          }
+        }
+      });
+    }
   });
 });
 
@@ -153,7 +213,7 @@ app.patch('/grid', (req, res) => {
 
     debug('PATCH /grid query: ', query);
 
-    client.query(query, (error, data) => {
+    pgClient.query(query, (error, data) => {
       if (error) {
         return res.status(400).json({ error: 'Error writing to database' });
       }
@@ -284,7 +344,7 @@ app.post('/grain', (req, res) => {
   };
 
   const execGrainSql = (sql, callback) => {
-    client.query(sql, (error, data) => {
+    pgClient.query(sql, (error, data) => {
       if (error) {
         console.log(error);
         return callback("error");
@@ -334,7 +394,7 @@ const startupTasks = () => {
   ];
 
   for (let sql of sqlTasks) {
-    client.query(sql, (error, data) => {
+    pgClient.query(sql, (error, data) => {
       if (error) {
         console.log(error);
       }
@@ -346,7 +406,7 @@ const startupTasks = () => {
 // and fire up the node server
 async function connect() {
   try {
-    await client.connect();
+    await pgClient.connect();
     app.listen(port);
     console.log(`Express app started on port ${port}`);
     startupTasks();
