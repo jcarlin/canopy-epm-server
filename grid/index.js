@@ -11,6 +11,23 @@ const extractKeySet = rawKey => {
   });
 };
 
+// TODO: remove this hack by first updating the manifest dimension's value.
+// i.e. 'time_id' -> 'time'
+const extractKeySetAndId = rawKey => {
+  return rawKey.split('___').map(keyGroup => {
+    const keySet = keyGroup.split('__');
+    let dim = null;
+
+    if (keySet[0].match('_id')) {
+      dim = keySet[0].substring(0, keySet[0].length -3);
+    }
+    return {
+      dimension: dim || makeLowerCase(keySet[0]),
+      member: keySet[1]
+    };
+  });
+};
+
 const produceVariance = tableData => {
   tableData.rowDefs.forEach(def => {
     const keys = Object.keys(def);
@@ -83,10 +100,18 @@ const stitchDatabaseData = (manifest, tableData, dbData) => {
         match
           ? (def[key].value = match[pinned[0].member])
           : (def[key].value = null);
+
+        // Set the value (number) of the cell
+        if (match) {
+          // Put any desired rounding here. Currently handled in the client: https://goo.gl/J7CKFp
+          def[key].value = match[pinned[0].member];
+        } else {
+          def[key].value = null;
+        }
       }
     });
   });
   return tableData;
 };
 
-module.exports = { extractKeySet, stitchDatabaseData, produceVariance };
+module.exports = { extractKeySet, extractKeySetAndId, stitchDatabaseData, produceVariance };

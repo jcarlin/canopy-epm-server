@@ -1,0 +1,17 @@
+{
+  "transform_id": "5",
+  "transform_name": "Object Code By Time",
+  "table": "elt.object_code_by_time",
+  "dimensions": [
+    "currency_id",
+    "datasrc_id",
+    "organization_id",
+    "scenario_id",
+    "time_id",
+    "variation_id",
+    "product_id",
+    "objectcode_id"
+  ],
+    "metrics": ["expense_balance"],
+    "new_value": ""
+  }

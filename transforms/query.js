@@ -1,6 +1,6 @@
 const debug = require('debug')('log');
 const { capitalize, makeLowerCase } = require('./../util');
-const { extractKeySet } = require('./../grid');
+const { extractKeySet, extractKeySetAndId } = require('./../grid');
 
 const getPinnedSet = pinned => {
   return pinned.filter(pin => pin.dimension !== 'Metric').map(pin => {
@@ -11,12 +11,21 @@ const getPinnedSet = pinned => {
   });
 };
 
-const buildFilterStatement = (filters, tableName) => {
-  // TODO: replace this hack that was created to rectify Nile vs public and manifest naming conventions.
-  if (tableName === "elt.app_net_rev") {
+const buildFilterStatement = (filters, tableName, dimKeys) => {
+  // TODO: replace this with an alternative way to distinguish Nile vs v1 manifests.
+  if (tableName.match('elt.')) {
     return filters.map(filter => {
-      return `${makeLowerCase(filter.dimension)}_id = ('${filter.member}')`;
-    });  
+      // Get dimension info
+      const dimInfo = dimKeys.find(dimKey => {
+        return dimKey.name === filter.dimension;
+      });
+
+      return `d${dimInfo.id}_id = (
+        SELECT d${dimInfo.id}_id
+        FROM dim_${dimInfo.id}
+        WHERE d${dimInfo.id}_name = '${filter.member}'
+      )`;
+    });
   }
   else {
     return filters.map(filter => {
@@ -50,18 +59,63 @@ const makeUpdateQueryString = (transform, ice, pinned) => {
   return queryString;
 };
 
-const makeQueryString = (transform, pinned) => {
+
+
+const cxUpsertQueryString = (transform, ice, pinned, dimKeys) => {
+  const keySets = [
+    ...extractKeySetAndId(ice.rowKey),
+    ...extractKeySetAndId(ice.columnKey),
+    ...getPinnedSet(pinned)
+  ];
+
+  const dimArrays = keySets.map(filter => {
+    // Get dimension info
+    const dimInfo = dimKeys.find(dimKey => {
+      return dimKey.name === filter.dimension;
+    });
+
+    return `['${filter.dimension}', '${filter.member}']`;
+  });
+
+  // TODO: add handling multiple metrics (array) from manifest
+  const queryString = `
+    SELECT cx_upsert(
+      ARRAY[
+      ['root_name','${transform.metrics[0]}'],
+      ${dimArrays},
+      ['value','${transform.new_value}'],
+      ['skip_execute','off'],
+      ['p_msg','on']
+      ]::hstore
+    ); 
+  `;
+
+  return queryString;
+};
+
+const makeQueryString = (transform, pinned, dimKeys) => {
   const pinnedSet = getPinnedSet(pinned);
   const table = transform.table;
   const dimensions = transform.dimensions.join(',');
   const metrics = transform.metrics.map(metric => `"${metric}"`).join(',');
-  const filterStatements = buildFilterStatement(pinnedSet, transform.table);
+  const filterStatements = buildFilterStatement(pinnedSet, transform.table, dimKeys);
   const queryString = `SELECT ${dimensions},${metrics} FROM ${
     table
-  } WHERE ${filterStatements.join(' AND ')}`;
+  } WHERE ${filterStatements.join(' AND ')};`;
 
-  debug('makeQueryString: ' + queryString);
+  // debug('makeQueryString: ' + queryString);
+  // debug("pinnedSet: " + JSON.stringify(pinnedSet));
+  // debug("table: " + table);
+  // debug("dimensions: " + dimensions);
+  // debug("metrics: " + metrics);
+  // debug("filterStatements: " + filterStatements); */
+  // debug('queryString: ', queryString);
+
   return queryString;
 };
 
-module.exports = { makeQueryString, makeUpdateQueryString };
+module.exports = { 
+  makeQueryString, 
+  makeUpdateQueryString,
+  cxUpsertQueryString
+};
