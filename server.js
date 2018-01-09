@@ -10,6 +10,8 @@ const snowflake = require('snowflake-sdk');
 const debug = require('debug')('log');
 const async = require('async');
 
+const { getDbConnSettings } = require('./database');
+
 const { makeQueryString, makeUpdateQueryString, cxUpsertQueryString } = require('./transforms');
 const { makeGrainBlockQueryStrings, makeGrainBrickQueryStrings, makeObjectCodeByTimeView, makeAppNetRevView } = require('./graindefs/query.js');
 const { buildTableData } = require('./manifests');
@@ -19,9 +21,8 @@ const { makeLowerCase } = require('./util');
 let grainDefs = {};
 let dimKeys = {};
 const port = process.env.PORT || 8080;
+process.env.DATABASE = 'postgresql';
 const app = express();
-let dbClient = 'pgClient';
-//let dbClient = 'sfClient';
 
 // This will log to console if enabled (npm run-script dev)
 debug('booting %o', 'debug');
@@ -35,26 +36,9 @@ app.use(
   })
 );
 
-// PostgreSQL db connection
-const pgClient = new pg.Client({
-  user: 'canopy_db_admin',
-  host: 'canopy-epm-test.cxuldttnrpns.us-east-2.rds.amazonaws.com',
-  database: 'canopy_test',
-  password: process.env.DB_PASSWORD,
-  port: 5432
-  // statement_timeout: 120000 // timeout queries after 2 minutes
-});
-
-// Snowflake db connection
-const sfClient = snowflake.createConnection({
-  account: 'ge10380', // 'CANOPYEPM',
-  username: 'canopyepm',
-  password: process.env.DB_PASSWORD_SF,
-  region: 'us-east-1',
-  database: 'FIVETRAN',
-  schema: 'ELT_ELT',
-  warehouse: 'FIVETRAN_WAREHOUSE'
-});
+// Define database clients/connections
+const pgClient = new pg.Client(getDbConnSettings("postgresql").settings);
+const sfClient = snowflake.createConnection(getDbConnSettings("snowflake").settings);
 
 const checkJwt = jwt({
   secret: jwksRsa.expressJwtSecret({
@@ -78,12 +62,33 @@ app.use(cors());
 // access token produced by Auth0
 // app.use(checkJwt);
 
+app.get('/database', (req, res) => {
+  debug('GET /database');
+  return res.json({ database: process.env.DATABASE });
+});
+
+app.post('/database', (req, res) => {
+  debug('POST /database');
+  if (!req.body.database) {
+    return res.status(400).json({
+      error:
+        'You must supply a manifest. Send it on an object with a `manfifest` key: { manifest: ... }'
+    });
+  }
+
+  process.env.DATABASE = req.body.database.toLowerCase();
+  return res.json({"success": true});
+});
+
 /**
  * In response to the client app sending
  * a hydrated manifest, send back the completely
  * built table data ready to be consumed by ag-grid.
  */
 app.post('/grid', (req, res) => {
+
+  debug("/grid");
+
   if (!req.body.manifest) {
     return res.status(400).json({
       error:
@@ -105,8 +110,8 @@ app.post('/grid', (req, res) => {
     const includeVariancePct = manifest.regions[0].includeVariancePct;
     let metrics;
     
-    // TODO: remove/improve this hack to handle case differences returned from different dbClients
-    if (dbClient === 'sfClient') {
+    // TODO: remove/improve this hack to handle case differences returned from different databases
+    if (process.env.DATABASE === 'snowflake') {
       metrics = transform.metrics.map(metric => `"${metric.toUpperCase()}"`).join(',');
     } else {
       metrics = transform.metrics.map(metric => `"${metric}"`).join(',');
@@ -129,9 +134,8 @@ app.post('/grid', (req, res) => {
       return res.json(producedData);
     }
 
-    // Handle dbClient type and query db
-    if (dbClient === 'pgClient') {
-
+    // Handle database type and query db
+    if (process.env.DATABASE === 'postgresql') {
       pgClient.query(query, (error, data) => {
         if (error) {
           debug('pgClient.query error: ', error);
@@ -140,8 +144,7 @@ app.post('/grid', (req, res) => {
         
         return stitchData(data.rows);
       });
-    } else if (dbClient === 'sfClient') {
-
+    } else if (process.env.DATABASE === 'snowflake') {
       sfClient.execute({
         sqlText: query,
         // binds: [10], // this should work according to docs but is not. Important to avoid sql injection.
@@ -171,6 +174,7 @@ app.post('/grid', (req, res) => {
  * Edit a cell by based on an ICE
  */
 app.patch('/grid', (req, res) => {
+  debug("/grid");
   const ice = req.body.ice;
   const manifest = req.body.manifest;
   let query = '';
@@ -221,6 +225,7 @@ app.patch('/grid', (req, res) => {
  * filename of the manifest on disk.
  */
 app.get('/manifest', (req, res) => {
+  debug('GET /manifest');
   const manifestType = req.query.manifestType;
 
   if (!manifestType) {
@@ -240,6 +245,7 @@ app.get('/manifest', (req, res) => {
 // a manifest to and receive the column and row defs
 // produce by running it through `buildTableData`
 app.post('/test-manifest', (req, res) => {
+  debug('/test-manifest');
   const { manifest } = req.body;
 
   if (!req.body.manifest) {
@@ -267,6 +273,7 @@ app.get('/grain', (req, res) => {
  * 2018-01-03 run time: 5m7s
  */
 app.post('/grain', (req, res) => {
+  debug('/grain');
   const grainSack = grainDefs.grainSack;
   const dimKeys = grainDefs.dimKeys;
   const hierKeys = grainDefs.hierKeys;
