@@ -63,8 +63,18 @@ app.use(cors());
 // app.use(checkJwt);
 
 app.get('/database', (req, res) => {
-  debug('GET /database');
-  return res.json({ database: process.env.DATABASE });
+  return res.json([
+    {
+      name: 'snowflake',
+      description: 'Snowflake',
+      current: false
+    },
+    {
+      name: 'postgresql',
+      description: 'PostgreSQL',
+      current: false
+    }
+  ]);
 });
 
 app.post('/database', (req, res) => {
@@ -122,7 +132,7 @@ app.post('/grid', (req, res) => {
     
     // New function to take db data (from pg or sf) and finish remaining work + return
     const stitchData = dbData => {
-      debug('data: ', dbData);
+      // debug('data: ', dbData);
       const producedData = stitchDatabaseData(manifest, tableData, dbData);
   
       if (includeVariance && includeVariancePct) {
@@ -239,6 +249,28 @@ app.get('/manifest', (req, res) => {
     const manifest = JSON.parse(data);
     return res.json({ manifest });
   });
+});
+
+app.post('/statistics', (req, res) => {
+  /*if (!req.body.manifest) {
+    return res.status(400).json({
+      error: 'You must supply a manifest. Send it on an object with a `manfifest` key: { manifest: ... }'
+    });
+  }*/
+
+  // TODO: replace below with database query
+  const stats = {
+    totalEvalRowCount: Math.floor(Math.random() * 20000000),
+    dimSuperSet: Math.floor(Math.random() * 2000000),
+    dimDataSet: Math.floor(Math.random() * 20000),
+    dimQuerySet: Math.floor(Math.random() * 100),
+    startTime: new Date(),
+    queryTime: new Date(),
+    rowsUpdated: 0,
+    downstreamImpact: 0
+  };
+
+  return res.json(stats);
 });
 
 // Utility endpoint which you can send
