@@ -9,16 +9,38 @@ const pg = require('pg');
 const debug = require('debug')('log');
 const async = require('async');
 
-const { makeQueryString, makeUpdateQueryString, cxUpsertQueryString } = require('./transforms');
-const { makeGrainBlockQueryStrings, makeGrainBrickQueryStrings, makeObjectCodeByTimeView, makeAppNetRevView } = require('./graindefs/query.js');
-//const objectCodeByTimeView = require('./graindefs/object-code-by-time.sql');
-//const objectCodeByProductView = require('./graindefs/object-code-by-product.sql');
+const { 
+  makeQuerySql,
+  makeUpdateSql,
+  makeUpsertSql,
+  makeUnnestFactTableKeysSql,
+  makeDimSql,
+  makePropMatrixSqlPg,
+  makePropMatrixSqlSf
+} = require('./transforms');
+const { 
+  makeGrainBlockQueryStrings,
+  makeGrainBrickQueryStrings, 
+  makeObjectCodeByTimeView, 
+  makeAppNetRevView } = require('./graindefs/query.js');
+const { 
+  makeLowerCase,
+  mergeDimKeys,
+  mergeFactKeys,
+  mergeDimVals,
+  buildKeySet } = require('./util');
+const { 
+  stitchDatabaseData, 
+  produceVariance, 
+  getPinnedSet, 
+  extractKeySet, 
+  extractKeySetAndId 
+} = require('./grid');
 const { buildTableData } = require('./manifests');
-const { stitchDatabaseData, produceVariance } = require('./grid');
-const { makeLowerCase } = require('./util');
 
 let grainDefs = {};
 let dimKeys = {};
+let factKeys = [];
 
 const app = express();
 
@@ -88,16 +110,15 @@ app.post('/grid', (req, res) => {
     }
 
     const transform = JSON.parse(data);  
-    const pinned = manifest.regions[0].pinned;
+    const pinned = getPinnedSet(manifest.regions[0].pinned);
     const includeVariance = manifest.regions[0].includeVariance;
     const includeVariancePct = manifest.regions[0].includeVariancePct;
-    const query = makeQueryString(transform, pinned, dimKeys);
+    const query = makeQuerySql(transform, pinned, dimKeys);
 
-    debug('GET /grid query: ', query);
+    // debug('GET /grid query: ', query);
   
     client.query(query, (error, data) => {
       if (error) {
-        debug('client.query error: ', error);
         return res.json({ error });
       }
   
@@ -120,7 +141,7 @@ app.post('/grid', (req, res) => {
 app.patch('/grid', (req, res) => {
   const ice = req.body.ice;
   const manifest = req.body.manifest;
-  let query = '';
+  let sql = null;
 
   if (!ice || !manifest) {
     return res.status(400).json({
@@ -128,7 +149,6 @@ app.patch('/grid', (req, res) => {
     });
   }
 
-  const keys = Object.keys(ice);
   const rowIndex = ice.rowIndex;
   const colIndex = ice.colIndex;
   const newValue = ice.value;
@@ -145,20 +165,65 @@ app.patch('/grid', (req, res) => {
     transform.new_value = newValue;
     const pinned = region.pinned;
 
+    // Nile Update
     if (transform.table.match("elt.")) {
-      query = cxUpsertQueryString(transform, ice, pinned, dimKeys);
-    } else {
-      query = makeUpdateQueryString(transform, ice, pinned);
+      // TODO: for now this array is always a single fact. Handle this appropriately when the implementation changes.
+      const factInfo = mergeFactKeys(transform.metrics, factKeys)[0];
+      transform.factId = factInfo.fact_id;
+      
+      const keySet = buildKeySet(extractKeySetAndId(ice.rowKey), extractKeySetAndId(ice.columnKey), getPinnedSet(pinned));
+      let dimensions = mergeDimKeys(keySet, dimKeys);
+      const dimValuesSql = makeDimSql(dimensions);
+
+      /**
+       *  Query db for dimension values
+       */
+      client.query(dimValuesSql, (error, data) => {
+        if (error) {
+          return res.status(400).json({ error: 'Error writing to database' });
+        }
+        // Merge dimension values into dimension array
+        const dimValuesObj = data.rows[0].results;
+        dimensions = mergeDimVals(dimensions, dimValuesObj);
+
+        // Make upsert sql
+        sql = makeUpsertSql(transform, dimensions);
+        debug('upsertSql: ', sql);
+        
+        /**
+         *  Execute upsert sql
+         */
+        client.query(sql, (error, data) => {
+          if (error) {
+            return res.status(400).json({ error: 'Error writing to database' });
+          }
+          
+          // Make upsert sql
+          sql = makePropMatrixSqlPg(transform, dimensions);
+          debug('propMatrixSqlPg: ', sql);
+          
+          /**
+           *  Execute prop matrix sql
+           */
+          client.query(sql, (error, data) => {
+            if (error) {
+              return res.status(400).json({ error: 'Error writing to database' });
+            }
+            return res.json({ data });
+          });
+        });
+      });
+    } else { // Legacy Update
+      const keySets = buildKeySet(extractKeySetAndId(ice.rowKey), extractKeySetAndId(ice.columnKey), getPinnedSet(pinned));
+      query = makeUpdateSql(transform, keySets);
+      
+      client.query(query, (error, data) => {
+        if (error) {
+          return res.status(400).json({ error: 'Error writing to database' });
+        }
+        return res.json({ data });
+      });
     }
-
-    debug('PATCH /grid query: ', query);
-
-    client.query(query, (error, data) => {
-      if (error) {
-        return res.status(400).json({ error: 'Error writing to database' });
-      }
-      return res.json({ data });
-    });
   });
 });
 
@@ -300,7 +365,7 @@ app.post('/grain', (req, res) => {
       const gd = await grainDefsMap();
       const dbResults = await execGrainSql(allQueryStrings, (results) => {
         if (results == "error") {
-          return res.status(400).json({ error: results });   
+          return res.status(400).json({ error: results });
         }
 
         return res.json({"tableCount": tableCount});
@@ -326,6 +391,7 @@ const startupTasks = () => {
     }
     grainDefs = JSON.parse(data);
     dimKeys = grainDefs.dimKeys;
+    factKeys = grainDefs.factKeys;
   });
 
   let sqlTasks = [
