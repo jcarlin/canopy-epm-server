@@ -6,9 +6,11 @@ const cors = require('cors');
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
 const pg = require('pg');
+const snowflake = require('snowflake-sdk');
 const debug = require('debug')('log');
 const async = require('async');
 
+const { getDbConnSettings, dbConnections } = require('./database');
 const { 
   makeQuerySql,
   makeUpdateSql,
@@ -41,14 +43,18 @@ const { buildTableData } = require('./manifests');
 let grainDefs = {};
 let dimKeys = {};
 let factKeys = [];
+const port = process.env.PORT || 8080;
+
+// TODO: replace this hack
+process.env.DATABASE = 'postgresql';
+//process.env.DATABASE = 'snowflake';
 
 const app = express();
 
 // This will log to console if enabled (npm run-script dev)
 debug('booting %o', 'debug');
 
-// Necessary for express to be able
-// to read the request body
+// Necessary for express to be able to read the request body
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -56,15 +62,9 @@ app.use(
   })
 );
 
-const client = new pg.Client({
-  user: 'canopy_db_admin',
-  host: 'canopy-epm-test.cxuldttnrpns.us-east-2.rds.amazonaws.com',
-  database: 'canopy_test',
-  password: process.env.DB_PASSWORD,
-  port: 5432
-});
-
-const port = process.env.PORT || 8080;
+// Define database clients/connections
+const pgClient = new pg.Client(getDbConnSettings("postgresql").settings);
+const sfClient = snowflake.createConnection(getDbConnSettings("snowflake").settings);
 
 const checkJwt = jwt({
   secret: jwksRsa.expressJwtSecret({
@@ -88,6 +88,23 @@ app.use(cors());
 // access token produced by Auth0
 // app.use(checkJwt);
 
+app.get('/database', (req, res) => {
+  return res.json(dbConnections);
+});
+
+app.post('/database', (req, res) => {
+  debug('POST /database');
+  if (!req.body.database) {
+    return res.status(400).json({
+      error:
+        'You must supply a manifest. Send it on an object with a `manfifest` key: { manifest: ... }'
+    });
+  }
+
+  process.env.DATABASE = req.body.database.toLowerCase();
+  return res.json({"success": true});
+});
+
 /**
  * In response to the client app sending
  * a hydrated manifest, send back the completely
@@ -109,29 +126,69 @@ app.post('/grid', (req, res) => {
       return res.json({ err });
     }
 
-    const transform = JSON.parse(data);  
+    const transform = JSON.parse(data);
     const pinned = getPinnedSet(manifest.regions[0].pinned);
     const includeVariance = manifest.regions[0].includeVariance;
     const includeVariancePct = manifest.regions[0].includeVariancePct;
-    const query = makeQuerySql(transform, pinned, dimKeys);
-
-    // debug('GET /grid query: ', query);
-  
-    client.query(query, (error, data) => {
-      if (error) {
-        return res.json({ error });
-      }
-  
-      const producedData = stitchDatabaseData(manifest, tableData, data);
+    let metrics;
+    
+    // TODO: remove/improve this hack to handle case differences returned from different databases
+    if (process.env.DATABASE === 'snowflake') {
+      metrics = transform.metrics.map(metric => `"${metric.toUpperCase().split(' ').join('_')}"`).join(',');
+      transform.table = transform.table.split(' ').join('_');
+      debug('transform.table: ', transform.table);
+    } else {
+      metrics = transform.metrics.map(metric => `"${metric}"`).join(',');
+    }
+    
+    const query = makeQuerySql(transform, pinned, dimKeys, metrics);
+    debug('query: ', query);
+    
+    // New function to take db data (from pg or sf) and finish remaining work + return
+    const stitchData = dbData => {
+      const producedData = stitchDatabaseData(manifest, tableData, dbData);
   
       if (includeVariance && includeVariancePct) {
         const finalData = produceVariance(producedData);
         return res.json(finalData);
       }
-
       // debug('producedData: ', producedData);
       return res.json(producedData);
-    });
+    };
+
+    // Handle database type and query db
+    if (process.env.DATABASE === 'postgresql') {
+      pgClient.query(query, (error, data) => {
+        if (error) {
+          debug('pgClient.query error: ', error);
+          return res.json({ error });
+        }
+        
+        return stitchData(data.rows);
+      });
+    } else if (process.env.DATABASE === 'snowflake') {
+      sfClient.execute({
+        sqlText: query,
+        // binds: [10], // this should work according to docs but is not. Important to avoid sql injection.
+        complete: function(error, stmt, data) {
+          if (error) {
+            console.error('Failed to execute statement due to the following error: ' + error.message);
+            return res.json({ error });
+          } else {
+            // make keys lowercase
+            data = data.map(item => {
+              for (key in item) {
+                item[ key.toLowerCase() ] = item[key];
+                delete item[key];
+              }
+              return item;
+            });
+
+            return stitchData(data);  
+          }
+        }
+      });
+    }
   });
 });
 
@@ -152,21 +209,21 @@ app.patch('/grid', (req, res) => {
   const rowIndex = ice.rowIndex;
   const colIndex = ice.colIndex;
   const newValue = ice.value;
-  const region = manifest.regions.find(
-    region => region.colIndex === colIndex && region.rowIndex === rowIndex
-  );
+  const region = manifest.regions.find(region => {
+    return region.colIndex === colIndex && region.rowIndex === rowIndex;
+  });
 
   fs.readFile(`./transforms/${region.transform}`, (err, data) => {
     if (err) {
       return res.status(400).json({ error: err });
     }
-
+    debug("PATCH /grid here 3");
     const transform = JSON.parse(data);
     transform.new_value = newValue;
     const pinned = region.pinned;
 
     // Nile Update
-    if (transform.table.match("elt.")) {
+    if (transform.isNile) {
       // TODO: for now this array is always a single fact. Handle this appropriately when the implementation changes.
       const factInfo = mergeFactKeys(transform.metrics, factKeys)[0];
       transform.factId = factInfo.fact_id;
@@ -178,7 +235,7 @@ app.patch('/grid', (req, res) => {
       /**
        *  Query db for dimension values
        */
-      client.query(dimValuesSql, (error, data) => {
+      pgClient.query(dimValuesSql, (error, data) => {
         if (error) {
           return res.status(400).json({ error: 'Error writing to database' });
         }
@@ -193,7 +250,7 @@ app.patch('/grid', (req, res) => {
         /**
          *  Execute upsert sql
          */
-        client.query(sql, (error, data) => {
+        pgClient.query(sql, (error, data) => {
           if (error) {
             return res.status(400).json({ error: 'Error writing to database' });
           }
@@ -205,7 +262,7 @@ app.patch('/grid', (req, res) => {
           /**
            *  Execute prop matrix sql
            */
-          client.query(sql, (error, data) => {
+          pgClient.query(sql, (error, data) => {
             if (error) {
               return res.status(400).json({ error: 'Error writing to database' });
             }
@@ -217,7 +274,7 @@ app.patch('/grid', (req, res) => {
       const keySets = buildKeySet(extractKeySetAndId(ice.rowKey), extractKeySetAndId(ice.columnKey), getPinnedSet(pinned));
       query = makeUpdateSql(transform, keySets);
       
-      client.query(query, (error, data) => {
+      pgClient.query(query, (error, data) => {
         if (error) {
           return res.status(400).json({ error: 'Error writing to database' });
         }
@@ -233,6 +290,7 @@ app.patch('/grid', (req, res) => {
  * filename of the manifest on disk.
  */
 app.get('/manifest', (req, res) => {
+  debug('GET /manifest');
   const manifestType = req.query.manifestType;
 
   if (!manifestType) {
@@ -248,10 +306,33 @@ app.get('/manifest', (req, res) => {
   });
 });
 
+app.post('/statistics', (req, res) => {
+  /*if (!req.body.manifest) {
+    return res.status(400).json({
+      error: 'You must supply a manifest. Send it on an object with a `manfifest` key: { manifest: ... }'
+    });
+  }*/
+
+  // TODO: replace below with database query
+  const stats = {
+    totalEvalRowCount: Math.floor(Math.random() * 20000000),
+    dimSuperSet: Math.floor(Math.random() * 2000000),
+    dimDataSet: Math.floor(Math.random() * 20000),
+    dimQuerySet: Math.floor(Math.random() * 100),
+    startTime: new Date(),
+    queryTime: new Date(),
+    rowsUpdated: 0,
+    downstreamImpact: 0
+  };
+
+  return res.json(stats);
+});
+
 // Utility endpoint which you can send
 // a manifest to and receive the column and row defs
 // produce by running it through `buildTableData`
 app.post('/test-manifest', (req, res) => {
+  debug('/test-manifest');
   const { manifest } = req.body;
 
   if (!req.body.manifest) {
@@ -349,11 +430,10 @@ app.post('/grain', (req, res) => {
   };
 
   const execGrainSql = (sql, callback) => {
-    client.query(sql, (error, data) => {
+    pgClient.query(sql, (error, data) => {
       if (error) {
         console.log(error);
-        return callback("error");
-        //return res.status(400).json({ error: 'Error writing to database.' + `${error}` });
+        return res.status(400).json({ error: 'Error writing to database.' + `${error}` });
       }
       return;
     });
@@ -400,7 +480,7 @@ const startupTasks = () => {
   ];
 
   for (let sql of sqlTasks) {
-    client.query(sql, (error, data) => {
+    pgClient.query(sql, (error, data) => {
       if (error) {
         console.log(error);
       }
@@ -412,7 +492,20 @@ const startupTasks = () => {
 // and fire up the node server
 async function connect() {
   try {
-    await client.connect();
+    await pgClient.connect((err) => {
+      if (err) {
+        console.error('pgClient failed to connect', err.stack)
+      } else {
+        console.log('pgClient connected successfully')
+      }
+    });
+    await sfClient.connect(function(err, conn) {
+      if (err) {
+        console.error('sfClient failed to connect: ' + err.message);
+      } else {
+        console.log('sfClient connected successfully');
+      }
+    });
     app.listen(port);
     console.log(`Express app started on port ${port}`);
     startupTasks();

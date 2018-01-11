@@ -264,11 +264,10 @@ const makePropMatrixSqlSf = (transform, dimensions) => {
   return sql;
 };
 
-const makeQuerySql = (transform, pinned, dimKeys) => {
+const makeQuerySql = (transform, pinned, dimKeys, metrics) => {
   const table = transform.table;
   const dimensions = transform.dimensions.join(',');
-  const metrics = transform.metrics.map(metric => `"${metric}"`).join(',');
-  const filterStatements = buildFilterStatement(pinned, transform.table, dimKeys);
+  const filterStatements = buildFilterStatement(pinned, transform.isNile, dimKeys);
   const queryString = `SELECT ${dimensions},${metrics} FROM ${
     table
   } WHERE ${filterStatements.join(' AND ')};`;
@@ -292,9 +291,9 @@ const makeUnnestFactTableKeysSql = factId => {
     NATURAL JOIN s_dim ORDER BY dim_byte, dim_id;`;
 };
 
-const buildFilterStatement = (filters, tableName, dimKeys) => {
+const buildFilterStatement = (filters, isNile, dimKeys) => {
   // TODO: replace this with an alternative way to distinguish Nile vs v1 manifests.
-  if (tableName.match('elt.')) {
+  if (isNile) {
     return filters.map(filter => {
       // Get dimension info
       const dimInfo = dimKeys.find(dimKey => {

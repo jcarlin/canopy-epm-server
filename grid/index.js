@@ -92,8 +92,8 @@ const stitchDatabaseData = (manifest, tableData, dbData) => {
         // }
 
         const pinned = findPinned(manifest.regions, colIndex, rowIndex);
-
-        const match = dbData.rows.find(row => {
+        
+        match = dbData.find(row => {
           return eval(totalMatchString);
         });
 
