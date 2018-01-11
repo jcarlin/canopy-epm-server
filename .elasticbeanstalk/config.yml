@@ -1,6 +1,8 @@
 branch-defaults:
   development:
     environment: canopy-epm-server-dev
+  master:
+    environment: canopy-epm-server-test
 environment-defaults:
   canopy-epm-server-dev:
     branch: null
