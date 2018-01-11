@@ -92,18 +92,10 @@ const stitchDatabaseData = (manifest, tableData, dbData) => {
         // }
 
         const pinned = findPinned(manifest.regions, colIndex, rowIndex);
-        let match;
-
-        if (dbData.rows) {
-          match = dbData.rows.find(row => {
-            return eval(totalMatchString);
-          });
-        } else {
-          match = dbData.find(row => {
-            return eval(totalMatchString);
-          });
-        }
         
+        match = dbData.find(row => {
+          return eval(totalMatchString);
+        });
 
         match
           ? (def[key].value = match[pinned[0].member])
@@ -122,4 +114,13 @@ const stitchDatabaseData = (manifest, tableData, dbData) => {
   return tableData;
 };
 
-module.exports = { extractKeySet, extractKeySetAndId, stitchDatabaseData, produceVariance };
+const getPinnedSet = pinned => {
+  return pinned.filter(pin => pin.dimension !== 'Metric').map(pin => {
+    return {
+      dimension: makeLowerCase(pin.dimension),
+      member: pin.member
+    };
+  });
+};
+
+module.exports = { extractKeySet, extractKeySetAndId, stitchDatabaseData, produceVariance, getPinnedSet };

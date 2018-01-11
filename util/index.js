@@ -119,11 +119,62 @@ const getExtractedElements = (manifest, type) => {
   return output;
 };
 
+// Add id and idColName to the dimensions (objects) array
+const mergeDimKeys = (dimArray, dimKeyArray) => {
+  return dimArray.map(dim => {
+    // Get matching dimension info
+    const dimInfo = dimKeyArray.find(dimKey => {
+      return dimKey.name === dim.dimension;
+    });
+
+    return Object.assign(
+      {}, 
+      dim, 
+      {id: dimInfo.id}, 
+      {idColName: `d${dimInfo.id}_id`}
+    );
+  });
+};
+
+// Return factKey from grainDefs.factKeys (because it has more info) instead of fact from transform.dimensions
+const mergeFactKeys = (factArray, factKeyArray) => {
+  return factArray.map(fact => {
+    return factKeyArray.find(factKey => {
+      return factKey.fact_name === fact;
+    });
+  });
+};
+
+// Add value and idWhereClause to the dimensions (objects) array
+const mergeDimVals = (dimensions, dimVals) => {
+  return dimensions.map(dim => {
+    const dimVal = dimVals[dim.idColName];
+    return Object.assign(
+      {}, 
+      dim, 
+      {value: dimVal},
+      {idWhereClause: `d${dim.id}_id = ${dimVal}`}
+    );
+  })
+};
+
+const buildKeySet = (rowKeySet, colKeySet, pinned) => {
+  return [
+    ...rowKeySet,
+    ...colKeySet,
+    ...pinned
+  ];
+};
+
 module.exports = {
   capitalize,
   makeLowerCase,
   extractFields,
   buildElements,
   seekElements,
-  getExtractedElements
+  getExtractedElements,
+  mergeDimKeys,
+  mergeFactKeys,
+  mergeDimVals,
+  buildKeySet
 };

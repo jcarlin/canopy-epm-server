@@ -1,3 +1,3 @@
-const { getDbConnSettings } = require('./connections');
+const { dbConnections, getDbConnSettings } = require('./connections');
 
-module.exports = { getDbConnSettings };
+module.exports = { dbConnections, getDbConnSettings };

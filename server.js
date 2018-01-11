@@ -10,25 +10,51 @@ const snowflake = require('snowflake-sdk');
 const debug = require('debug')('log');
 const async = require('async');
 
-const { getDbConnSettings } = require('./database');
-
-const { makeQueryString, makeUpdateQueryString, cxUpsertQueryString } = require('./transforms');
-const { makeGrainBlockQueryStrings, makeGrainBrickQueryStrings, makeObjectCodeByTimeView, makeAppNetRevView } = require('./graindefs/query.js');
+const { getDbConnSettings, dbConnections } = require('./database');
+const { 
+  makeQuerySql,
+  makeUpdateSql,
+  makeUpsertSql,
+  makeUnnestFactTableKeysSql,
+  makeDimSql,
+  makePropMatrixSqlPg,
+  makePropMatrixSqlSf
+} = require('./transforms');
+const { 
+  makeGrainBlockQueryStrings,
+  makeGrainBrickQueryStrings, 
+  makeObjectCodeByTimeView, 
+  makeAppNetRevView } = require('./graindefs/query.js');
+const { 
+  makeLowerCase,
+  mergeDimKeys,
+  mergeFactKeys,
+  mergeDimVals,
+  buildKeySet } = require('./util');
+const { 
+  stitchDatabaseData, 
+  produceVariance, 
+  getPinnedSet, 
+  extractKeySet, 
+  extractKeySetAndId 
+} = require('./grid');
 const { buildTableData } = require('./manifests');
-const { stitchDatabaseData, produceVariance } = require('./grid');
-const { makeLowerCase } = require('./util');
 
 let grainDefs = {};
 let dimKeys = {};
+let factKeys = [];
 const port = process.env.PORT || 8080;
+
+// TODO: replace this hack
 process.env.DATABASE = 'postgresql';
+//process.env.DATABASE = 'snowflake';
+
 const app = express();
 
 // This will log to console if enabled (npm run-script dev)
 debug('booting %o', 'debug');
 
-// Necessary for express to be able
-// to read the request body
+// Necessary for express to be able to read the request body
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -63,18 +89,7 @@ app.use(cors());
 // app.use(checkJwt);
 
 app.get('/database', (req, res) => {
-  return res.json([
-    {
-      name: 'snowflake',
-      description: 'Snowflake',
-      current: false
-    },
-    {
-      name: 'postgresql',
-      description: 'PostgreSQL',
-      current: false
-    }
-  ]);
+  return res.json(dbConnections);
 });
 
 app.post('/database', (req, res) => {
@@ -96,9 +111,6 @@ app.post('/database', (req, res) => {
  * built table data ready to be consumed by ag-grid.
  */
 app.post('/grid', (req, res) => {
-
-  debug("/grid");
-
   if (!req.body.manifest) {
     return res.status(400).json({
       error:
@@ -114,35 +126,35 @@ app.post('/grid', (req, res) => {
       return res.json({ err });
     }
 
-    const transform = JSON.parse(data);  
-    const pinned = manifest.regions[0].pinned;
+    const transform = JSON.parse(data);
+    const pinned = getPinnedSet(manifest.regions[0].pinned);
     const includeVariance = manifest.regions[0].includeVariance;
     const includeVariancePct = manifest.regions[0].includeVariancePct;
     let metrics;
     
     // TODO: remove/improve this hack to handle case differences returned from different databases
     if (process.env.DATABASE === 'snowflake') {
-      metrics = transform.metrics.map(metric => `"${metric.toUpperCase()}"`).join(',');
+      metrics = transform.metrics.map(metric => `"${metric.toUpperCase().split(' ').join('_')}"`).join(',');
+      transform.table = transform.table.split(' ').join('_');
+      debug('transform.table: ', transform.table);
     } else {
       metrics = transform.metrics.map(metric => `"${metric}"`).join(',');
     }
     
-    const query = makeQueryString(transform, pinned, dimKeys, metrics);
-    debug('GET /grid query: ', query);
+    const query = makeQuerySql(transform, pinned, dimKeys, metrics);
+    debug('query: ', query);
     
     // New function to take db data (from pg or sf) and finish remaining work + return
     const stitchData = dbData => {
-      // debug('data: ', dbData);
       const producedData = stitchDatabaseData(manifest, tableData, dbData);
   
       if (includeVariance && includeVariancePct) {
         const finalData = produceVariance(producedData);
         return res.json(finalData);
       }
-
       // debug('producedData: ', producedData);
       return res.json(producedData);
-    }
+    };
 
     // Handle database type and query db
     if (process.env.DATABASE === 'postgresql') {
@@ -184,10 +196,9 @@ app.post('/grid', (req, res) => {
  * Edit a cell by based on an ICE
  */
 app.patch('/grid', (req, res) => {
-  debug("/grid");
   const ice = req.body.ice;
   const manifest = req.body.manifest;
-  let query = '';
+  let sql = null;
 
   if (!ice || !manifest) {
     return res.status(400).json({
@@ -195,37 +206,81 @@ app.patch('/grid', (req, res) => {
     });
   }
 
-  const keys = Object.keys(ice);
   const rowIndex = ice.rowIndex;
   const colIndex = ice.colIndex;
   const newValue = ice.value;
-  const region = manifest.regions.find(
-    region => region.colIndex === colIndex && region.rowIndex === rowIndex
-  );
+  const region = manifest.regions.find(region => {
+    return region.colIndex === colIndex && region.rowIndex === rowIndex;
+  });
 
   fs.readFile(`./transforms/${region.transform}`, (err, data) => {
     if (err) {
       return res.status(400).json({ error: err });
     }
-
+    debug("PATCH /grid here 3");
     const transform = JSON.parse(data);
     transform.new_value = newValue;
     const pinned = region.pinned;
 
+    // Nile Update
     if (transform.isNile) {
-      query = cxUpsertQueryString(transform, ice, pinned, dimKeys);
-    } else {
-      query = makeUpdateQueryString(transform, ice, pinned);
+      // TODO: for now this array is always a single fact. Handle this appropriately when the implementation changes.
+      const factInfo = mergeFactKeys(transform.metrics, factKeys)[0];
+      transform.factId = factInfo.fact_id;
+      
+      const keySet = buildKeySet(extractKeySetAndId(ice.rowKey), extractKeySetAndId(ice.columnKey), getPinnedSet(pinned));
+      let dimensions = mergeDimKeys(keySet, dimKeys);
+      const dimValuesSql = makeDimSql(dimensions);
+
+      /**
+       *  Query db for dimension values
+       */
+      pgClient.query(dimValuesSql, (error, data) => {
+        if (error) {
+          return res.status(400).json({ error: 'Error writing to database' });
+        }
+        // Merge dimension values into dimension array
+        const dimValuesObj = data.rows[0].results;
+        dimensions = mergeDimVals(dimensions, dimValuesObj);
+
+        // Make upsert sql
+        sql = makeUpsertSql(transform, dimensions);
+        debug('upsertSql: ', sql);
+        
+        /**
+         *  Execute upsert sql
+         */
+        pgClient.query(sql, (error, data) => {
+          if (error) {
+            return res.status(400).json({ error: 'Error writing to database' });
+          }
+          
+          // Make upsert sql
+          sql = makePropMatrixSqlPg(transform, dimensions);
+          debug('propMatrixSqlPg: ', sql);
+          
+          /**
+           *  Execute prop matrix sql
+           */
+          pgClient.query(sql, (error, data) => {
+            if (error) {
+              return res.status(400).json({ error: 'Error writing to database' });
+            }
+            return res.json({ data });
+          });
+        });
+      });
+    } else { // Legacy Update
+      const keySets = buildKeySet(extractKeySetAndId(ice.rowKey), extractKeySetAndId(ice.columnKey), getPinnedSet(pinned));
+      query = makeUpdateSql(transform, keySets);
+      
+      pgClient.query(query, (error, data) => {
+        if (error) {
+          return res.status(400).json({ error: 'Error writing to database' });
+        }
+        return res.json({ data });
+      });
     }
-
-    debug('PATCH /grid query: ', query);
-
-    pgClient.query(query, (error, data) => {
-      if (error) {
-        return res.status(400).json({ error: 'Error writing to database' });
-      }
-      return res.json({ data });
-    });
   });
 });
 
@@ -305,7 +360,6 @@ app.get('/grain', (req, res) => {
  * 2018-01-03 run time: 5m7s
  */
 app.post('/grain', (req, res) => {
-  debug('/grain');
   const grainSack = grainDefs.grainSack;
   const dimKeys = grainDefs.dimKeys;
   const hierKeys = grainDefs.hierKeys;
@@ -379,8 +433,7 @@ app.post('/grain', (req, res) => {
     pgClient.query(sql, (error, data) => {
       if (error) {
         console.log(error);
-        return callback("error");
-        //return res.status(400).json({ error: 'Error writing to database.' + `${error}` });
+        return res.status(400).json({ error: 'Error writing to database.' + `${error}` });
       }
       return;
     });
@@ -392,7 +445,7 @@ app.post('/grain', (req, res) => {
       const gd = await grainDefsMap();
       const dbResults = await execGrainSql(allQueryStrings, (results) => {
         if (results == "error") {
-          return res.status(400).json({ error: results });   
+          return res.status(400).json({ error: results });
         }
 
         return res.json({"tableCount": tableCount});
@@ -418,6 +471,7 @@ const startupTasks = () => {
     }
     grainDefs = JSON.parse(data);
     dimKeys = grainDefs.dimKeys;
+    factKeys = grainDefs.factKeys;
   });
 
   let sqlTasks = [
