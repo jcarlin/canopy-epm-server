@@ -5,6 +5,19 @@
 	"author": "adahl",
 	"grainSack": [
     {
+      "id":001,
+      "name":"core_nine",
+      "grainType":"brick",
+      "cached":true,
+      "cached":true,
+      "memberSets":[
+        {	"memberSetType":"compute","dimension":"fact","hierarchy":"fact","dimColumnName":"fact_name",
+          "memberSetCode":[
+            {"database":"postgres","code":"SELECT fact_id FROM s_fact WHERE fact_id <= 9 ORDER BY 1;"}
+        ]}
+      ]
+    },
+    {
       "id":201,
       "name":"prod_all",
       "grainType":"brick",
