@@ -375,6 +375,136 @@
       ]
     }
   ],
+  "factKeys": [
+    {
+      "fact_id": 1,
+      "fact_type_id": 2,
+      "fact_name": "bb_transfer",
+      "fact_desc": "Root: Intra-Unit Transfer",
+      "fact_code": "",
+      "fact_key": [2,1,3,4,5,8,9,11,6,10]
+    },
+    {
+      "fact_id": 2,
+      "fact_type_id": 2,
+      "fact_name": "bb_xfer_revenue",
+      "fact_desc": "Root: Inter-Unit Transfers",
+      "fact_code": "",
+      "fact_key": [2,3,4,5,8,9,11,6]
+    },
+    {
+      "fact_id": 3,
+      "fact_type_id": 2,
+      "fact_name": "bb_revenue",
+      "fact_desc": "Root: Revenue",
+      "fact_code": "",
+      "fact_key": [2,3,4,5,8,9,11,6]
+    },
+    {
+      "fact_id": 4,
+      "fact_type_id": 2,
+      "fact_name": "revenue_balance",
+      "fact_desc": "Root: Revenue",
+      "fact_code": "",
+      "fact_key": [2,3,4,5,8,9,11,6]
+    },
+    {
+      "fact_id": 5,
+      "fact_type_id": 2,
+      "fact_name": "bb_nonsal_expense",
+      "fact_desc": "Root: Expense",
+      "fact_code": "",
+      "fact_key": [2,3,4,5,8,9,11,6]
+    },
+    {
+      "fact_id": 6,
+      "fact_type_id": 2,
+      "fact_name": "expense_balance",
+      "fact_desc": "Root: Expense",
+      "fact_code": "",
+      "fact_key": [2,3,4,5,8,9,11,6]
+    },
+    {
+      "fact_id": 7,
+      "fact_type_id": 2,
+      "fact_name": "bb_comp_expense",
+      "fact_desc": "Root: Reserve Expense",
+      "fact_code": "",
+      "fact_key": [2,3,4,5,8,9,11,6]
+    },
+    {
+      "fact_id": 8,
+      "fact_type_id": 2,
+      "fact_name": "bb_comp_position_expense",
+      "fact_desc": "Root: Position Expense Amount",
+      "fact_code": "",
+      "fact_key": [2,3,4,5,8,9,11,6,7]
+    },
+    {
+      "fact_id": 9,
+      "fact_type_id": 2,
+      "fact_name": "fund_appropriation_balance",
+      "fact_desc": "Root: Fund Appropriations",
+      "fact_code": "",
+      "fact_key": [2,3,4,5,8,9,11,6,10]
+    },
+    {
+      "fact_id": 10,
+      "fact_type_id": 3,
+      "fact_name": "totaltransfer",
+      "fact_desc": "Calc: Total Transfer",
+      "fact_code": "",
+      "fact_key": [2,3,4,5,8,9,11,6]
+    },
+    {
+      "fact_id": 11,
+      "fact_type_id": 3,
+      "fact_name": "totalrevenue",
+      "fact_desc": "Calc: Total Revenue",
+      "fact_code": "",
+      "fact_key": [2,3,4,5,8,9,11,6]
+    },
+    {
+      "fact_id": 12,
+      "fact_type_id": 3,
+      "fact_name": "bb_comp_expense_total",
+      "fact_desc": "Calc: Position and Reserve Expense Amount",
+      "fact_code": "",
+      "fact_key": [2,3,4,5,8,9,11,6]
+    },
+    {
+      "fact_id": 13,
+      "fact_type_id": 3,
+      "fact_name": "totalexpense",
+      "fact_desc": "Calc: Total Expense",
+      "fact_code": "",
+      "fact_key": [2,3,4,5,8,9,11,6]
+    },
+    {
+      "fact_id": 14,
+      "fact_type_id": 3,
+      "fact_name": "net_rev_trans_exp_balance",
+      "fact_desc": "Calc: Revenue and Transfers Less Expense",
+      "fact_code": "",
+      "fact_key": [2,3,4,5,8,9,11,6]
+    },
+    {
+      "fact_id": 20,
+      "fact_type_id": 4,
+      "fact_name": "net_rev",
+      "fact_desc": "Net Revenue",
+      "fact_code": "",
+      "fact_key": [2,3,4,5,8,9,11,6]
+    },
+    {
+      "fact_id": 15,
+      "fact_type_id": 4,
+      "fact_name": "branch_net_rev",
+      "fact_desc": "Branch: Net Revenue",
+      "fact_code": "",
+      "fact_key": [2,3,4,5,8,9,11,6]
+    }
+  ],
   "dimKeys": [
     {
       "id": 1,

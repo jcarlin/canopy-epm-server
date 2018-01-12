@@ -77,23 +77,23 @@ const stitchDatabaseData = (manifest, tableData, dbData) => {
         const totalMatchString = `${joinedColumnKeys} && ${joinedRowKeys}`;
 
         // debug
-        if (!loggedToConsole) {
-          debug('stitchDataBaseData() ... ');
-          debug('colIndex: ' + JSON.stringify(colIndex));
-          debug('rowIndex: ' + JSON.stringify(rowIndex));
-          debug('columnKeys: ' + JSON.stringify(columnKeys));
-          debug('rowKeys: ' + JSON.stringify(rowKeys));
-          debug('rowKeyStrings: ' + JSON.stringify(rowKeyStrings));
-          debug('columnKeyStrings: ' + JSON.stringify(columnKeyStrings));
-          debug('joinedColumnKeys: ' + JSON.stringify(joinedColumnKeys));
-          debug('joinedRowKeys: ' + JSON.stringify(joinedRowKeys));
-          debug('totalMatchString: ' + JSON.stringify(totalMatchString));
-          loggedToConsole = true;
-        }
+        // if (!loggedToConsole) {
+        //   debug('stitchDataBaseData() ... ');
+        //   debug('colIndex: ' + JSON.stringify(colIndex));
+        //   debug('rowIndex: ' + JSON.stringify(rowIndex));
+        //   debug('columnKeys: ' + JSON.stringify(columnKeys));
+        //   debug('rowKeys: ' + JSON.stringify(rowKeys));
+        //   debug('rowKeyStrings: ' + JSON.stringify(rowKeyStrings));
+        //   debug('columnKeyStrings: ' + JSON.stringify(columnKeyStrings));
+        //   debug('joinedColumnKeys: ' + JSON.stringify(joinedColumnKeys));
+        //   debug('joinedRowKeys: ' + JSON.stringify(joinedRowKeys));
+        //   debug('totalMatchString: ' + JSON.stringify(totalMatchString));
+        //   loggedToConsole = true;
+        // }
 
         const pinned = findPinned(manifest.regions, colIndex, rowIndex);
-
-        const match = dbData.rows.find(row => {
+        
+        match = dbData.find(row => {
           return eval(totalMatchString);
         });
 
@@ -114,4 +114,13 @@ const stitchDatabaseData = (manifest, tableData, dbData) => {
   return tableData;
 };
 
-module.exports = { extractKeySet, extractKeySetAndId, stitchDatabaseData, produceVariance };
+const getPinnedSet = pinned => {
+  return pinned.filter(pin => pin.dimension !== 'Metric').map(pin => {
+    return {
+      dimension: makeLowerCase(pin.dimension),
+      member: pin.member
+    };
+  });
+};
+
+module.exports = { extractKeySet, extractKeySetAndId, stitchDatabaseData, produceVariance, getPinnedSet };

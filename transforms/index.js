@@ -1,11 +1,19 @@
 const {
-  makeQueryString,
-  makeUpdateQueryString,
-  cxUpsertQueryString
+  makeQuerySql, 
+  makeUpdateSql,
+  makeUpsertSql,
+  makeUnnestFactTableKeysSql,
+  makeDimSql,
+  makePropMatrixSqlPg,
+  makePropMatrixSqlSf
 } = require('./query');
 
 module.exports = {
-  makeQueryString,
-  makeUpdateQueryString,
-  cxUpsertQueryString
+  makeQuerySql, 
+  makeUpdateSql,
+  makeUpsertSql,
+  makeUnnestFactTableKeysSql,
+  makeDimSql,
+  makePropMatrixSqlPg,
+  makePropMatrixSqlSf
 };

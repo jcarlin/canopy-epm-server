@@ -1,7 +1,8 @@
 {
   "transform_id": "5",
   "transform_name": "Object Code By Time",
-  "table": "elt.object_code_by_time",
+  "table": "object_code_by_time",
+  "isNile": true,
   "dimensions": [
     "currency_id",
     "datasrc_id",
