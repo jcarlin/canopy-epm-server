@@ -5,10 +5,9 @@
 	"author": "adahl",
 	"grainSack": [
     {
-      "id":001,
+      "id":1,
       "name":"core_nine",
       "grainType":"brick",
-      "cached":true,
       "cached":true,
       "memberSets":[
         {	"memberSetType":"compute","dimension":"fact","hierarchy":"fact","dimColumnName":"fact_name",
