@@ -77,19 +77,19 @@ const stitchDatabaseData = (manifest, tableData, dbData) => {
         const totalMatchString = `${joinedColumnKeys} && ${joinedRowKeys}`;
 
         // debug
-        // if (!loggedToConsole) {
-        //   debug('stitchDataBaseData() ... ');
-        //   debug('colIndex: ' + JSON.stringify(colIndex));
-        //   debug('rowIndex: ' + JSON.stringify(rowIndex));
-        //   debug('columnKeys: ' + JSON.stringify(columnKeys));
-        //   debug('rowKeys: ' + JSON.stringify(rowKeys));
-        //   debug('rowKeyStrings: ' + JSON.stringify(rowKeyStrings));
-        //   debug('columnKeyStrings: ' + JSON.stringify(columnKeyStrings));
-        //   debug('joinedColumnKeys: ' + JSON.stringify(joinedColumnKeys));
-        //   debug('joinedRowKeys: ' + JSON.stringify(joinedRowKeys));
-        //   debug('totalMatchString: ' + JSON.stringify(totalMatchString));
-        //   loggedToConsole = true;
-        // }
+        if (!loggedToConsole) {
+          debug('stitchDataBaseData() ... ');
+          debug('colIndex: ' + JSON.stringify(colIndex));
+          debug('rowIndex: ' + JSON.stringify(rowIndex));
+          debug('columnKeys: ' + JSON.stringify(columnKeys));
+          debug('rowKeys: ' + JSON.stringify(rowKeys));
+          debug('rowKeyStrings: ' + JSON.stringify(rowKeyStrings));
+          debug('columnKeyStrings: ' + JSON.stringify(columnKeyStrings));
+          debug('joinedColumnKeys: ' + JSON.stringify(joinedColumnKeys));
+          debug('joinedRowKeys: ' + JSON.stringify(joinedRowKeys));
+          debug('totalMatchString: ' + JSON.stringify(totalMatchString));
+          loggedToConsole = true;
+        }
 
         const pinned = findPinned(manifest.regions, colIndex, rowIndex);
         

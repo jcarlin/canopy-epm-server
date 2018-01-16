@@ -120,21 +120,35 @@ const getExtractedElements = (manifest, type) => {
 };
 
 // Add id and idColName to the dimensions (objects) array
-const mergeDimKeys = (dimArray, dimKeyArray) => {
+const mergeDimKeys = (dimArray, dimKeys) => {
   return dimArray.map(dim => {
-    // Get matching dimension info
-    const dimInfo = dimKeyArray.find(dimKey => {
+    // Get dimension info
+    const dimInfo = dimKeys.find(dimKey => {
       return dimKey.name === dim.dimension;
     });
 
-    return Object.assign(
-      {}, 
-      dim, 
-      {id: dimInfo.id}, 
-      {idColName: `d${dimInfo.id}_id`}
-    );
+    dim.id = dimInfo.id;
+    dim.idColName = `d${dimInfo.id}_id`;
+
+    return dim;
   });
-};
+}; 
+
+  // return dimArray.map(dim => {
+  //   // Get matching dimension info
+  //   const dimInfo = dimKeyArray.find(dimKey => {
+  //     console.log("dimKey: ", dimKey);
+  //     console.log("dim: ", dim);
+  //     return dimKey.name.toString() === dim.toString();
+  //   });
+
+  //   return Object.assign(
+  //     {}, 
+  //     {dimension: dim}, 
+  //     {id: dimInfo.id},
+  //     {idColName: `d${dimInfo.id}_id`}
+  //   );
+  // });
 
 // Return factKey from grainDefs.factKeys (because it has more info) instead of fact from transform.dimensions
 const mergeFactKeys = (factArray, factKeyArray) => {
@@ -150,8 +164,8 @@ const mergeDimVals = (dimensions, dimVals) => {
   return dimensions.map(dim => {
     const dimVal = dimVals[dim.idColName];
     return Object.assign(
-      {}, 
-      dim, 
+      {},
+      dim,
       {value: dimVal},
       {idWhereClause: `d${dim.id}_id = ${dimVal}`}
     );

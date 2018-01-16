@@ -1,8 +1,13 @@
 require('dotenv').config();
 
+const dbTypes = Object.freeze({
+  "POSTGRESQL": 1, 
+  "SNOWFLAKE": 2
+});
+
 const dbConnections = [
   {
-    name: 'postgresql',
+    type: dbTypes.POSTGRESQL,
     settings: {
       user: 'canopy_db_admin',
       host: 'canopy-epm-test.cxuldttnrpns.us-east-2.rds.amazonaws.com',
@@ -12,7 +17,7 @@ const dbConnections = [
     }
   },
   {
-    name: 'snowflake',
+    type: dbTypes.SNOWFLAKE,
     settings: {
       account: 'ge10380', // 'CANOPYEPM',
       username: 'canopyepm',
@@ -25,10 +30,11 @@ const dbConnections = [
   }
 ];
 
-const getDbConnSettings = dbName => {
+// Return a database's connection settings
+const getDbConnSettings = (databaseType) => {
   return dbConnections.find(conn => {
-    return conn.name === dbName;
-  });
+    return conn.type === databaseType;
+  }).settings;
 };
 
-module.exports = { dbConnections, getDbConnSettings };
+module.exports = { dbConnections, dbTypes, getDbConnSettings };
