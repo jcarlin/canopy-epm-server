@@ -33,8 +33,8 @@ const {
 } = require('./grid');
 const { buildTableData } = require('./manifests');
 
-// process.env.DATABASE = database.dbTypes.POSTGRESQL;
-process.env.DATABASE = database.dbTypes.SNOWFLAKE;
+process.env.DATABASE = database.dbTypes.POSTGRESQL;
+// process.env.DATABASE = database.dbTypes.SNOWFLAKE;
 
 const port = process.env.PORT || 8080;
 const app = express();
