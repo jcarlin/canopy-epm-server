@@ -24,7 +24,7 @@ const {
   mergeFactKeys,
   mergeDimVals,
   buildKeySet } = require('./util');
-const { 
+const {
   stitchDatabaseData, 
   produceVariance, 
   getPinnedSet, 
@@ -33,8 +33,9 @@ const {
 } = require('./grid');
 const { buildTableData } = require('./manifests');
 
-process.env.DATABASE = database.dbTypes.POSTGRESQL;
-// process.env.DATABASE = database.dbTypes.SNOWFLAKE;
+// Temporary defaulting to POSTGRESQL connection for all queries. UI will toggle this setting.
+// process.env.DATABASE = database.dbTypes.POSTGRESQL;
+process.env.DATABASE = database.dbTypes.SNOWFLAKE;
 
 const port = process.env.PORT || 8080;
 const app = express();
@@ -221,9 +222,9 @@ app.post('/grid', (req, res) => {
           // Execute getDimensionIdSql
           sfClient.execute({
             sqlText: sql,
-            complete: function(error, stmt, data) {
-              if (error) {
-                return res.status(400).json({ error: 'Error writing to database' });
+            complete: function(err, stmt, data) {
+              if (err) {
+                return res.status(400).json({ err: 'Error writing to database' + err.message });
               }
               
               // Merge dimension values into dimension array
@@ -438,7 +439,7 @@ app.patch('/grid', (req, res) => {
             sqlText: sql,
             complete: function(error, stmt, data) {
               if (error) {
-                return res.status(400).json({ error: 'Error writing to database' });  
+                return res.status(400).json({ error: 'Error writing to database' });
               }
               // Merge dimension values into dimension array
               const dimValuesObj = data[0];
@@ -455,7 +456,7 @@ app.patch('/grid', (req, res) => {
                 sqlText: sql,
                 complete: function(error, stmt, data) {
                   if (error) {
-                    return res.json({ error });
+                    return res.status(400).json({ error: 'Error writing to database' });  
                   }
                   // Set additional sqlParams values
                   sqlParams.dimIdValues = dimensions.map(dim => { return dim.value; });
@@ -469,7 +470,7 @@ app.patch('/grid', (req, res) => {
                     sqlText: sql,
                     complete: function(error, stmt, data) {
                       if (error) {
-                        return res.json({ error });
+                        return res.status(400).json({ error });  
                       }
                       // updateBranch15Sql
                       sql = database.updateBranch15Sql(sqlParams);
@@ -480,7 +481,7 @@ app.patch('/grid', (req, res) => {
                         complete: function(error, stmt, data) {
                           if (error) {
                             console.error('Failed to execute statement due to the following error: ' + error.message);
-                            res.json({ error });
+                            return res.status(400).json({ error: 'Error writing to database' });
                           } 
                           // updateApp20Sql
                           sql = database.updateApp20Sql(sqlParams);
@@ -490,7 +491,7 @@ app.patch('/grid', (req, res) => {
                             sqlText: sql,
                             complete: function(error, stmt, data) {
                               if (error) {
-                                return res.json({ error });
+                                return res.status(400).json({ error: 'Error writing to database' });
                               }
                               res.json({ data });
                             } // updateApp20Sql

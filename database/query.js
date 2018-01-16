@@ -1,4 +1,22 @@
 const debug = require('debug')('log');
+
+const getDimensionIdSql = dimensions => {
+  const subSelects = dimensions.map(dim => {
+    return `
+      (SELECT d${dim.id}_id
+      FROM dim_${dim.id}
+      WHERE d${dim.id}_name = '${dim.member}') AS "d${dim.id}_id"`;
+  });
+
+  const sql = `
+    SELECT * 
+    FROM (SELECT ${subSelects.join(',')}) a;
+  `;
+
+  debug('getDimensionIdSql: ', sql);
+  return sql;
+};
+
 // Query to build table data for grid
 const querySql = (params) => {
   const sql = `
@@ -28,24 +46,6 @@ const updateAppTableSql = (params) => {
 /**
  * Queries for updating
  */
-
-const getDimensionIdSql = dimensions => {
-  const subSelects = dimensions.map(dim => {
-    return `
-      (SELECT d${dim.id}_id
-      FROM dim_${dim.id}
-      WHERE d${dim.id}_name = '${dim.member}') AS "d${dim.id}_id"`;
-  });
-
-  const sql = `
-    SELECT * 
-    FROM (SELECT ${subSelects.join(',')}) a;
-  `;
-
-  debug('getDimensionIdSql: ', sql);
-  return sql;
-};
-
 const unnestFactTableKeySql = factId => {
   const sql = `
     SELECT *
@@ -249,8 +249,7 @@ const updateApp20Sql = (params) => {
       AND u.d8_id = a.d8_id
       AND u.d9_id = a.d9_id
       AND u.d11_id = a.d11_id
-      AND u.d6_id = a.d6_id
-    RETURNING u.*;
+      AND u.d6_id = a.d6_id;
   `;
 
   debug('updateApp20Sql: ', sql);
@@ -493,8 +492,7 @@ const updateBranch15Sql = (params) => {
       AND u.d8_id = a.d8_id
       AND u.d9_id = a.d9_id
       AND u.d11_id = a.d11_id
-      AND u.d6_id = a.d6_id
-    RETURNING u.*;
+      AND u.d6_id = a.d6_id;
   `;
 
   debug('updateBranch15Sql: ', sql);
