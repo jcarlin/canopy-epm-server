@@ -82,7 +82,12 @@ app.use(cors());
 // app.use(checkJwt);
 
 app.get('/database', (req, res) => {
-  return res.json(database.dbTypes);
+  const dbMap = database.dbConnections.map(conn => {
+    conn.active = (conn.type == process.env.DATABASE);
+    return conn;
+  });
+  
+  return res.json(dbMap);
 });
 
 app.post('/database', (req, res) => {
@@ -94,9 +99,13 @@ app.post('/database', (req, res) => {
   }
 
   process.env.DATABASE = database.dbTypes[req.body.database.toUpperCase()];
-  console.log("Database switched! ", database.dbTypes[process.env.DATABASE]);
+  
+  const dbMap = database.dbConnections.map(conn => {
+    conn.active = (conn.type == process.env.DATABASE);
+    return conn;
+  });
 
-  return res.json({"success": true});
+  return res.json(dbMap);
 });
 
 /**
