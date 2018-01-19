@@ -91,7 +91,7 @@ app.get('/database', (req, res) => {
 });
 
 app.post('/database', (req, res) => {
-  debug('POST /database');
+  debug('POST /database')
   if (!req.body.database || !database.dbTypes[req.body.database.toUpperCase()]) {
     return res.status(400).json({
       error: 'You must supply a database. Send it on an object with a `database` key: { database: ... }'
@@ -103,7 +103,7 @@ app.post('/database', (req, res) => {
   const dbMap = database.dbConnections.map(conn => {
     conn.active = (conn.type == process.env.DATABASE);
     return conn;
-  });
+  });  
 
   return res.json(dbMap);
 });
@@ -541,26 +541,26 @@ app.get('/manifest', (req, res) => {
   });
 });
 
-app.post('/statistics', (req, res) => {
-  /*if (!req.body.manifest) {
-    return res.status(400).json({
-      error: 'You must supply a manifest. Send it on an object with a `manfifest` key: { manifest: ... }'
+app.get('/statistics', (req, res) => {
+  const manifestType = req.query.manifestType;
+
+  if (!manifestType) {
+    return res.status(400).json({ error: 'You must supply a manifest type' });
+  }
+
+  fs.readFile(`./manifests/statistics.json`, (err, data) => {
+    if (err) {
+      return res.status(400).json({ error: 'Manifest not found' });
+    }
+
+    const statistics = JSON.parse(data);
+      
+    return res.json({
+      "manifestStats": statistics.manifests[manifestType],
+      "globalStats": statistics.global,
+      "startTime": new Date()
     });
-  }*/
-
-  // TODO: replace below with database query
-  const stats = {
-    totalEvalRowCount: Math.floor(Math.random() * 20000000),
-    dimSuperSet: Math.floor(Math.random() * 2000000),
-    dimDataSet: Math.floor(Math.random() * 20000),
-    dimQuerySet: Math.floor(Math.random() * 100),
-    startTime: new Date(),
-    queryTime: new Date(),
-    rowsUpdated: 0,
-    downstreamImpact: 0
-  };
-
-  return res.json(stats);
+  });
 });
 
 // Utility endpoint which you can send

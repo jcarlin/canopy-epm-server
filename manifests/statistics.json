@@ -1,0 +1,216 @@
+{
+  "manifests": {
+    "object-code-by-product": {
+      "dimSuperSet": {
+        "total": 939279145780800,
+        "details": [
+          {
+            "dimension": "product",
+            "records": 53
+          },
+          {
+            "dimension": "currency",
+            "records": 1
+          },
+          {
+            "dimension": "datasrc",
+            "records": 30
+          },
+          {
+            "dimension": "objectcode",
+            "records": 9790
+          },
+          {
+            "dimension": "organization",
+            "records": 419037
+          },
+          {
+            "dimension": "scenario",
+            "records": 22
+          },
+          {
+            "dimension": "time",
+            "records": 36
+          },
+          {
+            "dimension": "variation",
+            "records": 2
+          }
+        ]
+      },
+      "dataSuperSet": {
+        "total": 25590462,
+        "details": [
+          {
+            "fact": "bb_transfer",
+            "records": 34689
+          },
+          {
+            "fact": "bb_xfer_revenue",
+            "records": 9856
+          },
+          {
+            "fact": "bb_revenue",
+            "records": 708301
+          },
+          {
+            "fact": "revenue_balance",
+            "records": 5702821
+          },
+          {
+            "fact": "bb_nonsal_expense",
+            "records": 5529795
+          },
+          {
+            "fact": "expense_balance",
+            "records": 11470335
+          },
+          {
+            "fact": "bb_comp_expense",
+            "records": 473652
+          },
+          {
+            "fact": "bb_comp_position_expense",
+            "records": 765997
+          },
+          {
+            "fact": "fund_appropriation_balance",
+            "records": 895016
+          }
+        ]
+      }
+    },
+    "object-code-by-time": {
+      "dimSuperSet": {
+        "total": 208,
+        "details": [
+          {
+            "dimension": "product",
+            "records": 1
+          },
+          {
+            "dimension": "currency",
+            "records": 1
+          },
+          {
+            "dimension": "datasrc",
+            "records": 1
+          },
+          {
+            "dimension": "objectcode",
+            "records": 0
+          },
+          {
+            "dimension": "organization",
+            "records": 1
+          },
+          {
+            "dimension": "scenario",
+            "records": 2
+          },
+          {
+            "dimension": "time",
+            "records": 13
+          },
+          {
+            "dimension": "variation",
+            "records": 1
+          }
+        ]
+      },
+      "dataSuperSet": {
+        "total": 11470335,
+        "details": [
+          {
+            "fact": "expense_balance",
+            "records": 11470335
+          }
+        ]
+      }
+    }
+  },
+  "global": {
+    "dimSuperSet": {
+      "total": 378771119507289600,
+      "details": [
+        {
+          "dimension": "product",
+          "heirarchy": "producttype",
+          "records": 24
+        },
+        {
+          "dimension": "currency",
+          "heirarchy": "currency",
+          "records": 6
+        },
+        {
+          "dimension": "datasrc",
+          "heirarchy": "datasrcalternate",
+          "records": 59
+        },
+        {
+          "dimension": "objectcode",
+          "heirarchy": "objectcode",
+          "records": 2257
+        },
+        {
+          "dimension": "organization",
+          "heirarchy": "award",
+          "records": 375245
+        },
+        {
+          "dimension": "scenario",
+          "heirarchy": "scenario",
+          "records": 20
+        },
+        {
+          "dimension": "time",
+          "heirarchy": "fiscal",
+          "records": 376
+        },
+        {
+          "dimension": "variation",
+          "heirarchy": "variation",
+          "records": 7
+        }
+      ]
+    },
+    "dataSuperSet": {
+      "total": 205698991488480,
+      "details": [
+        {
+          "dimension": "product",
+          "records": 21
+        },
+        {
+          "dimension": "currency",
+          "records": 1
+        },
+        {
+          "dimension": "datasrc",
+          "records": 27
+        },
+        {
+          "dimension": "objectcode",
+          "records": 1544
+        },
+        {
+          "dimension": "organization",
+          "records": 114505
+        },
+        {
+          "dimension": "scenario",
+          "records": 9
+        },
+        {
+          "dimension": "time",
+          "records": 228
+        },
+        {
+          "dimension": "variation",
+          "records": 1
+        }
+      ]
+    }
+  }
+}
