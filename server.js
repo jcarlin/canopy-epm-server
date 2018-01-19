@@ -34,8 +34,8 @@ const {
 const { buildTableData } = require('./manifests');
 
 // Temporary defaulting to POSTGRESQL connection for all queries. UI will toggle this setting.
-// process.env.DATABASE = database.dbTypes.POSTGRESQL;
-process.env.DATABASE = database.dbTypes.SNOWFLAKE;
+process.env.DATABASE = database.dbTypes.POSTGRESQL;
+// process.env.DATABASE = database.dbTypes.SNOWFLAKE;
 
 const port = process.env.PORT || 8080;
 const app = express();
@@ -82,6 +82,7 @@ app.use(cors());
 // app.use(checkJwt);
 
 app.get('/database', (req, res) => {
+  console.log('GET /database process.env.DATABASE: ', process.env.DATABASE);
   const dbMap = database.dbConnections.map(conn => {
     conn.active = (conn.type == process.env.DATABASE);
     return conn;
@@ -91,7 +92,10 @@ app.get('/database', (req, res) => {
 });
 
 app.post('/database', (req, res) => {
-  debug('POST /database')
+  debug('POST /database');
+  console.log('POST /database process.env.DATABASE BEFORE: ', process.env.DATABASE);
+  console.log('POST /database req.body.database: ', req.body.database);
+  
   if (!req.body.database || !database.dbTypes[req.body.database.toUpperCase()]) {
     return res.status(400).json({
       error: 'You must supply a database. Send it on an object with a `database` key: { database: ... }'
@@ -99,11 +103,12 @@ app.post('/database', (req, res) => {
   }
 
   process.env.DATABASE = database.dbTypes[req.body.database.toUpperCase()];
-  
+  console.log('POST /database process.env.DATABASE AFTER: ', process.env.DATABASE);
+
   const dbMap = database.dbConnections.map(conn => {
     conn.active = (conn.type == process.env.DATABASE);
     return conn;
-  });  
+  });
 
   return res.json(dbMap);
 });
@@ -745,7 +750,7 @@ async function connect() {
     await startupTasks();
     app.listen(port);
     console.log(`Express app started on port ${port}`);
-    
+    console.log('process.env.DATABASE: ', process.env.DATABASE);
   } catch (err) {
     console.log(err);
   }
