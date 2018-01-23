@@ -1,0 +1,68 @@
+{
+	"page": [{
+		"list": [{
+			"dimension": "Scenario",
+			"member": "actual",
+			"description": "Actual"
+		}, {
+			"dimension": "Scenario",
+			"member": "booked_budget",
+			"description": "Booked Budget"
+		}]
+	}],
+	"regions": [{
+		"rowIndex": 0,
+		"colIndex": 0,
+		"rowDepth": 1,
+		"colDepth": 1,
+		"showRowHeaders": true,
+		"showColHeaders": true,
+		"includeVariance": false,
+		"includeVariancePct": false,
+		"transform": "object_code_by_time.json",
+		"pinned": [{
+			"dimension": "Metric",
+			"member": "expense_balance"
+		}, {
+			"dimension": "Currency",
+			"member": "lc"
+		}, {
+			"dimension": "Datasrc",
+			"member": "edw_ga_activity"
+		}, {
+			"dimension": "Organization",
+			"member": "level_10_99460_leaf"
+		}, {
+			"dimension": "Scenario",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Product",
+			"member": "televisions"
+		}, {
+			"dimension": "Variation",
+			"member": "periodic"
+		}],
+		"rows": [{
+			"dimension": "objectcode_id",
+			"member": "52310",
+			"description": "52310 - ALCOHOLIC BEVERAGES",
+			"data entry": true
+		}, {
+			"dimension": "objectcode_id",
+			"member": "52315",
+			"description": "52315 - ENTERTAINMENT",
+			"data entry": true
+		}],
+		"columns": [{
+			"dimension": "time_id",
+			"member": "20160900",
+			"description": "2016 Sep",
+			"data entry": true
+		}, {
+			"dimension": "time_id",
+			"member": "20161000",
+			"description": "2016 Oct",
+			"data entry": true
+		}]
+	}]
+}

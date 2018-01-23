@@ -13,7 +13,6 @@ const getDimensionIdSql = dimensions => {
     FROM (SELECT ${subSelects.join(',')}) a;
   `;
 
-  debug('getDimensionIdSql: ', sql);
   return sql;
 };
 

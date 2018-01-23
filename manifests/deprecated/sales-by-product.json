@@ -151,36 +151,43 @@
         {
           "dimension": "Product",
           "member": "Books",
+          "description": "Books",
           "data entry": true
         },
         {
           "dimension": "Product",
           "member": "DVDs",
+          "description": "DVDs",
           "data entry": true
         },
         {
           "dimension": "Product",
           "member": "Healthcare",
+          "description": "Healthcare",
           "data entry": false
         },
         {
           "dimension": "Product",
           "member": "Automotive",
+          "description": "Automotive",
           "data entry": true
         },
         {
           "dimension": "Product",
           "member": "Electronics",
+          "description": "Electronics",
           "data entry": false
         },
         {
           "dimension": "Product",
           "member": "Sporting Goods",
+          "description": "Sporting Goods",
           "data entry": false
         },
         {
           "dimension": "Product",
           "member": "Apparel",
+          "description": "Apparel",
           "data entry": false
         }
       ]

@@ -5,18 +5,6 @@
 	"author": "adahl",
 	"grainSack": [
     {
-      "id":1,
-      "name":"core_nine",
-      "grainType":"brick",
-      "cached":true,
-      "memberSets":[
-        {	"memberSetType":"compute","dimension":"fact","hierarchy":"fact","dimColumnName":"fact_name",
-          "memberSetCode":[
-            {"database":"postgres","code":"SELECT fact_id FROM s_fact WHERE fact_id <= 9 ORDER BY 1;"}
-        ]}
-      ]
-    },
-    {
       "id":201,
       "name":"prod_all",
       "grainType":"brick",
@@ -505,72 +493,17 @@
     }
   ],
   "dimKeys": [
-    {
-      "id": 1,
-      "name": "category",
-      "description": "Category",
-      "byte": 2
-    },
-    {
-      "id": 2,
-      "name": "product",
-      "description": "Product",
-      "byte": 2
-    },
-    {
-      "id": 3,
-      "name": "currency",
-      "description": "Currency",
-      "byte": 2
-    },
-    {
-      "id": 4,
-      "name": "datasrc",
-      "description": "Datasrc",
-      "byte": 2
-    },
-    {
-      "id": 5,
-      "name": "objectcode",
-      "description": "Object Code",
-      "byte": 2
-    },
-    {
-      "id": 6,
-      "name": "organization",
-      "description": "Organization",
-      "byte": 4
-    },
-    {
-      "id": 7,
-      "name": "position",
-      "description": "Position",
-      "byte": 4
-    },
-    {
-      "id": 8,
-      "name": "scenario",
-      "description": "Scenario",
-      "byte": 2
-    },
-    {
-      "id": 9,
-      "name": "time",
-      "description": "Time",
-      "byte": 2
-    },
-    {
-      "id": 10,
-      "name": "transfer",
-      "description": "Transfer",
-      "byte": 4
-    },
-    {
-      "id": 11,
-      "name": "variation",
-      "description": "Variation",
-      "byte": 2
-    }
+    {"id":1,"name":"category","description":"Category","byte":2},
+    {"id":3,"name":"currency","description":"Currency","byte":2},
+    {"id":4,"name":"datasrc","description":"Datasrc","byte":2},
+    {"id":5,"name":"objectcode","description":"Object Code","byte":2},
+    {"id":6,"name":"organization","description":"Organization","byte":4},
+    {"id":7,"name":"position","description":"Position","byte":4},
+    {"id":8,"name":"scenario","description":"Scenario","byte":2},
+    {"id":9,"name":"time","description":"Time","byte":2},
+    {"id":10,"name":"transfer","description":"Transfer","byte":4},
+    {"id":11,"name":"variation","description":"Variation","byte":2},
+    {"id":2,"name":"product","description":"Product","byte":4}
   ],
   "hierKeys": [
     {

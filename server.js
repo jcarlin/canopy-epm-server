@@ -666,7 +666,10 @@ app.post('/grain', (req, res) => {
         queryStrings = makeGrainBlockQueryStrings(sqlParams, {"memberSet": member});
       }
       
-      allQueryStrings = `${allQueryStrings}${queryStrings}${makeAppNetRevView()}${makeObjectCodeByTimeView()}`;
+      // Leaving out view sql for now
+      // allQueryStrings = `${allQueryStrings}${queryStrings}${makeAppNetRevView()}${makeObjectCodeByTimeView()}`;
+      
+      allQueryStrings = `${allQueryStrings}${queryStrings}`;
     });
   };
 
@@ -684,6 +687,7 @@ app.post('/grain', (req, res) => {
   const executeGrainDefSql = async () => {
     try {
       const gd = await grainDefsMap();
+      const logSql = await console.log('graindef sql: ', allQueryStrings);
       const dbResults = await execGrainSql(allQueryStrings, (results) => {
         if (results == "error") {
           return res.status(400).json({ error: results });

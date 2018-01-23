@@ -32,67 +32,58 @@
 		],
 		"rows": [{
 			"dimension": "Scenario",
-			"member": "Actual",
+      "member": "Actual",
+      "description": "Actual",
 			"rows": [{
 				"dimension": "Account",
-				"member": "40000 - REVENUE",
+        "member": "40000 - REVENUE",
+        "description": "40000 - REVENUE",
 				"data entry": false
 			}, {
 				"dimension": "Account",
-				"member": "43001 - GIFT REVENUE",
+        "member": "43001 - GIFT REVENUE",
+        "description": "43001 - GIFT REVENUE",
 				"data entry": true
-			}, {
-				"dimension": "Account",
-				"member": "44001 - INVESTMENT INCOME",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "48001 - INTERDEPT REVENUE",
-				"data entry": true
-			}, {
-				"dimension": "Account",
-				"member": "46FAC - FACILITY RENTAL",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "46PAT - PATENTS/ROYALTIES",
-				"data entry": true
-			}, {
-				"dimension": "Account",
-				"member": "49001 - TRANSFERS",
-				"data entry": false
 			}]
 		}],
 		"columns": [{
 			"dimension": "Variation",
-			"member": "Periodic",
+      "member": "Periodic",
+      "description": "Periodic",
 			"columns": [{
 				"dimension": "Product",
-				"member": "Books",
+        "member": "Books",
+        "description": "Books",
 				"data entry": true
 			}, {
 				"dimension": "Product",
-				"member": "DVDs",
+        "member": "DVDs",
+        "description": "DVDs",
 				"data entry": true
 			}, {
 				"dimension": "Product",
-				"member": "Healthcare",
+        "member": "Healthcare",
+        "description": "Healthcare",
 				"data entry": true
 			}, {
 				"dimension": "Product",
-				"member": "Automotive",
+        "member": "Automotive",
+        "description": "Automotive",
 				"data entry": true
 			}, {
 				"dimension": "Product",
-				"member": "Electronics",
+        "member": "Electronics",
+        "description": "Electronics",
 				"data entry": true
 			}, {
 				"dimension": "Product",
-				"member": "Sporting Goods",
+        "member": "Sporting Goods",
+        "description": "Sporting Goods",
 				"data entry": true
 			}, {
 				"dimension": "Product",
-				"member": "Apparel",
+        "member": "Apparel",
+        "description": "Apparel",
 				"data entry": true
 			}]
 		}]
@@ -120,67 +111,58 @@
 		],
 		"rows": [{
 			"dimension": "Scenario",
-			"member": "Actual",
+      "member": "Actual",
+      "description": "Actual",
 			"rows": [{
 				"dimension": "Account",
-				"member": "40000 - REVENUE",
+        "member": "40000 - REVENUE",
+        "description": "40000 - REVENUE",
 				"data entry": false
 			}, {
 				"dimension": "Account",
-				"member": "43001 - GIFT REVENUE",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "44001 - INVESTMENT INCOME",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "48001 - INTERDEPT REVENUE",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "46FAC - FACILITY RENTAL",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "46PAT - PATENTS/ROYALTIES",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "49001 - TRANSFERS",
+        "member": "43001 - GIFT REVENUE",
+        "description": "43001 - GIFT REVENUE",
 				"data entry": false
 			}]
 		}],
 		"columns": [{
 			"dimension": "Variation",
-			"member": "YTD",
+      "member": "YTD",
+      "description": "YTD",
 			"columns": [{
 				"dimension": "Product",
-				"member": "Books",
+        "member": "Books",
+        "description": "Books",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "DVDs",
+        "member": "DVDs",
+        "description": "DVDs",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Healthcare",
+        "member": "Healthcare",
+        "description": "Healthcare",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Automotive",
+        "member": "Automotive",
+        "description": "Automotive",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Electronics",
+        "member": "Electronics",
+        "description": "Electronics",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Sporting Goods",
+        "member": "Sporting Goods",
+        "description": "Sporting Goods",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Apparel",
+        "member": "Apparel",
+        "description": "Apparel",
 				"data entry": false
 			}]
 		}]
@@ -209,67 +191,58 @@
 		],
 		"rows": [{
 			"dimension": "Scenario",
-			"member": "Budget",
+      "member": "Budget",
+      "description": "Budget",
 			"rows": [{
 				"dimension": "Account",
-				"member": "40000 - REVENUE",
+        "member": "40000 - REVENUE",
+        "description": "40000 - REVENUE",
 				"data entry": false
 			}, {
 				"dimension": "Account",
-				"member": "43001 - GIFT REVENUE",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "44001 - INVESTMENT INCOME",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "48001 - INTERDEPT REVENUE",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "46FAC - FACILITY RENTAL",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "46PAT - PATENTS/ROYALTIES",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "49001 - TRANSFERS",
+        "member": "43001 - GIFT REVENUE",
+        "description": "43001 - GIFT REVENUE",
 				"data entry": false
 			}]
 		}],
 		"columns": [{
 			"dimension": "Variation",
-			"member": "Periodic",
+      "member": "Periodic",
+      "description": "Periodic",
 			"columns": [{
 				"dimension": "Product",
-				"member": "Books",
+        "member": "Books",
+        "description": "Books",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "DVDs",
+        "member": "DVDs",
+        "description": "DVDs",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Healthcare",
+        "member": "Healthcare",
+        "description": "Healthcare",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Automotive",
+        "member": "Automotive",
+        "description": "Automotive",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Electronics",
+        "member": "Electronics",
+        "description": "Electronics",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Sporting Goods",
+        "member": "Sporting Goods",
+        "description": "Sporting Goods",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Apparel",
+        "member": "Apparel",
+        "description": "Apparel",
 				"data entry": false
 			}]
 		}]
@@ -297,67 +270,58 @@
 		],
 		"rows": [{
 			"dimension": "Scenario",
-			"member": "Budget",
+      "member": "Budget",
+      "description": "Budget",
 			"rows": [{
 				"dimension": "Account",
-				"member": "40000 - REVENUE",
+        "member": "40000 - REVENUE",
+        "description": "40000 - REVENUE",
 				"data entry": true
 			}, {
 				"dimension": "Account",
-				"member": "43001 - GIFT REVENUE",
-				"data entry": true
-			}, {
-				"dimension": "Account",
-				"member": "44001 - INVESTMENT INCOME",
-				"data entry": true
-			}, {
-				"dimension": "Account",
-				"member": "48001 - INTERDEPT REVENUE",
-				"data entry": true
-			}, {
-				"dimension": "Account",
-				"member": "46FAC - FACILITY RENTAL",
-				"data entry": true
-			}, {
-				"dimension": "Account",
-				"member": "46PAT - PATENTS/ROYALTIES",
-				"data entry": true
-			}, {
-				"dimension": "Account",
-				"member": "49001 - TRANSFERS",
+        "member": "43001 - GIFT REVENUE",
+        "description": "43001 - GIFT REVENUE",
 				"data entry": true
 			}]
 		}],
 		"columns": [{
 			"dimension": "Variation",
-			"member": "YTD",
+      "member": "YTD",
+      "description": "YTD",
 			"columns": [{
 				"dimension": "Product",
-				"member": "Books",
+        "member": "Books",
+        "description": "Books",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "DVDs",
+        "member": "DVDs",
+        "description": "DVDs",
 				"data entry": true
 			}, {
 				"dimension": "Product",
-				"member": "Healthcare",
+        "member": "Healthcare",
+        "description": "Healthcare",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Automotive",
+        "member": "Automotive",
+        "description": "Automotive",
 				"data entry": true
 			}, {
 				"dimension": "Product",
-				"member": "Electronics",
+        "member": "Electronics",
+        "description": "Electronics",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Sporting Goods",
+        "member": "Sporting Goods",
+        "description": "Sporting Goods",
 				"data entry": true
 			}, {
 				"dimension": "Product",
-				"member": "Apparel",
+        "member": "Apparel",
+        "description": "Apparel",
 				"data entry": false
 			}]
 		}]
@@ -383,71 +347,58 @@
 		}],
 		"rows": [{
 			"dimension": "Scenario",
-			"member": "Actual",
+      "member": "Actual",
+      "description": "Actual",
 			"rows": [{
 				"dimension": "Account",
-				"member": "50000 - TOTAL EXPENSES",
+        "member": "50000 - TOTAL EXPENSES",
+        "description": "50000 - TOTAL EXPENSES",
 				"data entry": false
 			}, {
 				"dimension": "Account",
-				"member": "500SE - COMPENSATION EXPENSES",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "51100 - SALARY AND WAGES",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "51700 - FRINGE BENEFITS",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "51900 - OTHER COMPENSATION",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "51BON - BONUS EXPENSE",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "56900 - INDIRECT COSTS",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "ENDFB - ENDING BALANCE",
+        "member": "500SE - COMPENSATION EXPENSES",
+        "description": "500SE - COMPENSATION EXPENSES",
 				"data entry": false
 			}]
 		}],
 		"columns": [{
 			"dimension": "Variation",
-			"member": "Periodic",
+      "member": "Periodic",
+      "description": "Periodic",
 			"columns": [{
 				"dimension": "Product",
-				"member": "Books",
+        "member": "Books",
+        "description": "Books",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "DVDs",
+        "member": "DVDs",
+        "description": "DVDs",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Healthcare",
+        "member": "Healthcare",
+        "description": "Healthcare",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Automotive",
+        "member": "Automotive",
+        "description": "Automotive",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Electronics",
+        "member": "Electronics",
+        "description": "Electronics",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Sporting Goods",
+        "member": "Sporting Goods",
+        "description": "Sporting Goods",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Apparel",
+        "member": "Apparel",
+        "description": "Apparel",
 				"data entry": false
 			}]
 		}]
@@ -473,71 +424,58 @@
 		}],
 		"rows": [{
 			"dimension": "Scenario",
-			"member": "Actual",
+      "member": "Actual",
+      "description": "Actual",
 			"rows": [{
 				"dimension": "Account",
-				"member": "50000 - TOTAL EXPENSES",
+        "member": "50000 - TOTAL EXPENSES",
+        "description": "50000 - TOTAL EXPENSES",
 				"data entry": false
 			}, {
 				"dimension": "Account",
-				"member": "500SE - COMPENSATION EXPENSES",
-				"data entry": true
-			}, {
-				"dimension": "Account",
-				"member": "51100 - SALARY AND WAGES",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "51700 - FRINGE BENEFITS",
-				"data entry": true
-			}, {
-				"dimension": "Account",
-				"member": "51900 - OTHER COMPENSATION",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "51BON - BONUS EXPENSE",
-				"data entry": true
-			}, {
-				"dimension": "Account",
-				"member": "56900 - INDIRECT COSTS",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "ENDFB - ENDING BALANCE",
+        "member": "500SE - COMPENSATION EXPENSES",
+        "description": "500SE - COMPENSATION EXPENSES",
 				"data entry": true
 			}]
 		}],
 		"columns": [{
 			"dimension": "Variation",
-			"member": "YTD",
+      "member": "YTD",
+      "description": "YTD",
 			"columns": [{
 				"dimension": "Product",
-				"member": "Books",
+        "member": "Books",
+        "description": "Books",
 				"data entry": true
 			}, {
 				"dimension": "Product",
-				"member": "DVDs",
+        "member": "DVDs",
+        "description": "DVDs",
 				"data entry": true
 			}, {
 				"dimension": "Product",
-				"member": "Healthcare",
+        "member": "Healthcare",
+        "description": "Healthcare",
 				"data entry": true
 			}, {
 				"dimension": "Product",
-				"member": "Automotive",
+        "member": "Automotive",
+        "description": "Automotive",
 				"data entry": true
 			}, {
 				"dimension": "Product",
-				"member": "Electronics",
+        "member": "Electronics",
+        "description": "Electronics",
 				"data entry": true
 			}, {
 				"dimension": "Product",
-				"member": "Sporting Goods",
+        "member": "Sporting Goods",
+        "description": "Sporting Goods",
 				"data entry": true
 			}, {
 				"dimension": "Product",
-				"member": "Apparel",
+        "member": "Apparel",
+        "description": "Apparel",
 				"data entry": true
 			}]
 		}]
@@ -563,71 +501,58 @@
 		}],
 		"rows": [{
 			"dimension": "Scenario",
-			"member": "Budget",
+      "member": "Budget",
+      "description": "Budget",
 			"rows": [{
 				"dimension": "Account",
-				"member": "50000 - TOTAL EXPENSES",
+        "member": "50000 - TOTAL EXPENSES",
+        "description": "50000 - TOTAL EXPENSES",
 				"data entry": true
 			}, {
 				"dimension": "Account",
-				"member": "500SE - COMPENSATION EXPENSES",
-				"data entry": true
-			}, {
-				"dimension": "Account",
-				"member": "51100 - SALARY AND WAGES",
-				"data entry": true
-			}, {
-				"dimension": "Account",
-				"member": "51700 - FRINGE BENEFITS",
-				"data entry": true
-			}, {
-				"dimension": "Account",
-				"member": "51900 - OTHER COMPENSATION",
-				"data entry": true
-			}, {
-				"dimension": "Account",
-				"member": "51BON - BONUS EXPENSE",
-				"data entry": true
-			}, {
-				"dimension": "Account",
-				"member": "56900 - INDIRECT COSTS",
-				"data entry": true
-			}, {
-				"dimension": "Account",
-				"member": "ENDFB - ENDING BALANCE",
+        "member": "500SE - COMPENSATION EXPENSES",
+        "description": "500SE - COMPENSATION EXPENSES",
 				"data entry": true
 			}]
 		}],
 		"columns": [{
 			"dimension": "Variation",
-			"member": "Periodic",
+      "member": "Periodic",
+      "description": "Periodic",
 			"columns": [{
 				"dimension": "Product",
-				"member": "Books",
+        "member": "Books",
+        "description": "Books",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "DVDs",
+        "member": "DVDs",
+        "description": "DVDs",
 				"data entry": true
 			}, {
 				"dimension": "Product",
-				"member": "Healthcare",
+        "member": "Healthcare",
+        "description": "Healthcare",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Automotive",
+        "member": "Automotive",
+        "description": "Automotive",
 				"data entry": true
 			}, {
 				"dimension": "Product",
-				"member": "Electronics",
+        "member": "Electronics",
+        "description": "Electronics",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Sporting Goods",
+        "member": "Sporting Goods",
+        "description": "Sporting Goods",
 				"data entry": true
 			}, {
 				"dimension": "Product",
-				"member": "Apparel",
+        "member": "Apparel",
+        "description": "Apparel",
 				"data entry": false
 			}]
 		}]
@@ -653,71 +578,58 @@
 		}],
 		"rows": [{
 			"dimension": "Scenario",
-			"member": "Budget",
+      "member": "Budget",
+      "description": "Budget",
 			"rows": [{
 				"dimension": "Account",
-				"member": "50000 - TOTAL EXPENSES",
+        "member": "50000 - TOTAL EXPENSES",
+        "description": "50000 - TOTAL EXPENSES",
 				"data entry": false
 			}, {
 				"dimension": "Account",
-				"member": "500SE - COMPENSATION EXPENSES",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "51100 - SALARY AND WAGES",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "51700 - FRINGE BENEFITS",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "51900 - OTHER COMPENSATION",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "51BON - BONUS EXPENSE",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "56900 - INDIRECT COSTS",
-				"data entry": false
-			}, {
-				"dimension": "Account",
-				"member": "ENDFB - ENDING BALANCE",
+        "member": "500SE - COMPENSATION EXPENSES",
+        "description": "500SE - COMPENSATION EXPENSES",
 				"data entry": false
 			}]
 		}],
 		"columns": [{
 			"dimension": "Variation",
-			"member": "YTD",
+      "member": "YTD",
+      "description": "YTD",
 			"columns": [{
 				"dimension": "Product",
-				"member": "Books",
+        "member": "Books",
+        "description": "Books",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "DVDs",
+        "member": "DVDs",
+        "description": "DVDs",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Healthcare",
+        "member": "Healthcare",
+        "description": "Healthcare",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Automotive",
+        "member": "Automotive",
+        "description": "Automotive",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Electronics",
+        "member": "Electronics",
+        "description": "Electronics",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Sporting Goods",
+        "member": "Sporting Goods",
+        "description": "Sporting Goods",
 				"data entry": false
 			}, {
 				"dimension": "Product",
-				"member": "Apparel",
+        "member": "Apparel",
+        "description": "Apparel",
 				"data entry": false
 			}]
 		}]

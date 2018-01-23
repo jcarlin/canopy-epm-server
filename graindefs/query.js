@@ -246,7 +246,7 @@ const makeObjectCodeByTimeView = () => {
         dim_11.d11_name AS variation_id,
         a.d6_id,
         dim_6.d6_name AS organization_id,
-        to_char(trunc(a.r6), 'L999,999,999,999'::text) AS expense_balance
+        a.r6 AS expense_balance
       FROM ( SELECT root_6.d2_id,
                 root_6.d3_id,
                 root_6.d4_id,
@@ -300,7 +300,7 @@ const makeAppNetRevView = () => {
         dim_11.d11_name AS variation_id,
         a.d6_id,
         dim_6.d6_name AS organization_id,
-        to_char(trunc(a.a20), 'L999,999,999,999'::text) AS app_net_rev
+        a.a20 AS app_net_rev
       FROM ( SELECT grain_206.goofy_d2_id AS d2_id,
                 app_20.d3_id,
                 app_20.d4_id,
