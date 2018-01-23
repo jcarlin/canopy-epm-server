@@ -54,155 +54,9 @@
 		"rowIndex": 0,
 		"colIndex": 0,
 		"rowDepth": 1,
-		"colDepth": 3,
+		"colDepth": 2,
 		"showRowHeaders": true,
 		"showColHeaders": true,
-		"includeVariance": false,
-		"includeVariancePct": false,
-		"transform": "net_rev_trans_exp_balance.json",
-		"pinned": [{
-			"dimension": "Metric",
-			"member": "net_rev_trans_exp_balance"
-		}, {
-			"dimension": "Currency",
-			"member": "lc"
-		}, {
-			"dimension": "Datasrc",
-			"member": "preliminary"
-		}, {
-			"dimension": "Product",
-			"member": "all_products"
-		}, {
-			"dimension": "Variation",
-			"member": "periodic"
-		}],
-		"rows": [{
-			"dimension": "objectcode_id",
-			"member": "4901b",
-			"description": "Sales Revenue",
-			"data entry": false
-		}],
-		"columns": [{
-			"dimension": "time_id",
-			"member": "$LIST$",
-			"description": "Time",
-			"columns": [{
-				"dimension": "scenario_id",
-				"member": "booked_budget",
-				"description": "Budget",
-				"columns": [{
-						"dimension": "organization_id",
-						"member": "level_6_184343_leaf",
-						"description": "East Region",
-						"data entry": false
-					},
-					{
-						"dimension": "organization_id",
-						"member": "level_6_184345_leaf",
-						"description": "Central Region",
-						"data entry": false
-					},
-					{
-						"dimension": "organization_id",
-						"member": "level_6_184348_leaf",
-						"description": "West Region",
-						"data entry": false
-					},
-					{
-						"dimension": "organization_id",
-						"member": "level_2_168380_node",
-						"description": "United States",
-						"data entry": false
-					},
-					{
-						"dimension": "organization_id",
-						"member": "level_1_2_node",
-						"description": "Worldwide",
-						"data entry": false
-					}
-				]
-			}]
-		}]
-	}, {
-		"rowIndex": 0,
-		"colIndex": 1,
-		"rowDepth": 1,
-		"colDepth": 3,
-		"showRowHeaders": false,
-		"showColHeaders": true,
-		"includeVariance": false,
-		"includeVariancePct": false,
-		"transform": "net_rev_trans_exp_balance.json",
-		"pinned": [{
-			"dimension": "Metric",
-			"member": "net_rev_trans_exp_balance"
-		}, {
-			"dimension": "Currency",
-			"member": "lc"
-		}, {
-			"dimension": "Datasrc",
-			"member": "preliminary"
-		}, {
-			"dimension": "Product",
-			"member": "all_products"
-		}, {
-			"dimension": "Variation",
-			"member": "periodic"
-		}],
-		"rows": [{
-			"dimension": "objectcode_id",
-			"member": "4901b",
-			"description": "Sales Revenue",
-			"data entry": false
-		}],
-		"columns": [{
-			"dimension": "time_id",
-			"member": "$LIST$",
-			"description": "Time",
-			"columns": [{
-				"dimension": "scenario_id",
-				"member": "actual",
-				"description": "Actual",
-				"columns": [{
-						"dimension": "organization_id",
-						"member": "level_6_184343_leaf",
-						"description": "East Region",
-						"data entry": false
-					},
-					{
-						"dimension": "organization_id",
-						"member": "level_6_184345_leaf",
-						"description": "Central Region",
-						"data entry": false
-					},
-					{
-						"dimension": "organization_id",
-						"member": "level_6_184348_leaf",
-						"description": "West Region",
-						"data entry": false
-					},
-					{
-						"dimension": "organization_id",
-						"member": "level_2_168380_node",
-						"description": "United States",
-						"data entry": false
-					},
-					{
-						"dimension": "organization_id",
-						"member": "level_1_2_node",
-						"description": "Worldwide",
-						"data entry": false
-					}
-				]
-			}]
-		}]
-	}, {
-		"rowIndex": 1,
-		"colIndex": 0,
-		"rowDepth": 1,
-		"colDepth": 3,
-		"showRowHeaders": true,
-		"showColHeaders": false,
 		"includeVariance": false,
 		"includeVariancePct": false,
 		"transform": "net_rev_trans_exp_balance.json",
@@ -219,161 +73,301 @@
 			"dimension": "Product",
 			"member": "all_products"
 		}, {
+			"dimension": "Time",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Variation",
+			"member": "periodic"
+		}],
+		"rows": [{
+			"dimension": "objectcode_id",
+			"member": "4901b",
+			"description": "Sales Revenue",
+			"data entry": false
+		}],
+		"columns": [{
+			"dimension": "scenario_id",
+			"member": "booked_budget",
+			"description": "Budget",
+			"columns": [{
+					"dimension": "organization_id",
+					"member": "level_6_184343_leaf",
+					"description": "East Region",
+					"data entry": false
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_6_184345_leaf",
+					"description": "Central Region",
+					"data entry": false
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_6_184348_leaf",
+					"description": "West Region",
+					"data entry": false
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_2_168380_node",
+					"description": "United States",
+					"data entry": false
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_1_2_node",
+					"description": "Worldwide",
+					"data entry": false
+				}
+			]
+		}]
+	}, {
+		"rowIndex": 0,
+		"colIndex": 1,
+		"rowDepth": 1,
+		"colDepth": 2,
+		"showRowHeaders": false,
+		"showColHeaders": true,
+		"includeVariance": false,
+		"includeVariancePct": false,
+		"transform": "net_rev_trans_exp_balance.json",
+		"pinned": [{
+			"dimension": "Metric",
+			"member": "revenue_balance"
+		}, {
+			"dimension": "Currency",
+			"member": "lc"
+		}, {
+			"dimension": "Datasrc",
+			"member": "preliminary"
+		}, {
+			"dimension": "Product",
+			"member": "all_products"
+		}, {
+			"dimension": "Time",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Variation",
+			"member": "periodic"
+		}],
+		"rows": [{
+			"dimension": "objectcode_id",
+			"member": "4901b",
+			"description": "Sales Revenue",
+			"data entry": false
+		}],
+		"columns": [{
+			"dimension": "scenario_id",
+			"member": "actual",
+			"description": "Actual",
+			"columns": [{
+					"dimension": "organization_id",
+					"member": "level_6_184343_leaf",
+					"description": "East Region",
+					"data entry": false
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_6_184345_leaf",
+					"description": "Central Region",
+					"data entry": false
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_6_184348_leaf",
+					"description": "West Region",
+					"data entry": false
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_2_168380_node",
+					"description": "United States",
+					"data entry": false
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_1_2_node",
+					"description": "Worldwide",
+					"data entry": false
+				}
+			]
+		}]
+	}, {
+		"rowIndex": 1,
+		"colIndex": 0,
+		"rowDepth": 1,
+		"colDepth": 2,
+		"showRowHeaders": true,
+		"showColHeaders": false,
+		"includeVariance": false,
+		"includeVariancePct": false,
+		"transform": "net_rev_trans_exp_balance.json",
+		"pinned": [{
+			"dimension": "Metric",
+			"member": "bb_revenue"
+		}, {
+			"dimension": "Currency",
+			"member": "lc"
+		}, {
+			"dimension": "Datasrc",
+			"member": "preliminary"
+		}, {
+			"dimension": "Object Code",
+			"member": "4901b"
+		}, {
+			"dimension": "Time",
+			"member": "$LIST$"
+		}, {
 			"dimension": "Variation",
 			"member": "periodic"
 		}],
 		"rows": [{
 			"dimension": "product_id",
-			"member": "accessories",
+			"member": "sku_099975_000056",
 			"description": "Accessories",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "automotive",
+			"member": "sku_096184_000048",
 			"description": "Automotive",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "bluetooth_speakers",
+			"member": "sku_068521_000057",
 			"description": "Bluetooth Speakers",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "cameras",
+			"member": "sku_043912_000058",
 			"description": "Cameras",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "car_electronics",
+			"member": "sku_078638_000059",
 			"description": "Car Electronics",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "cell_phones",
+			"member": "sku_107805_000060",
 			"description": "Cell Phones",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "clothing",
+			"member": "sku_057124_000049",
 			"description": "Clothing",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "grocery",
+			"member": "sku_024077_000050",
 			"description": "Grocery",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "headphones",
+			"member": "sku_003554_000061",
 			"description": "Headphones",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "healthcare",
+			"member": "sku_006312_000051",
 			"description": "Health Care",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "home_garden",
+			"member": "sku_023812_000052",
 			"description": "Home & Garden",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "home_audio",
+			"member": "sku_097826_000062",
 			"description": "Home Audio",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "instruments",
+			"member": "sku_093194_000063",
 			"description": "Instruments",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "monitors",
+			"member": "sku_071765_000064",
 			"description": "Monitors",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "movies",
+			"member": "sku_016113_000053",
 			"description": "Movies",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "photo_video",
+			"member": "sku_082448_000065",
 			"description": "Photo & Video",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "sports_equipment",
+			"member": "sku_071867_000054",
 			"description": "Sports Equipment",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "televisions",
+			"member": "sku_018404_000066",
 			"description": "Televisions",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "toys",
+			"member": "sku_106111_000055",
 			"description": "Toys",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "video_games",
+			"member": "sku_026883_000067",
 			"description": "Video Games",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "wearable_technology",
+			"member": "sku_123378_000068",
 			"description": "Wearable Technology",
 			"data entry": true
 		}],
 		"columns": [{
-			"dimension": "time_id",
-			"member": "$LIST$",
-			"description": "Time",
+			"dimension": "scenario_id",
+			"member": "booked_budget",
+			"description": "Budget",
 			"columns": [{
-				"dimension": "scenario_id",
-				"member": "booked_budget",
-				"description": "Budget",
-				"columns": [{
-						"dimension": "organization_id",
-						"member": "level_6_184343_leaf",
-						"description": "East Region",
-						"data entry": true
-					},
-					{
-						"dimension": "organization_id",
-						"member": "level_6_184345_leaf",
-						"description": "Central Region",
-						"data entry": true
-					},
-					{
-						"dimension": "organization_id",
-						"member": "level_6_184348_leaf",
-						"description": "West Region",
-						"data entry": true
-					},
-					{
-						"dimension": "organization_id",
-						"member": "level_2_168380_node",
-						"description": "United States",
-						"data entry": false
-					},
-					{
-						"dimension": "organization_id",
-						"member": "level_1_2_node",
-						"description": "Worldwide",
-						"data entry": false
-					}
-				]
-			}]
+					"dimension": "organization_id",
+					"member": "level_6_184343_leaf",
+					"description": "East Region",
+					"data entry": true
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_6_184345_leaf",
+					"description": "Central Region",
+					"data entry": true
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_6_184348_leaf",
+					"description": "West Region",
+					"data entry": true
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_2_168380_node",
+					"description": "United States",
+					"data entry": false
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_1_2_node",
+					"description": "Worldwide",
+					"data entry": false
+				}
+			]
 		}]
 	}, {
 		"rowIndex": 1,
 		"colIndex": 1,
 		"rowDepth": 1,
-		"colDepth": 3,
+		"colDepth": 2,
 		"showRowHeaders": false,
 		"showColHeaders": false,
 		"includeVariance": false,
@@ -392,155 +386,153 @@
 			"dimension": "Object Code",
 			"member": "4901b"
 		}, {
+			"dimension": "Time",
+			"member": "$LIST$"
+		}, {
 			"dimension": "Variation",
 			"member": "periodic"
 		}],
 		"rows": [{
 			"dimension": "product_id",
-			"member": "accessories",
+			"member": "sku_099975_000056",
 			"description": "Accessories",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "automotive",
+			"member": "sku_096184_000048",
 			"description": "Automotive",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "bluetooth_speakers",
+			"member": "sku_068521_000057",
 			"description": "Bluetooth Speakers",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "cameras",
+			"member": "sku_043912_000058",
 			"description": "Cameras",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "car_electronics",
+			"member": "sku_078638_000059",
 			"description": "Car Electronics",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "cell_phones",
+			"member": "sku_107805_000060",
 			"description": "Cell Phones",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "clothing",
+			"member": "sku_057124_000049",
 			"description": "Clothing",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "grocery",
+			"member": "sku_024077_000050",
 			"description": "Grocery",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "headphones",
+			"member": "sku_003554_000061",
 			"description": "Headphones",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "healthcare",
+			"member": "sku_006312_000051",
 			"description": "Health Care",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "home_garden",
+			"member": "sku_023812_000052",
 			"description": "Home & Garden",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "home_audio",
+			"member": "sku_097826_000062",
 			"description": "Home Audio",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "instruments",
+			"member": "sku_093194_000063",
 			"description": "Instruments",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "monitors",
+			"member": "sku_071765_000064",
 			"description": "Monitors",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "movies",
+			"member": "sku_016113_000053",
 			"description": "Movies",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "photo_video",
+			"member": "sku_082448_000065",
 			"description": "Photo & Video",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "sports_equipment",
+			"member": "sku_071867_000054",
 			"description": "Sports Equipment",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "televisions",
+			"member": "sku_018404_000066",
 			"description": "Televisions",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "toys",
+			"member": "sku_106111_000055",
 			"description": "Toys",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "video_games",
+			"member": "sku_026883_000067",
 			"description": "Video Games",
 			"data entry": true
 		}, {
 			"dimension": "product_id",
-			"member": "wearable_technology",
+			"member": "sku_123378_000068",
 			"description": "Wearable Technology",
 			"data entry": true
 		}],
 		"columns": [{
-			"dimension": "time_id",
-			"member": "$LIST$",
-			"description": "Time",
+			"dimension": "scenario_id",
+			"member": "actual",
+			"description": "Actual",
 			"columns": [{
-				"dimension": "scenario_id",
-				"member": "actual",
-				"description": "Actual",
-				"columns": [{
-						"dimension": "organization_id",
-						"member": "level_6_184343_leaf",
-						"description": "East Region",
-						"data entry": true
-					},
-					{
-						"dimension": "organization_id",
-						"member": "level_6_184345_leaf",
-						"description": "Central Region",
-						"data entry": true
-					},
-					{
-						"dimension": "organization_id",
-						"member": "level_6_184348_leaf",
-						"description": "West Region",
-						"data entry": true
-					},
-					{
-						"dimension": "organization_id",
-						"member": "level_2_168380_node",
-						"description": "United States",
-						"data entry": false
-					},
-					{
-						"dimension": "organization_id",
-						"member": "level_1_2_node",
-						"description": "Worldwide",
-						"data entry": false
-					}
-				]
-			}]
+					"dimension": "organization_id",
+					"member": "level_6_184343_leaf",
+					"description": "East Region",
+					"data entry": true
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_6_184345_leaf",
+					"description": "Central Region",
+					"data entry": true
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_6_184348_leaf",
+					"description": "West Region",
+					"data entry": true
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_2_168380_node",
+					"description": "United States",
+					"data entry": false
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_1_2_node",
+					"description": "Worldwide",
+					"data entry": false
+				}
+			]
 		}]
 	}]
 }
