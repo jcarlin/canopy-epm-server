@@ -431,17 +431,19 @@ app.patch('/grid', (req, res) => {
                   if (error) {
                     return res.status(400).json({ error: 'Error writing to database' });
                   }
+
+                  res.json({ data });
                 
-                  // updateApp20NatJoinSql
-                  sql = database.updateApp20NatJoinSql(sqlParams);
+                  // // updateApp20NatJoinSql
+                  // sql = database.updateApp20NatJoinSql(sqlParams);
                   
-                  // Execute updateApp20NatJoinSql
-                  pgClient.query(sql, (error, data) => {
-                    if (error) {
-                      return res.status(400).json({ error: 'Error writing to database' });
-                    }
-                    res.json({ data });
-                  }); //updateApp20NatJoinSql
+                  // // Execute updateApp20NatJoinSql
+                  // pgClient.query(sql, (error, data) => {
+                  //   if (error) {
+                  //     return res.status(400).json({ error: 'Error writing to database' });
+                  //   }
+                  //   res.json({ data });
+                  // }); //updateApp20NatJoinSql
                 }); // updateBranch15NaturalJoinSql
               }); // insertSql
             }); // deactivateSql
@@ -497,19 +499,22 @@ app.patch('/grid', (req, res) => {
                             console.error('Failed to execute statement due to the following error: ' + error.message);
                             return res.status(400).json({ error: 'Error writing to database' });
                           } 
-                          // updateApp20Sql
-                          sql = database.updateApp20Sql(sqlParams);
+
+                          res.json({ data });
                           
-                          // Execute updateApp20Sql
-                          sfClient.execute({
-                            sqlText: sql,
-                            complete: function(error, stmt, data) {
-                              if (error) {
-                                return res.status(400).json({ error: 'Error writing to database' });
-                              }
-                              res.json({ data });
-                            } // updateApp20Sql
-                          });
+                          // // updateApp20Sql
+                          // sql = database.updateApp20Sql(sqlParams);
+                          
+                          // // Execute updateApp20Sql
+                          // sfClient.execute({
+                          //   sqlText: sql,
+                          //   complete: function(error, stmt, data) {
+                          //     if (error) {
+                          //       return res.status(400).json({ error: 'Error writing to database' });
+                          //     }
+                          //     res.json({ data });
+                          //   } // updateApp20Sql
+                          // });
                         } // updateBranch15Sql
                       });
                     } // insertSql

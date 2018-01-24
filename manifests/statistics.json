@@ -1,12 +1,64 @@
 {
   "manifests": {
-    "object-code-by-product": {
+    "sales-revenue-by-product": {
       "dimSuperSet": {
-        "total": 939279145780800,
+        "total": 151139040,
         "details": [
           {
             "dimension": "product",
-            "records": 53
+            "records": 20
+          },
+          {
+            "dimension": "currency",
+            "records": 1
+          },
+          {
+            "dimension": "datasrc",
+            "records": 1
+          },
+          {
+            "dimension": "objectcode",
+            "records": 1
+          },
+          {
+            "dimension": "organization",
+            "records": 314873
+          },
+          {
+            "dimension": "scenario",
+            "records": 2
+          },
+          {
+            "dimension": "time",
+            "records": 12
+          },
+          {
+            "dimension": "variation",
+            "records": 1
+          }
+        ]
+      },
+      "dataSuperSet": {
+        "total": 32256,
+        "details": [
+          {
+            "fact": "bb_revenue",
+            "records": 15624
+          },
+          {
+            "fact": "revenue_balance",
+            "records": 16632
+          }
+        ]
+      }
+    },
+    "object-code-by-product": {
+      "dimSuperSet": {
+        "total": 5895181752640804900,
+        "details": [
+          {
+            "dimension": "product",
+            "records": 332643
           },
           {
             "dimension": "currency",
@@ -26,7 +78,7 @@
           },
           {
             "dimension": "scenario",
-            "records": 22
+            "records": 2
           },
           {
             "dimension": "time",
@@ -39,7 +91,7 @@
         ]
       },
       "dataSuperSet": {
-        "total": 25590462,
+        "total": 19309623,
         "details": [
           {
             "fact": "bb_transfer",
@@ -51,19 +103,19 @@
           },
           {
             "fact": "bb_revenue",
-            "records": 708301
+            "records": 15624
           },
           {
             "fact": "revenue_balance",
-            "records": 5702821
+            "records": 16632
           },
           {
             "fact": "bb_nonsal_expense",
-            "records": 5529795
+            "records": 5561294
           },
           {
             "fact": "expense_balance",
-            "records": 11470335
+            "records": 11536863
           },
           {
             "fact": "bb_comp_expense",
@@ -119,11 +171,11 @@
         ]
       },
       "dataSuperSet": {
-        "total": 11470335,
+        "total": 11536863,
         "details": [
           {
             "fact": "expense_balance",
-            "records": 11470335
+            "records": 11536863
           }
         ]
       }
@@ -131,12 +183,12 @@
   },
   "global": {
     "dimSuperSet": {
-      "total": 378771119507289600,
+      "total": 2004504110822515000000,
       "details": [
         {
           "dimension": "product",
           "heirarchy": "producttype",
-          "records": 24
+          "records": 127011
         },
         {
           "dimension": "currency",
@@ -176,11 +228,11 @@
       ]
     },
     "dataSuperSet": {
-      "total": 205698991488480,
+      "total": 48770020274976,
       "details": [
         {
           "dimension": "product",
-          "records": 21
+          "records": 42
         },
         {
           "dimension": "currency",
@@ -188,23 +240,23 @@
         },
         {
           "dimension": "datasrc",
-          "records": 27
+          "records": 22
         },
         {
           "dimension": "objectcode",
-          "records": 1544
+          "records": 742
         },
         {
           "dimension": "organization",
-          "records": 114505
+          "records": 65141
         },
         {
           "dimension": "scenario",
-          "records": 9
+          "records": 7
         },
         {
           "dimension": "time",
-          "records": 228
+          "records": 156
         },
         {
           "dimension": "variation",

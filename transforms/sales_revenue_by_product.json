@@ -1,0 +1,18 @@
+{
+  "transform_id": "6",
+  "transform_name": "Sales Revenue By Product",
+  "table": "sales_revenue_by_product",
+  "isNile": true,
+  "dimensions": [
+    "currency_id",
+    "datasrc_id",
+    "organization_id",
+    "scenario_id",
+    "time_id",
+    "variation_id",
+    "product_id",
+    "objectcode_id"
+  ],
+    "metrics": ["bb_revenue"],
+    "new_value": ""
+  }
