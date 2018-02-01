@@ -127,99 +127,50 @@ app.post('/grid', (req, res) => {
     });
   }
 
-  const manifest = req.body.manifest;
-  const tableData = buildTableData(manifest); // manifest -> something ag-grid can use
-
-  fs.readFile(`./transforms/${tableData.transforms[0]}`, 'utf8', (err, data) => {
-    if (err) {
-      return res.json({ err });
-    }
-
-    let sql = null;
-    const transform = JSON.parse(data);
-    const dimensions = transform.dimensions;
+  try {
+    const manifest = req.body.manifest;
     const pinned = getPinnedSet(manifest.regions[0].pinned);
     const includeVariance = manifest.regions[0].includeVariance;
     const includeVariancePct = manifest.regions[0].includeVariancePct;
-    
+    const dimensionsWithKeys = mergeDimKeys(pinned, dimKeys);
+    const tableData = buildTableData(manifest); // manifest -> something ag-grid can use
+
     // Format response object
     const stitchData = dbData => {
-      if (process.env.DATABASE == database.dbTypes.SNOWFLAKE) {
-        console.log("stitchData for snowflake");
+      if (process.env.DATABASE == database.dbTypes.SNOWFLAKE) {        
         dbData = dbData.map(row => {
           return _.transform(row, function (result, val, key) {
             result[key.toLowerCase()] = val;
           });
         });
-        const producedData = stitchDatabaseData(manifest, tableData, dbData);
-
-        if (includeVariance && includeVariancePct) {
-          const finalData = produceVariance(producedData); 
-          res.json(finalData);
-        }
-
-        res.json(producedData);
-      } else {
-        const producedData = stitchDatabaseData(manifest, tableData, dbData);
-
-        if (includeVariance && includeVariancePct) {
-          const finalData = produceVariance(producedData); 
-          res.json(finalData);
-        }
-
-        res.json(producedData);
       }
+        
+      const producedData = stitchDatabaseData(manifest, tableData, dbData);
+
+      if (includeVariance && includeVariancePct) {
+        const finalData = produceVariance(producedData); 
+        return res.json(finalData);
+      }
+
+      return res.json(producedData);
     };
 
-    // Legacy (app table) query
-    if (!transform.isNile) {
-      const sqlParams = {
-        dimensions: dimensions.join(','),
-        metrics: transform.metrics.map(metric => `"${metric}"`).join(','),
-        tableName: transform.table,
-        filterStatements: pinned.map(filter => {
-          return `${filter.dimension} IN ('${filter.member}')`;
-        }).join(' AND ')
-      }
-      if (process.env.DATABASE == database.dbTypes.SNOWFLAKE) {
-        sqlParams.filterStatements = pinned.map(filter => {
-          return `${capitalize(filter.dimension)} IN ('${filter.member}')`;
-        }).join(' AND ');
-        sqlParams.metrics = `"NET_PROFIT"`; // HACK!
-        // querySql
-        sql = database.querySql(sqlParams);
-
-        // Execute querySql
-        sfClient.execute({
-          sqlText: sql,
-          complete: function(error, stmt, data) {
-            if (error) {
-              return res.json({ error });
-            }
-
-            stitchData(data);
-          } // querySql
-        });
-      } else { // POSTGRESQL
-        sql = database.querySql(sqlParams);
-
-        pgClient.query(sql, (error, data) => {
-          if (error) {
-            return res.status(400).json({ error: 'Error writing to database' });
-          }
-  
-          stitchData(data.rows);
+    fs.readFile(`./transforms/${tableData.transforms[0]}`, 'utf8', (err, data) => {
+      if (err) {
+        return res.status(400).json({
+          error: `Could not find transform: ${tableData.transforms[0]}`
         });
       }
-    } else {
+
+      let sql = null;
+      const transform = JSON.parse(data);
+      const dimensions = transform.dimensions;
       const sqlParams = {
         dimensions: dimensions,
         metrics: null,
         tableName: transform.table,
         filterStatements: null
       };
-  
-      const dimensionsWithKeys = mergeDimKeys(pinned, dimKeys);
       
       // getDimensionIdSql
       sql = database.getDimensionIdSql(dimensionsWithKeys);
@@ -271,7 +222,7 @@ app.post('/grid', (req, res) => {
           // Execute getDimensionIdSql
           pgClient.query(sql, (error, data) => {
             if (error) {
-              res.status(400).json({ error: 'Error writing to database' });
+              return res.status(400).json({ error: 'Error writing to database' });
             }
             // Merge dimension values into dimension array
             const dimValuesObj = data.rows[0];
@@ -292,8 +243,10 @@ app.post('/grid', (req, res) => {
           }); // getDimensionIdSql
           break;
       }
-    } // manifest.isNile
-  });
+    });
+  } catch(err) {
+    return res.status(400).json({ error: 'POST /grid threw an error: ' + err });
+  }
 });
 
 /**
@@ -334,71 +287,93 @@ app.patch('/grid', (req, res) => {
       dimIdColumns: null
     };
     
-    // Legacy (app table) update
-    if (!transform.isNile) {
-      
-      sqlParams.tableName = transform.table;
-      sqlParams.filterStatements = keySets.map(key => {
-        return `${key.dimension} = '${key.member}'`;
-      }).join(' AND ');
-      
-      // updateAppTableSql
-      sql = database.updateAppTableSql(sqlParams);
-      
-      // Why is this converting to string??
-      const db = Number(process.env.DATABASE);
-      switch(db) {
-        case database.dbTypes.POSTGRESQL:
+    // const dimensionsWithKeys = mergeDimKeys(keySets, dimKeys);
+    // sql = database.getDimensionIdSql(dimensionsWithKeys);
+
+    const factInfo = mergeFactKeys(transform.metrics, factKeys)[0];
+    sqlParams.factId = factInfo.fact_id;
+    sqlParams.tableName = `root_${factInfo.fact_id}`;
+    let dimensions = mergeDimKeys(keySets, dimKeys);
+    
+    // getDimensionIdSql
+    sql = database.getDimensionIdSql(dimensions);
+
+    // Why is this converting to string??
+    const db = Number(process.env.DATABASE);
+    switch(db) {
+      case database.dbTypes.POSTGRESQL:
+        // Execute getDimensionIdSql
+        pgClient.query(sql, (error, data) => {
+          if (error) {
+            return res.status(400).json({ error: 'Error writing to database' });
+          }
+          
+          // Merge dimension values into dimension array
+          const dimValuesObj = data.rows[0];
+          const dimensionsWithVals = mergeDimVals(dimensions, dimValuesObj);
+          sqlParams.filterStatements = dimensionsWithVals.map(dim => {
+            return dim.idWhereClause;
+          }).join(' AND ');
+
+          // deactivateSql
+          sql = database.deactivateSql(sqlParams);
+
+          // Execute deactivateSql
           pgClient.query(sql, (error, data) => {
             if (error) {
               return res.status(400).json({ error: 'Error writing to database' });
             }
+            // Set additional sqlParams values
+            sqlParams.dimIdValues = dimensionsWithVals.map(dim => { return dim.value; });
+            sqlParams.dimIdColumns = dimensionsWithVals.map(dim => { return dim.idColName; });
+            
+            // Make insertSql
+            sql = database.insertSql(sqlParams);
 
-            res.json({ data });
-          }); // updateAppTableSql
-          break;
-        case database.dbTypes.SNOWFLAKE:
-          sqlParams.table = transform.table.split(' ').join('_');
-         
-          sfClient.execute({
-            sqlText: sql,
-            complete: function(error, stmt, data) {
+            // Execute insertSql
+            pgClient.query(sql, (error, data) => {
               if (error) {
                 return res.status(400).json({ error: 'Error writing to database' });
               }
+              
+              // updateBranch15NaturalJoinSql
+              sql = database.updateBranch15NatJoinSql(sqlParams);
+              
+              // Execute updateBranch15NaturalJoinSql
+              pgClient.query(sql, (error, data) => {
+                if (error) {
+                  return res.status(400).json({ error: 'Error writing to database' });
+                }
 
-              res.json({ data });
-            }
-          }); // updateAppTableSql
-          break;
-      }
-    } 
-    else {
-      // const dimensionsWithKeys = mergeDimKeys(keySets, dimKeys);
-      // sql = database.getDimensionIdSql(dimensionsWithKeys);
-
-      const factInfo = mergeFactKeys(transform.metrics, factKeys)[0];
-      sqlParams.factId = factInfo.fact_id;
-      sqlParams.tableName = `root_${factInfo.fact_id}`;
-      let dimensions = mergeDimKeys(keySets, dimKeys);
-      
-      // getDimensionIdSql
-      sql = database.getDimensionIdSql(dimensions);
-
-      // Why is this converting to string??
-      const db = Number(process.env.DATABASE);
-      switch(db) {
-        case database.dbTypes.POSTGRESQL:
-          // Execute getDimensionIdSql
-          pgClient.query(sql, (error, data) => {
+                res.json({ data });
+              
+                // // updateApp20NatJoinSql
+                // sql = database.updateApp20NatJoinSql(sqlParams);
+                
+                // // Execute updateApp20NatJoinSql
+                // pgClient.query(sql, (error, data) => {
+                //   if (error) {
+                //     return res.status(400).json({ error: 'Error writing to database' });
+                //   }
+                //   res.json({ data });
+                // }); //updateApp20NatJoinSql
+              }); // updateBranch15NaturalJoinSql
+            }); // insertSql
+          }); // deactivateSql
+        }); // getDimensionIdSql
+        break;
+      case database.dbTypes.SNOWFLAKE:
+        // Execute getDimensionIdSql
+        sfClient.execute({
+          sqlText: sql,
+          complete: function(error, stmt, data) {
             if (error) {
               return res.status(400).json({ error: 'Error writing to database' });
             }
-            
             // Merge dimension values into dimension array
-            const dimValuesObj = data.rows[0];
-            const dimensionsWithVals = mergeDimVals(dimensions, dimValuesObj);
-            sqlParams.filterStatements = dimensionsWithVals.map(dim => {
+            const dimValuesObj = data[0];
+            dimensions = mergeDimVals(dimensions, dimValuesObj);
+            sqlParams.filterStatements = dimensions.map(dim => {
               return dim.idWhereClause;
             }).join(' AND ');
 
@@ -406,126 +381,63 @@ app.patch('/grid', (req, res) => {
             sql = database.deactivateSql(sqlParams);
 
             // Execute deactivateSql
-            pgClient.query(sql, (error, data) => {
-              if (error) {
-                return res.status(400).json({ error: 'Error writing to database' });
-              }
-              // Set additional sqlParams values
-              sqlParams.dimIdValues = dimensionsWithVals.map(dim => { return dim.value; });
-              sqlParams.dimIdColumns = dimensionsWithVals.map(dim => { return dim.idColName; });
-              
-              // Make insertSql
-              sql = database.insertSql(sqlParams);
-
-              // Execute insertSql
-              pgClient.query(sql, (error, data) => {
+            sfClient.execute({
+              sqlText: sql,
+              complete: function(error, stmt, data) {
                 if (error) {
-                  return res.status(400).json({ error: 'Error writing to database' });
+                  return res.status(400).json({ error: 'Error writing to database' });  
                 }
+                // Set additional sqlParams values
+                sqlParams.dimIdValues = dimensions.map(dim => { return dim.value; });
+                sqlParams.dimIdColumns = dimensions.map(dim => { return dim.idColName; });
                 
-                // updateBranch15NaturalJoinSql
-                sql = database.updateBranch15NatJoinSql(sqlParams);
-                
-                // Execute updateBranch15NaturalJoinSql
-                pgClient.query(sql, (error, data) => {
-                  if (error) {
-                    return res.status(400).json({ error: 'Error writing to database' });
-                  }
+                // Make insertSql
+                sql = database.insertSql(sqlParams);
+                    
+                // Execute insertSql
+                sfClient.execute({
+                  sqlText: sql,
+                  complete: function(error, stmt, data) {
+                    if (error) {
+                      return res.status(400).json({ error });  
+                    }
+                    // updateBranch15Sql
+                    sql = database.updateBranch15Sql(sqlParams);
+                    
+                    // Execute updateBranch15Sql
+                    sfClient.execute({
+                      sqlText: sql,
+                      complete: function(error, stmt, data) {
+                        if (error) {
+                          console.error('Failed to execute statement due to the following error: ' + error.message);
+                          return res.status(400).json({ error: 'Error writing to database' });
+                        } 
 
-                  res.json({ data });
-                
-                  // // updateApp20NatJoinSql
-                  // sql = database.updateApp20NatJoinSql(sqlParams);
-                  
-                  // // Execute updateApp20NatJoinSql
-                  // pgClient.query(sql, (error, data) => {
-                  //   if (error) {
-                  //     return res.status(400).json({ error: 'Error writing to database' });
-                  //   }
-                  //   res.json({ data });
-                  // }); //updateApp20NatJoinSql
-                }); // updateBranch15NaturalJoinSql
-              }); // insertSql
-            }); // deactivateSql
-          }); // getDimensionIdSql
-          break;
-        case database.dbTypes.SNOWFLAKE:
-          // Execute getDimensionIdSql
-          sfClient.execute({
-            sqlText: sql,
-            complete: function(error, stmt, data) {
-              if (error) {
-                return res.status(400).json({ error: 'Error writing to database' });
-              }
-              // Merge dimension values into dimension array
-              const dimValuesObj = data[0];
-              dimensions = mergeDimVals(dimensions, dimValuesObj);
-              sqlParams.filterStatements = dimensions.map(dim => {
-                return dim.idWhereClause;
-              }).join(' AND ');
-
-              // deactivateSql
-              sql = database.deactivateSql(sqlParams);
-
-              // Execute deactivateSql
-              sfClient.execute({
-                sqlText: sql,
-                complete: function(error, stmt, data) {
-                  if (error) {
-                    return res.status(400).json({ error: 'Error writing to database' });  
-                  }
-                  // Set additional sqlParams values
-                  sqlParams.dimIdValues = dimensions.map(dim => { return dim.value; });
-                  sqlParams.dimIdColumns = dimensions.map(dim => { return dim.idColName; });
-                  
-                  // Make insertSql
-                  sql = database.insertSql(sqlParams);
-                      
-                  // Execute insertSql
-                  sfClient.execute({
-                    sqlText: sql,
-                    complete: function(error, stmt, data) {
-                      if (error) {
-                        return res.status(400).json({ error });  
-                      }
-                      // updateBranch15Sql
-                      sql = database.updateBranch15Sql(sqlParams);
-                      
-                      // Execute updateBranch15Sql
-                      sfClient.execute({
-                        sqlText: sql,
-                        complete: function(error, stmt, data) {
-                          if (error) {
-                            console.error('Failed to execute statement due to the following error: ' + error.message);
-                            return res.status(400).json({ error: 'Error writing to database' });
-                          } 
-
-                          res.json({ data });
-                          
-                          // // updateApp20Sql
-                          // sql = database.updateApp20Sql(sqlParams);
-                          
-                          // // Execute updateApp20Sql
-                          // sfClient.execute({
-                          //   sqlText: sql,
-                          //   complete: function(error, stmt, data) {
-                          //     if (error) {
-                          //       return res.status(400).json({ error: 'Error writing to database' });
-                          //     }
-                          //     res.json({ data });
-                          //   } // updateApp20Sql
-                          // });
-                        } // updateBranch15Sql
-                      });
-                    } // insertSql
-                  });
-                } // deactivateSql
-              });
-            } // getDimensionIdSql
-          });
-          break;
-      } // switch(database)
-    } // !transform.isNile
+                        res.json({ data });
+                        
+                        // // updateApp20Sql
+                        // sql = database.updateApp20Sql(sqlParams);
+                        
+                        // // Execute updateApp20Sql
+                        // sfClient.execute({
+                        //   sqlText: sql,
+                        //   complete: function(error, stmt, data) {
+                        //     if (error) {
+                        //       return res.status(400).json({ error: 'Error writing to database' });
+                        //     }
+                        //     res.json({ data });
+                        //   } // updateApp20Sql
+                        // });
+                      } // updateBranch15Sql
+                    });
+                  } // insertSql
+                });
+              } // deactivateSql
+            });
+          } // getDimensionIdSql
+        });
+        break;
+    } // switch(database)
   });
 });
 

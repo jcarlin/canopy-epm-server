@@ -1,0 +1,498 @@
+{
+	"page": [{
+		"list": [{
+			"dimension": "Organization",
+			"member": "level_1_2_node",
+			"description": "Worldwide"
+		}, {
+			"dimension": "Organization",
+			"member": "level_2_168380_node",
+			"description": "United States"
+		}, {
+			"dimension": "Organization",
+			"member": "level_6_184343_leaf",
+			"description": "East Region"
+		}, {
+			"dimension": "Organization",
+			"member": "level_6_184345_leaf",
+			"description": "Central Region"
+		}, {
+			"dimension": "Organization",
+			"member": "level_6_184348_leaf",
+			"description": "West Region"
+		}]
+	}, {
+		"list": [{
+			"dimension": "Object Code",
+			"member": "49300",
+			"description": "Gross Profit"
+		}, {
+			"dimension": "Object Code",
+			"member": "4901b",
+			"description": "Sales Revenue"
+		}, {
+			"dimension": "Object Code",
+			"member": "4902b",
+			"description": "Cost of Sales"
+		}]
+	}, {
+		"list": [{
+			"dimension": "time_id",
+			"member": "20160900",
+			"description": "2016 Sep"
+		}, {
+			"dimension": "time_id",
+			"member": "20161000",
+			"description": "2016 Oct"
+		}, {
+			"dimension": "time_id",
+			"member": "20161100",
+			"description": "2016 Nov"
+		}, {
+			"dimension": "time_id",
+			"member": "20161200",
+			"description": "2016 Dec"
+		}, {
+			"dimension": "time_id",
+			"member": "20170100",
+			"description": "2017 Jan"
+		}, {
+			"dimension": "time_id",
+			"member": "20170200",
+			"description": "2017 Feb"
+		}, {
+			"dimension": "time_id",
+			"member": "20170300",
+			"description": "2017 Mar"
+		}, {
+			"dimension": "time_id",
+			"member": "20170400",
+			"description": "2017 Apr"
+		}, {
+			"dimension": "time_id",
+			"member": "20170500",
+			"description": "2017 May"
+		}, {
+			"dimension": "time_id",
+			"member": "20170600",
+			"description": "2017 Jun"
+		}, {
+			"dimension": "time_id",
+			"member": "20170700",
+			"description": "2016 Jul"
+		}, {
+			"dimension": "time_id",
+			"member": "20170800",
+			"description": "2017 Aug"
+		}]
+	}],
+	"regions": [{
+		"rowIndex": 0,
+		"colIndex": 0,
+		"rowDepth": 1,
+		"colDepth": 2,
+		"showRowHeaders": false,
+		"showColHeaders": true,
+		"includeVariance": true,
+		"includeVariancePct": true,
+		"transform": "gross_profit_variance.json",
+		"pinned": [{
+			"dimension": "Metric",
+			"member": "net_rev_trans_exp_balance"
+		}, {
+			"dimension": "Currency",
+			"member": "lc"
+		}, {
+			"dimension": "Datasrc",
+			"member": "final"
+		}, {
+			"dimension": "Organization",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Scenario",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Product",
+			"member": "all_products"
+		}],
+		"rows": [{
+			"dimension": "objectcode_id",
+			"member": "$LIST$",
+			"description": "Sales Revenue",
+			"data entry": false
+		}],
+		"columns": [{
+			"dimension": "Variation",
+			"member": "periodic",
+			"columns": [{
+					"dimension": "Scenario",
+					"member": "actual",
+					"description": "Actual",
+					"data entry": false
+				},
+				{
+					"dimension": "Scenario",
+					"member": "booked_budget",
+					"description": "Budget",
+					"data entry": false
+				}
+			]
+		}]
+	}, {
+		"rowIndex": 0,
+		"colIndex": 1,
+		"rowDepth": 1,
+		"colDepth": 2,
+		"showRowHeaders": true,
+		"showColHeaders": true,
+		"includeVariance": true,
+		"includeVariancePct": true,
+		"transform": "gross_profit_variance.json",
+		"pinned": [{
+			"dimension": "Metric",
+			"member": "net_rev_trans_exp_balance"
+		}, {
+			"dimension": "Currency",
+			"member": "lc"
+		}, {
+			"dimension": "Datasrc",
+			"member": "final"
+		}, {
+			"dimension": "Organization",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Scenario",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Product",
+			"member": "all_products"
+		}],
+		"rows": [{
+			"dimension": "objectcode_id",
+			"member": "$LIST$",
+			"description": "Sales Revenue",
+			"data entry": false
+		}],
+		"columns": [{
+			"dimension": "Variation",
+			"member": "ytd",
+			"columns": [{
+					"dimension": "Scenario",
+					"member": "actual",
+					"description": "Actual",
+					"data entry": false
+				},
+				{
+					"dimension": "Scenario",
+					"member": "booked_budget",
+					"description": "Budget",
+					"data entry": false
+				}
+			]
+		}]
+	}, {
+		"rowIndex": 1,
+		"colIndex": 0,
+		"rowDepth": 1,
+		"colDepth": 2,
+		"showRowHeaders": false,
+		"showColHeaders": false,
+		"includeVariance": true,
+		"includeVariancePct": true,
+		"transform": "gross_profit_variance.json",
+		"pinned": [{
+			"dimension": "Metric",
+			"member": "net_rev_trans_exp_balance"
+		}, {
+			"dimension": "Currency",
+			"member": "lc"
+		}, {
+			"dimension": "Datasrc",
+			"member": "final"
+		}, {
+			"dimension": "Object Code",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Organization",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Scenario",
+			"member": "$LIST$"
+		}],
+		"rows": [{
+			"dimension": "Product",
+			"member": "accessories",
+			"description": "Accessories",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "automotive",
+			"description": "Automotive",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "bluetooth_speakers",
+			"description": "Bluetooth Speakers",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "cameras",
+			"description": "Cameras",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "car_electronics",
+			"description": "Car Electronics",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "cell_phones",
+			"description": "Cell Phones",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "clothing",
+			"description": "Clothing",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "grocery",
+			"description": "Grocery",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "headphones",
+			"description": "Headphones",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "healthcare",
+			"description": "Health Care",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "home_garden",
+			"description": "Home & Garden",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "home_audio",
+			"description": "Home Audio",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "instruments",
+			"description": "Instruments",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "monitors",
+			"description": "Monitors",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "movies",
+			"description": "Movies",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "photo_video",
+			"description": "Photo & Video",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "sports_equipment",
+			"description": "Sports Equipment",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "televisions",
+			"description": "Televisions",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "toys",
+			"description": "Toys",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "video_games",
+			"description": "Video Games",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "wearable_technology",
+			"description": "Wearable Technology",
+			"data entry": false
+		}],
+		"columns": [{
+			"dimension": "Variation",
+			"member": "periodic",
+			"columns": [{
+					"dimension": "Scenario",
+					"member": "actual",
+					"description": "Actual",
+					"data entry": false
+				},
+				{
+					"dimension": "Scenario",
+					"member": "booked_budget",
+					"description": "Budget",
+					"data entry": false
+				}
+			]
+		}]
+	}, {
+		"rowIndex": 1,
+		"colIndex": 1,
+		"rowDepth": 1,
+		"colDepth": 2,
+		"showRowHeaders": true,
+		"showColHeaders": false,
+		"includeVariance": true,
+		"includeVariancePct": true,
+		"transform": "gross_profit_variance.json",
+		"pinned": [{
+			"dimension": "Metric",
+			"member": "net_rev_trans_exp_balance"
+		}, {
+			"dimension": "Currency",
+			"member": "lc"
+		}, {
+			"dimension": "Datasrc",
+			"member": "final"
+		}, {
+			"dimension": "Object Code",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Organization",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Scenario",
+			"member": "$LIST$"
+		}],
+		"rows": [{
+			"dimension": "Product",
+			"member": "accessories",
+			"description": "Accessories",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "automotive",
+			"description": "Automotive",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "bluetooth_speakers",
+			"description": "Bluetooth Speakers",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "cameras",
+			"description": "Cameras",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "car_electronics",
+			"description": "Car Electronics",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "cell_phones",
+			"description": "Cell Phones",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "clothing",
+			"description": "Clothing",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "grocery",
+			"description": "Grocery",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "headphones",
+			"description": "Headphones",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "healthcare",
+			"description": "Health Care",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "home_garden",
+			"description": "Home & Garden",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "home_audio",
+			"description": "Home Audio",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "instruments",
+			"description": "Instruments",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "monitors",
+			"description": "Monitors",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "movies",
+			"description": "Movies",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "photo_video",
+			"description": "Photo & Video",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "sports_equipment",
+			"description": "Sports Equipment",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "televisions",
+			"description": "Televisions",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "toys",
+			"description": "Toys",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "video_games",
+			"description": "Video Games",
+			"data entry": false
+		}, {
+			"dimension": "Product",
+			"member": "wearable_technology",
+			"description": "Wearable Technology",
+			"data entry": false
+		}],
+		"columns": [{
+			"dimension": "Variation",
+			"member": "ytd",
+			"columns": [{
+					"dimension": "Scenario",
+					"member": "actual",
+					"description": "Actual",
+					"data entry": false
+				},
+				{
+					"dimension": "Scenario",
+					"member": "booked_budget",
+					"description": "Budget",
+					"data entry": false
+				}
+			]
+		}]
+	}]
+}
