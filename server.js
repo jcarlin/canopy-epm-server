@@ -55,10 +55,6 @@ app.use(
   })
 );
 
-// Define database clients/connections
-const pgClient = new pg.Client(database.getDbConnSettings(database.dbTypes.POSTGRESQL));
-const sfClient = snowflake.createConnection(database.getDbConnSettings(database.dbTypes.SNOWFLAKE));
-
 const checkJwt = jwt({
   secret: jwksRsa.expressJwtSecret({
     cache: true,
@@ -81,8 +77,37 @@ app.use(cors());
 // access token produced by Auth0
 // app.use(checkJwt);
 
+// Error Handler
+app.use(function(err, req, res, next) {
+  console.log('*MIDDLEWARE ERROR*');
+  res.status(500);
+  res.render('error', { error: err });
+});
+
+// Define database clients/connections and method for querying
+const pgClient = new pg.Client(database.getDbConnSettings(database.dbTypes.POSTGRESQL));
+const sfClient = snowflake.createConnection(database.getDbConnSettings(database.dbTypes.SNOWFLAKE));
+
+const dbClientQuery = (sql, callback) => {
+  if (process.env.DATABASE == database.dbTypes.POSTGRESQL) {
+    pgClient.query(sql, (err, data) => {
+      callback(err, data.rows);
+    });
+  } else if (process.env.DATABASE == database.dbTypes.SNOWFLAKE) {
+    sfClient.execute({
+      sqlText: sql,
+      complete: function(err, stmt, data) {
+        callback(err, data);
+      }
+    }); 
+  }
+};
+
+/**
+ * Express routes
+ */
+
 app.get('/database', (req, res) => {
-  console.log('GET /database process.env.DATABASE: ', process.env.DATABASE);
   const dbMap = database.dbConnections.map(conn => {
     conn.active = (conn.type == process.env.DATABASE);
     return conn;
@@ -92,10 +117,6 @@ app.get('/database', (req, res) => {
 });
 
 app.post('/database', (req, res) => {
-  debug('POST /database');
-  console.log('POST /database process.env.DATABASE BEFORE: ', process.env.DATABASE);
-  console.log('POST /database req.body.database: ', req.body.database);
-  
   if (!req.body.database || !database.dbTypes[req.body.database.toUpperCase()]) {
     return res.status(400).json({
       error: 'You must supply a database. Send it on an object with a `database` key: { database: ... }'
@@ -103,7 +124,6 @@ app.post('/database', (req, res) => {
   }
 
   process.env.DATABASE = database.dbTypes[req.body.database.toUpperCase()];
-  console.log('POST /database process.env.DATABASE AFTER: ', process.env.DATABASE);
 
   const dbMap = database.dbConnections.map(conn => {
     conn.active = (conn.type == process.env.DATABASE);
@@ -118,134 +138,88 @@ app.post('/database', (req, res) => {
  * a hydrated manifest, send back the completely
  * built table data ready to be consumed by ag-grid.
  */
-app.post('/grid', (req, res) => {
-  debug('POST /grid');
-  if (!req.body.manifest) {
-    return res.status(400).json({
-      error:
-        'You must supply a manifest. Send it on an object with a `manfifest` key: { manifest: ... }'
-    });
-  }
-
+app.post('/grid', (req, res, next) => {
   try {
+    if (!req.body.manifest) throw `You must supply a manifest. 
+      Send it on an object with a 'manfifest' key: { manifest: ... }`;
+
+    const db = Number(process.env.DATABASE); // Why is this converting to string??
     const manifest = req.body.manifest;
     const pinned = getPinnedSet(manifest.regions[0].pinned);
     const includeVariance = manifest.regions[0].includeVariance;
     const includeVariancePct = manifest.regions[0].includeVariancePct;
     const dimensionsWithKeys = mergeDimKeys(pinned, dimKeys);
     const tableData = buildTableData(manifest); // manifest -> something ag-grid can use
+    let transform = null;
+
+    // Get and parse transform
+    const getTransform = callback => {
+      fs.readFile(`./transforms/${tableData.transforms[0]}`, 'utf8', (err, data) => {
+        if (err) callback(err);
+
+        transform = JSON.parse(data);
+        sql = database.getDimensionIdSql(dimensionsWithKeys);
+        callback(null, sql);
+      });
+    };
+
+    // Assemble sql for query
+    const buildDataSetQuery = (result, callback) => {
+      const dimensionsWithVals = mergeDimVals(dimensionsWithKeys, result[0]);
+      const filterStatements = dimensionsWithVals.map(dim => {
+        return dim.idWhereClause;
+      }).join(' AND ');
+      
+      const sqlParams = {
+        dimensions: transform.dimensions,
+        metrics: transform.metrics.map(metric => `"${metric}"`).join(','),
+        tableName: transform.table,
+        filterStatements: filterStatements
+      };
+      
+      // Set params according to db nuances
+      if (db === database.dbTypes.SNOWFLAKE) {
+        sqlParams.metrics = transform.metrics.map(metric => `"${metric.toUpperCase().split(' ').join('_')}"`).join(',');
+        sqlParams.tableName = transform.table.split(' ').join('_');
+      }
+
+      sql = database.querySql(sqlParams);
+      callback(null, sql);
+    };
 
     // Format response object
-    const stitchData = dbData => {
+    const stitchData = (result, callback) => {
       if (process.env.DATABASE == database.dbTypes.SNOWFLAKE) {        
-        dbData = dbData.map(row => {
-          return _.transform(row, function (result, val, key) {
-            result[key.toLowerCase()] = val;
+        result = result.map(row => {
+          return _.transform(row, function (res, val, key) {
+            res[key.toLowerCase()] = val;
           });
         });
       }
         
-      const producedData = stitchDatabaseData(manifest, tableData, dbData);
+      let producedData = stitchDatabaseData(manifest, tableData, result);
 
       if (includeVariance && includeVariancePct) {
-        const finalData = produceVariance(producedData); 
-        return res.json(finalData);
+        producedData = produceVariance(producedData); 
       }
 
-      return res.json(producedData);
+      callback(null, producedData);
     };
 
-    fs.readFile(`./transforms/${tableData.transforms[0]}`, 'utf8', (err, data) => {
-      if (err) {
-        return res.status(400).json({
-          error: `Could not find transform: ${tableData.transforms[0]}`
-        });
-      }
-
-      let sql = null;
-      const transform = JSON.parse(data);
-      const dimensions = transform.dimensions;
-      const sqlParams = {
-        dimensions: dimensions,
-        metrics: null,
-        tableName: transform.table,
-        filterStatements: null
-      };
-      
-      // getDimensionIdSql
-      sql = database.getDimensionIdSql(dimensionsWithKeys);
-      
-      // Why is this converting to string??
-      const db = Number(process.env.DATABASE);
-      switch(db) {
-        case database.dbTypes.SNOWFLAKE:
-          
-          // Set params according to db nuances
-          sqlParams.metrics = transform.metrics.map(metric => `"${metric.toUpperCase().split(' ').join('_')}"`).join(',');
-          sqlParams.table = transform.table.split(' ').join('_');
-          
-          // Execute getDimensionIdSql
-          sfClient.execute({
-            sqlText: sql,
-            complete: function(err, stmt, data) {
-              if (err) {
-                return res.status(400).json({ err: 'Error writing to database' + err.message });
-              }
-              
-              // Merge dimension values into dimension array
-              const dimValuesObj = data[0];
-              const dimensionsWithVals = mergeDimVals(dimensionsWithKeys, dimValuesObj);
-              
-              sqlParams.filterStatements = dimensionsWithVals.map(dim => {
-                return dim.idWhereClause;
-              }).join(' AND ');
-    
-              // querySql
-              sql = database.querySql(sqlParams);          
-              sfClient.execute({
-                sqlText: sql,
-                complete: function(error, stmt, data) {
-                  if (error) {
-                    return res.json({ error });
-                  }
-
-                  stitchData(data);
-                } // querySql
-              });
-            } // getDimensionIdSql
-          });
-          break;
-        case database.dbTypes.POSTGRESQL:
-          // Set params according to db nuances
-          sqlParams.metrics = transform.metrics.map(metric => `"${metric}"`).join(',');
-          
-          // Execute getDimensionIdSql
-          pgClient.query(sql, (error, data) => {
-            if (error) {
-              return res.status(400).json({ error: 'Error writing to database' });
-            }
-            // Merge dimension values into dimension array
-            const dimValuesObj = data.rows[0];
-            const dimensionsWithVals = mergeDimVals(dimensionsWithKeys, dimValuesObj);
-            
-            sqlParams.filterStatements = dimensionsWithVals.map(dim => {
-              return dim.idWhereClause;
-            }).join(' AND ');
-  
-            // querySql
-            sql = database.querySql(sqlParams);          
-            pgClient.query(sql, (error, data) => {
-              if (error) {
-                return res.json({ error });
-              }
-              stitchData(data.rows);
-            }); // querySql
-          }); // getDimensionIdSql
-          break;
-      }
+    // Process these functions in order, passing results to each subsequent function
+    async.waterfall([
+      getTransform,
+      dbClientQuery,
+      buildDataSetQuery,
+      dbClientQuery,
+      stitchData
+    ],
+    function(err, tableData) {
+      if (err) return next(err);
+      return res.json(tableData); // And, finally, return tableData
     });
-  } catch(err) {
-    return res.status(400).json({ error: 'POST /grid threw an error: ' + err });
+  } catch (err) {
+    return next(err);
   }
 });
 
