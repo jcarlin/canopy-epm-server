@@ -62,6 +62,18 @@
       ]
     },
     {
+      "id":207,
+      "name":"prod_shaper_node",
+      "grainType":"block",
+      "cached":true,
+      "memberSets":[
+        {	"memberSetType":"compute","dimension":"product","hierarchy":"producttype","dimColumnName":"product_leaf","goofyColumnName":"product_node",
+          "memberSetCode":[
+            {"database":"postgres","code":"SELECT goofy_d2_id AS d2_id, d2_id AS goofy_d2_id FROM grain_204 WHERE d2_id IN (2, 16,24,10,6,8,7,22,19,11,20,5,18,12,15,17,14,23,4,21,9,13);"}
+        ]}
+      ]
+    },
+    {
       "id":301,
       "name":"curr_lc",
       "grainType":"brick",
@@ -125,6 +137,18 @@
       "cached":true,
       "memberSets":[
         {"memberSetType":"evaluated","dimension":"datasrc","members":["edw_ga_activity"]}
+      ]
+    },
+    {
+      "id":407,
+      "name":"dats_final",
+      "grainType":"block",
+      "cached":true,
+      "memberSets":[
+        {	"memberSetType":"compute","dimension":"datasrc","hierarchy":"datasrcalternate","dimColumnName":"datasrc_leaf","goofyColumnName":"datasrc_node",
+          "memberSetCode":[
+            {"database":"postgres","code":"SELECT goofy_d4_id AS d4_id, d4_id AS goofy_d4_id FROM grain_404 WHERE d4_id = (SELECT d4_id FROM dim_4 WHERE d4_name = 'final') ORDER BY gr404_oid;"}
+        ]}
       ]
     },
     {
@@ -197,6 +221,18 @@
       ]
     },
     {
+      "id":516,
+      "name":"objc_profit_by_time",
+      "grainType":"block",
+      "cached":true,
+      "memberSets":[
+        {	"memberSetType":"compute","dimension":"objectcode","dimColumnName":"objectcode_leaf","goofyColumnName":"objectcode_node",
+          "memberSetCode":[
+            {"database":"postgres","code":"SELECT goofy_d5_id AS d5_id, d5_id AS goofy_d5_id FROM grain_505 WHERE d5_id = 460 UNION SELECT 461, 461 UNION SELECT 463, 463;"}
+        ]}
+      ]
+    },
+    {
       "id":601,
       "name":"orga_top_nodes",
       "grainType":"brick",
@@ -250,6 +286,18 @@
         {	"memberSetType":"compute","dimension":"organization","hierarchy":"award","dimColumnName":"organization_leaf","goofyColumnName":"organization_node",
           "memberSetCode":[
             {"database":"postgres","code":"SELECT goofy_d6_id AS d6_id, d6_id AS goofy_d6_id FROM grain_605 WHERE d6_id IN (SELECT d6_id FROM dim_6 WHERE d6_name IN ('level_1_2_node','level_2_83307_node','level_2_3_node')) ORDER BY gr605_oid;"}
+        ]}
+      ]
+    },
+    {
+      "id":607,
+      "name":"orga_shaper_profit_by_time",
+      "grainType":"block",
+      "cached":true,
+      "memberSets":[
+        {	"memberSetType":"compute","dimension":"organization","hierarchy":"award","dimColumnName":"organization_leaf","goofyColumnName":"organization_node",
+          "memberSetCode":[
+            {"database":"postgres","code":"SELECT goofy_d6_id AS d6_id, d6_id AS goofy_d6_id FROM grain_605 WHERE d6_id IN (SELECT d6_id FROM dim_6 WHERE d6_name IN ('level_1_2_node','level_2_168380_node')) UNION SELECT 184343, 184343 UNION SELECT 184345, 184345 UNION SELECT 184348, 184348;"}
         ]}
       ]
     },
@@ -340,6 +388,18 @@
         {	"memberSetType":"compute","dimension":"time","hierarchy":"fiscal","dimColumnName":"time_leaf","goofyColumnName":"time_node",
           "memberSetCode":[
             {"database":"postgres","code":"SELECT goofy_d9_id AS d9_id, d9_id AS goofy_d9_id FROM grain_905 WHERE d9_id IN (SELECT d9_id FROM dim_9 WHERE d9_name IN ('2016_fy','2017_fy','2018_fy')) ORDER BY gr905_oid;"}
+        ]}
+      ]
+    },
+    {
+      "id":909,
+      "name":"time_shaper_fy2017",
+      "grainType":"block",
+      "cached":true,
+      "memberSets":[
+        {	"memberSetType":"compute","dimension":"time","hierarchy":"fiscal","dimColumnName":"time_leaf","goofyColumnName":"time_node",
+          "memberSetCode":[
+            {"database":"postgres","code":"SELECT goofy_d9_id AS d9_id, d9_id AS goofy_d9_id FROM grain_905 WHERE d9_id IN (SELECT d9_id FROM dim_9 WHERE d9_name = '2017_fy') UNION SELECT 194, 194 UNION SELECT 195, 195 UNION SELECT 196, 196 UNION SELECT 198, 198 UNION  SELECT 199, 199 UNION SELECT 200, 200 UNION SELECT 202, 202 UNION SELECT 203, 203 UNION SELECT 204, 204 UNION SELECT 206, 206 UNION SELECT 207, 207 UNION SELECT 208, 208 ORDER BY goofy_d9_id;"}
         ]}
       ]
     },

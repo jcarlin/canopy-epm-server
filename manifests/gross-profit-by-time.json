@@ -11,7 +11,7 @@
 		}, {
 			"dimension": "Organization",
 			"member": "level_6_184343_leaf",
-			"description": "East Region"
+			"description": "East Region"  
 		}, {
 			"dimension": "Organization",
 			"member": "level_6_184345_leaf",
@@ -33,15 +33,15 @@
 		}]
 	}, {
 		"list": [{
-			"dimension": "Object Code",
+			"dimension": "Objectcode",
 			"member": "49300",
 			"description": "Gross Profit"
 		}, {
-			"dimension": "Object Code",
+			"dimension": "Objectcode",
 			"member": "4901b",
 			"description": "Sales Revenue"
 		}, {
-			"dimension": "Object Code",
+			"dimension": "Objectcode",
 			"member": "4902b",
 			"description": "Cost of Sales"
 		}]
@@ -62,7 +62,7 @@
 		"rowDepth": 1,
 		"colDepth": 1,
 		"showRowHeaders": true,
-		"showColHeaders": true,
+		"showColHeaders": false,
 		"includeVariance": false,
 		"includeVariancePct": false,
 		"transform": "gross_profit_by_time.json",
@@ -75,6 +75,9 @@
 		}, {
 			"dimension": "Datasrc",
 			"member": "final"
+    }, {
+			"dimension": "Objectcode",
+			"member": "$LIST$"
 		}, {
 			"dimension": "Organization",
 			"member": "$LIST$"
@@ -82,16 +85,13 @@
 			"dimension": "Scenario",
 			"member": "$LIST$"
 		}, {
-			"dimension": "Product",
-			"member": "all_products"
-		}, {
 			"dimension": "Variation",
 			"member": "$LIST$"
 		}],
 		"rows": [{
-			"dimension": "objectcode_id",
-			"member": "$LIST$",
-			"description": "Sales Revenue",
+			"dimension": "product_id",
+      "member": "all_products",
+      "description": "All Products",
 			"data entry": false
 		}],
 		"columns": [{
@@ -160,7 +160,8 @@
 			"description": "FY 2017",
 			"data entry": false
 		}]
-	}, {
+  },
+  {
 		"rowIndex": 1,
 		"colIndex": 0,
 		"rowDepth": 1,
@@ -180,7 +181,7 @@
 			"dimension": "Datasrc",
 			"member": "final"
 		}, {
-			"dimension": "Object Code",
+			"dimension": "Objectcode",
 			"member": "$LIST$"
 		}, {
 			"dimension": "Organization",
@@ -193,107 +194,107 @@
 			"member": "$LIST$"
 		}],
 		"rows": [{
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "accessories",
 			"description": "Accessories",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "automotive",
 			"description": "Automotive",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "bluetooth_speakers",
 			"description": "Bluetooth Speakers",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "cameras",
 			"description": "Cameras",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "car_electronics",
 			"description": "Car Electronics",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "cell_phones",
 			"description": "Cell Phones",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "clothing",
 			"description": "Clothing",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "grocery",
 			"description": "Grocery",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "headphones",
 			"description": "Headphones",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "healthcare",
 			"description": "Health Care",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "home_garden",
 			"description": "Home & Garden",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "home_audio",
 			"description": "Home Audio",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "instruments",
 			"description": "Instruments",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "monitors",
 			"description": "Monitors",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "movies",
 			"description": "Movies",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "photo_video",
 			"description": "Photo & Video",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "sports_equipment",
 			"description": "Sports Equipment",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "televisions",
 			"description": "Televisions",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "toys",
 			"description": "Toys",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "video_games",
 			"description": "Video Games",
 			"data entry": false
 		}, {
-			"dimension": "Product",
+			"dimension": "product_id",
 			"member": "wearable_technology",
 			"description": "Wearable Technology",
 			"data entry": false

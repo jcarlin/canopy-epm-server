@@ -53,17 +53,21 @@ const pgClient = new pg.Client(database.getDbConnSettings(database.dbTypes.POSTG
 const sfClient = snowflake.createConnection(database.getDbConnSettings(database.dbTypes.SNOWFLAKE));
 
 const dbClientQuery = (sql, callback) => {
-  if (process.env.DATABASE == database.dbTypes.POSTGRESQL) {
-    pgClient.query(sql, (err, data) => {
-      callback(err, data ? data.rows : data);
-    });
-  } else if (process.env.DATABASE == database.dbTypes.SNOWFLAKE) {
-    sfClient.execute({
-      sqlText: sql,
-      complete: function(err, stmt, data) {
-        callback(err, data);
-      }
-    }); 
+  try {
+    if (process.env.DATABASE == database.dbTypes.POSTGRESQL) {
+      pgClient.query(sql, (err, data) => {
+        callback(err, data ? data.rows : data);
+      });
+    } else if (process.env.DATABASE == database.dbTypes.SNOWFLAKE) {
+      sfClient.execute({
+        sqlText: sql,
+        complete: function(err, stmt, data) {
+          callback(err, data);
+        }
+      }); 
+    }
+  } catch(err) {
+    return next(err);
   }
 };
 
@@ -112,7 +116,6 @@ app.get('/database', (req, res, next) => {
       conn.active = (conn.type == process.env.DATABASE);
       return conn;
     });
-    
     return res.json(dbMap);
   } catch(err) {
     next(err);
@@ -155,12 +158,18 @@ app.post('/grid', (req, res, next) => {
       });
     }
 
+    
+
     const db = Number(process.env.DATABASE); // Why is this converting to string??
     const manifest = req.body.manifest;
+    console.log('manifest: ', JSON.stringify(manifest));
     const pinned = getPinnedSet(manifest.regions[0].pinned);
     const includeVariance = manifest.regions[0].includeVariance;
     const includeVariancePct = manifest.regions[0].includeVariancePct;
     const dimensionsWithKeys = mergeDimKeys(pinned, dimKeys);
+    debug('dimensionsWithKeys: ', dimensionsWithKeys);
+
+    console.log('dimensionsWithKeys: ', dimensionsWithKeys);
     const tableData = buildTableData(manifest); // manifest -> something ag-grid can use
     let transform = null;
 
@@ -174,7 +183,7 @@ app.post('/grid', (req, res, next) => {
       });
     };
 
-    const getDimensionIds = (transform, callback) => {  
+    const getDimensionIds = (transform, callback) => {
       sql = database.getDimensionIdSql(dimensionsWithKeys);
       dbClientQuery(sql, callback);
     };
@@ -363,7 +372,7 @@ app.get('/manifest', (req, res, next) => {
       return res.json({ manifest });
     });
   } catch(err) {
-    next(err);
+    return next(err);
   }
 });
 
@@ -389,7 +398,7 @@ app.get('/statistics', (req, res, next) => {
       });
     });
   } catch(err) {
-    next(err);
+    return next(err);
   }
 });
 
@@ -408,130 +417,118 @@ app.post('/test-manifest', (req, res, next) => {
     const tableData = buildTableData(req.body.manifest);
     return res.json(tableData);
   } catch(err) {
-    next(err);
+    return next(err);
   }
 });
 
 // Utility end point to output sql string of all graindef scripts
-app.get('/grain', (req, res, next) => {
+app.get('/graindef', (req, res, next) => {
   try {
     return res.json({grainDefs});
   } catch (err) {
-    next(err);
+    return next(err);
   }
 });
 
 /**
  * System admin utility route to handle creation of grain tables
- * 
- * 2018-01-03 run time: 5m7s
  */
-app.post('/grain', (req, res, next) => {
+app.post('/graindef/update', (req, res, next) => {
   try {
-    const grainSack = grainDefs.grainSack;
+    const grainDefId = req.body.id;
+    let grainSack = grainDefs.grainSack;
     const dimKeys = grainDefs.dimKeys;
     const hierKeys = grainDefs.hierKeys;
     let allQueryStrings = '';
     let tableCount = 0;
 
-    // Cycle through the grainDefs array of grainDef objects and for each, cycle through it's memberSet array
-    const grainDefsMap = () => {
-      grainSack.map(grainDef => {
-        const memberSets = mapMemberSets(grainDef);
-      });
-    };
-
     // Cycle through each memberSet array object
-    const mapMemberSets = (grainDef) => {
-      // Get diminfo from the dimInfo key, matched by memberSet's dimension
-      grainDef.memberSets.map(member => {
-        tableCount++;
-        let queryStrings = "";
-
-        // Get dimension info
-        const dimInfo = dimKeys.find(dimKey => {
-          return dimKey.name === member.dimension;
+    const mapMemberSets = (callback) => {
+      if (grainDefId) {
+        grainSack = grainSack.filter(grainDef => {
+          return grainDef.id == grainDefId;
         });
+      }
 
-        // params for the sql generation for this grainDef
-        const sqlParams = {
-          members: `'${member.members}'`,
-          grainTableName: `grain_${grainDef.id}`,
-          grainDefName: grainDef.name,
-          grainDefId: grainDef.id,
-          grainSerName: `gr${grainDef.id}_oid`,
-          dimNumber: dimInfo.id,
-          dimByte: dimInfo.byte === 2 ? 'SMALLINT' : 'INTEGER'
-        };
+      // parse through each grainDef
+      for (let i = 0, len = grainSack.length; i < len; i++) {
+        let grainDef = grainSack[i];
 
-        // Get hierarchy info
-        if (member.hierarchy) {
-          const hierInfo = hierKeys.find(hierKey => {
-            return hierKey.name === member.hierarchy;
+        // Get diminfo from the dimInfo key, matched by memberSet's dimension
+        for (let i=0, len = grainDef.memberSets.length; i < len; i++) {
+          const member = grainDef.memberSets[i];
+          let queryStrings = "";
+          
+          tableCount++;
+
+          // Get dimension info
+          const dimInfo = dimKeys.find(dimKey => {
+            return dimKey.name === member.dimension;
           });
 
-          sqlParams.hierNumber = hierInfo.id;
-          sqlParams.hierName = member.hierarchy;
-        }
-        
-        // assemble the sql for the brick/block creation
-        if (grainDef.grainType === "brick" && member.memberSetType === "evaluated") {
-          queryStrings = makeGrainBrickQueryStrings(sqlParams);
-        } else if (grainDef.grainType === "block") {
-          // TODO: remove this hack (that grabs the parent grainDef (table))
-          if (member.platformType === "node_leaf") {
-            let parentDimNumber = grainDef.id -1;
-            member.parentTableName = `grain_${parentDimNumber}`
-          }
+          // params for the sql generation for this grainDef
+          const sqlParams = {
+            members: `'${member.members}'`,
+            grainTableName: `grain_${grainDef.id}`,
+            grainDefName: grainDef.name,
+            grainDefId: grainDef.id,
+            grainSerName: `gr${grainDef.id}_oid`,
+            dimNumber: dimInfo.id,
+            dimByte: dimInfo.byte === 2 ? 'SMALLINT' : 'INTEGER'
+          };
 
-          // Extract object with database postgres
-          if (member.memberSetType === "compute") {
-            member.memberSetCode = member.memberSetCode.find(msc => {
-              return msc.database === "postgres";
+          // Get hierarchy info
+          if (member.hierarchy) {
+            const hierInfo = hierKeys.find(hierKey => {
+              return hierKey.name === member.hierarchy;
             });
+
+            sqlParams.hierNumber = hierInfo.id;
+            sqlParams.hierName = member.hierarchy;
           }
-          queryStrings = makeGrainBlockQueryStrings(sqlParams, {"memberSet": member});
-        }
-        
-        // Leaving out view sql for now
-        // allQueryStrings = `${allQueryStrings}${queryStrings}${makeAppNetRevView()}${makeObjectCodeByTimeView()}`;
-        
-        allQueryStrings = `${allQueryStrings}${queryStrings}`;
-      });
-    };
+          
+          // assemble the sql for the brick/block creation
+          if (grainDef.grainType === "brick" && member.memberSetType === "evaluated") {
+            queryStrings = makeGrainBrickQueryStrings(sqlParams);
+          } else if (grainDef.grainType === "block") {
+            // TODO: remove this hack (that grabs the parent grainDef (table))
+            if (member.platformType === "node_leaf") {
+              let parentDimNumber = grainDef.id -1;
+              member.parentTableName = `grain_${parentDimNumber}`
+            }
 
-    const execGrainSql = (sql, callback) => {
-      pgClient.query(sql, (error, data) => {
-        if (error) {
-          console.log(error);
-          return res.status(400).json({ error: 'Error writing to database.' + `${error}` });
-        }
-        return;
-      });
-    };
-    
-    // Async/await function that calls the above 3 functions
-    const executeGrainDefSql = async () => {
-      try {
-        const gd = await grainDefsMap();
-        const logSql = await console.log('graindef sql: ', allQueryStrings);
-        const dbResults = await execGrainSql(allQueryStrings, (results) => {
-          if (results == "error") {
-            return res.status(400).json({ error: results });
+            // Extract object with database postgres
+            if (member.memberSetType === "compute") {
+              member.memberSetCode = member.memberSetCode.find(msc => {
+                return msc.database === "postgres";
+              });
+            }
+            queryStrings = makeGrainBlockQueryStrings(sqlParams, {"memberSet": member});
           }
+          
+          // Leaving out view sql for now
+          // allQueryStrings = `${allQueryStrings}${queryStrings}${makeAppNetRevView()}${makeObjectCodeByTimeView()}`;
+          allQueryStrings = `${allQueryStrings}${queryStrings}`;
+        }
+      }
 
-          return res.json({"tableCount": tableCount});
-        });
-      }
-      catch(err) {
-        console.log("/grain executeGrainDefSql error: ", err);
-        return res.status(400).json({ error: err });
-      }
+      callback(allQueryStrings);
     };
 
-    executeGrainDefSql();
+    // Process these functions in order, passing results to each subsequent function
+    async.waterfall([
+      mapMemberSets,
+      dbClientQuery
+    ],
+    function(err, results) {
+      if (err) {
+        debug('async waterfall err: ', err);
+        return next(err);
+      }
+      return res.json({ tableCount: tableCount });
+    });
   } catch(err) {
-    next(err);
+    return next(err);
   }
 });
 
@@ -539,27 +536,29 @@ app.post('/grain', (req, res, next) => {
  * TODO: move these tasks to another file
  */
 const startupTasks = () => {
-  fs.readFile('./graindefs/grainDefs.json', 'utf8', (err, data) => {
-    if (err) {
-      console.log("Error reading grainDefs.json");
-      return;
-    }
-    grainDefs = JSON.parse(data);
-    dimKeys = grainDefs.dimKeys;
-    factKeys = grainDefs.factKeys;
-  });
-
-  let sqlTasks = [
-    'SET search_path TO elt;',
-    'CREATE EXTENSION IF NOT EXISTS hstore SCHEMA pg_catalog;'
-  ];
-
-  for (let sql of sqlTasks) {
-    pgClient.query(sql, (error, data) => {
-      if (error) {
-        console.log(error);
+  try {
+    fs.readFile('./graindefs/grainDefs.json', 'utf8', (err, data) => {
+      if (err) {
+        console.log("Error reading grainDefs.json");
+        return;
       }
+      grainDefs = JSON.parse(data);
+      dimKeys = grainDefs.dimKeys;
+      factKeys = grainDefs.factKeys;
     });
+  
+    let sqlTasks = [
+      'SET search_path TO elt;',
+      'CREATE EXTENSION IF NOT EXISTS hstore SCHEMA pg_catalog;'
+    ];
+  
+    for (let sql of sqlTasks) {
+      dbClientQuery(sql, (err, results) => {
+        if (err) return next(err);
+      })
+    }
+  } catch(err) {
+    return next(err);
   }
 }
 
@@ -591,7 +590,7 @@ async function connect() {
     console.log(`Express app started on port ${port}`);
     console.log('process.env.DATABASE: ', process.env.DATABASE);
   } catch (err) {
-    next(err);
+    return next(err);
   }
 }
 

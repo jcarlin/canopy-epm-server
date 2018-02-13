@@ -46,8 +46,6 @@ const makeGrainBrickQueryStrings = (params) => {
 
             ${addPrimaryKeySql}
 
-            ${grainTableSelectSql}
-
             ${grainViewSql}
             
             ` ];
@@ -219,8 +217,6 @@ const makeGrainBlockQueryStrings = (params, options) => {
             ${grainTableInsertSql}
 
             ${addPrimaryKeySql}
-
-            ${grainTableSelectSql}
 
             ${grainViewSql}
             
