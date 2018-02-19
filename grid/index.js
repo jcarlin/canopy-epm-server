@@ -1,4 +1,3 @@
-const debug = require('debug')('log');
 const { makeLowerCase } = require('./../util');
 
 const extractKeySet = rawKey => {
@@ -78,16 +77,16 @@ const stitchDatabaseData = (manifest, tableData, dbData) => {
 
         // debug
         if (!loggedToConsole) {
-          debug('stitchDataBaseData() ... ');
-          debug('colIndex: ' + JSON.stringify(colIndex));
-          debug('rowIndex: ' + JSON.stringify(rowIndex));
-          debug('columnKeys: ' + JSON.stringify(columnKeys));
-          debug('rowKeys: ' + JSON.stringify(rowKeys));
-          debug('rowKeyStrings: ' + JSON.stringify(rowKeyStrings));
-          debug('columnKeyStrings: ' + JSON.stringify(columnKeyStrings));
-          debug('joinedColumnKeys: ' + JSON.stringify(joinedColumnKeys));
-          debug('joinedRowKeys: ' + JSON.stringify(joinedRowKeys));
-          debug('totalMatchString: ' + JSON.stringify(totalMatchString));
+          console.log('stitchDataBaseData() ... ');
+          console.log('colIndex: ' + JSON.stringify(colIndex));
+          console.log('rowIndex: ' + JSON.stringify(rowIndex));
+          console.log('columnKeys: ' + JSON.stringify(columnKeys));
+          console.log('rowKeys: ' + JSON.stringify(rowKeys));
+          console.log('rowKeyStrings: ' + JSON.stringify(rowKeyStrings));
+          console.log('columnKeyStrings: ' + JSON.stringify(columnKeyStrings));
+          console.log('joinedColumnKeys: ' + JSON.stringify(joinedColumnKeys));
+          console.log('joinedRowKeys: ' + JSON.stringify(joinedRowKeys));
+          console.log('totalMatchString: ' + JSON.stringify(totalMatchString));
           loggedToConsole = true;
         }
 
@@ -114,6 +113,60 @@ const stitchDatabaseData = (manifest, tableData, dbData) => {
   return tableData;
 };
 
+const stitchDatabaseRegionData = (region, tableData, dbData) => {
+  let loggedToConsole = false;
+
+  tableData.rowDefs.forEach(def => {
+    const keys = Object.keys(def);
+
+    keys.forEach(key => {
+      if (typeof def[key] === 'object') {
+        const colIndex = def[key].colIndex;
+        const rowIndex = def[key].rowIndex;
+        const columnKeys = extractKeySet(def[key].columnKey);
+        const rowKeys = extractKeySet(def[key].rowKey);
+        const rowKeyStrings = produceKeyStrings(rowKeys);
+        const columnKeyStrings = produceKeyStrings(columnKeys);
+        const joinedColumnKeys = columnKeyStrings.join(' && ');
+        const joinedRowKeys = rowKeyStrings.join(' && ');
+        const totalMatchString = `${joinedColumnKeys} && ${joinedRowKeys}`;
+
+        // debug
+        if (!loggedToConsole) {
+          console.log('stitchDataBaseData() ... ');
+          console.log('colIndex: ' + JSON.stringify(colIndex));
+          console.log('rowIndex: ' + JSON.stringify(rowIndex));
+          console.log('columnKeys: ' + JSON.stringify(columnKeys));
+          console.log('rowKeys: ' + JSON.stringify(rowKeys));
+          console.log('rowKeyStrings: ' + JSON.stringify(rowKeyStrings));
+          console.log('columnKeyStrings: ' + JSON.stringify(columnKeyStrings));
+          console.log('joinedColumnKeys: ' + JSON.stringify(joinedColumnKeys));
+          console.log('joinedRowKeys: ' + JSON.stringify(joinedRowKeys));
+          console.log('totalMatchString: ' + JSON.stringify(totalMatchString));
+          loggedToConsole = true;
+        }
+        
+        match = dbData.find(row => {
+          return eval(totalMatchString);
+        });
+
+        match
+          ? (def[key].value = match[region.pinned[0].member])
+          : (def[key].value = null);
+
+        // Set the value (number) of the cell
+        if (match) {
+          // Put any desired rounding here. Currently handled in the client: https://goo.gl/J7CKFp
+          def[key].value = match[region.pinned[0].member];
+        } else {
+          def[key].value = null;
+        }
+      }
+    });
+  });
+  return tableData;
+};
+
 const getPinnedSet = pinned => {
   return pinned.filter(pin => pin.dimension !== 'Metric').map(pin => {
     return {
@@ -123,4 +176,4 @@ const getPinnedSet = pinned => {
   });
 };
 
-module.exports = { extractKeySet, extractKeySetAndId, stitchDatabaseData, produceVariance, getPinnedSet };
+module.exports = { extractKeySet, extractKeySetAndId, stitchDatabaseData, stitchDatabaseRegionData, produceVariance, getPinnedSet };

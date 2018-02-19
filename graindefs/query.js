@@ -1,5 +1,3 @@
-const debug = require('debug')('log');
-
 const makeGrainBrickQueryStrings = (params) => {
   const members = params.members;
   const grainTableName = params.grainTableName;
@@ -213,11 +211,8 @@ const makeGrainBlockQueryStrings = (params, options) => {
 
   // return them all as one string with some line breaks in between for debuging
   return [ `${grainTableSql}
-
             ${grainTableInsertSql}
-
             ${addPrimaryKeySql}
-
             ${grainViewSql}
             
             ` ];

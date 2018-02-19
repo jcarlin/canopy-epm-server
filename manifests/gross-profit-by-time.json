@@ -76,6 +76,9 @@
 			"dimension": "Datasrc",
 			"member": "final"
     }, {
+			"dimension": "Product",
+			"member": "all_products"
+		}, {
 			"dimension": "Objectcode",
 			"member": "$LIST$"
 		}, {
@@ -89,9 +92,8 @@
 			"member": "$LIST$"
 		}],
 		"rows": [{
-			"dimension": "product_id",
-      "member": "all_products",
-      "description": "All Products",
+			"dimension": "Objectcode",
+			"member": "$LIST$",
 			"data entry": false
 		}],
 		"columns": [{

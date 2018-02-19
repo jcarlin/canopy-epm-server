@@ -10,7 +10,7 @@ const dbConnections = [
     type: dbTypes.POSTGRESQL,
     name: 'POSTGRESQL',
     description: 'PostgreSQL',
-    active: process.env.DATABASE == dbTypes.POSTGRESQL,
+    active: global.db === dbTypes.POSTGRESQL,
     settings: {
       user: 'canopy_db_admin',
       host: 'canopy-epm-test.cxuldttnrpns.us-east-2.rds.amazonaws.com',
@@ -23,7 +23,7 @@ const dbConnections = [
     type: dbTypes.SNOWFLAKE,
     name: 'SNOWFLAKE',
     description: 'Snowflake',
-    active: process.env.DATABASE == dbTypes.SNOWFLAKE,
+    active: global.db === dbTypes.SNOWFLAKE,
     settings: {
       account: 'ge10380', // 'CANOPYEPM',
       username: 'canopyepm',

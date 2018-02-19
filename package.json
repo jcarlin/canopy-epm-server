@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "DEBUG=log nodemon server.js",
+    "dev": "nodemon server.js",
     "deploy": "eb deploy"
   },
   "repository": {
@@ -22,15 +22,13 @@
     "async": "^2.6.0",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
-    "debug": "^3.1.0",
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
     "express-jwt": "^5.3.0",
     "jwks-rsa": "^1.2.1",
     "lodash": "^4.17.4",
     "pg": "^7.4.0",
-    "snowflake-sdk": "^1.1.2",
-    "supports-color": "^5.1.0"
+    "snowflake-sdk": "^1.1.2"
   },
   "engines": {
     "node": "8.4.0",

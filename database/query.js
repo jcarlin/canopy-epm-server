@@ -1,5 +1,3 @@
-const debug = require('debug')('log');
-
 const getDimensionIdSql = dimensions => {
   const subSelects = dimensions.map(dim => {
     return `
@@ -13,7 +11,7 @@ const getDimensionIdSql = dimensions => {
     FROM (SELECT ${subSelects.join(',')}) a;
   `;
 
-  debug('getDimensionIdSql: ', sql);
+  console.log('getDimensionIdSql: ', sql);
   return sql;
 };
 
@@ -27,7 +25,7 @@ const querySql = (params) => {
     WHERE ${params.filterStatements};
   `;
 
-  debug('querySql: ', sql);
+  console.log('querySql: ', sql);
   return sql;
 };
 
@@ -39,7 +37,7 @@ const updateAppTableSql = (params) => {
     WHERE ${params.filterStatements};
   `;
 
-  debug('updateAppTableSql: ', sql);
+  console.log('updateAppTableSql: ', sql);
   return sql;
 };
 
@@ -58,7 +56,7 @@ const unnestFactTableKeySql = factId => {
     ORDER BY dim_byte, dim_id;
   `;
 
-  debug('unnestFactTableKeySql: ', sql);
+  console.log('unnestFactTableKeySql: ', sql);
   return sql;
 };
 
@@ -69,7 +67,7 @@ const deactivateSql = (params) => {
     WHERE active = true AND ${params.filterStatements};
   `;
 
-  debug('deactivateSql: ', sql);
+  console.log('deactivateSql: ', sql);
   return sql;
 };
 
@@ -88,7 +86,7 @@ const insertSql = (params) => {
     );
   `;
   
-  debug("insertSql: ", sql);
+  console.log("insertSql: ", sql);
   return sql;
 };
 
@@ -151,7 +149,7 @@ const updateBranch15NatJoinSql = (params) => {
     RETURNING u.*;
   `;
 
-  debug('updateBranch15NatJoinSql: ', sql);
+  console.log('updateBranch15NatJoinSql: ', sql);
   return sql;
 };
 
@@ -195,7 +193,7 @@ const updateApp20NatJoinSql = (params) => {
     RETURNING u.*;
   `;
 
-  debug('updateApp20NatJoinSql: ', sql);
+  console.log('updateApp20NatJoinSql: ', sql);
   return sql;
 };
 
@@ -252,7 +250,7 @@ const updateApp20Sql = (params) => {
       AND u.d6_id = a.d6_id;
   `;
 
-  debug('updateApp20Sql: ', sql);
+  console.log('updateApp20Sql: ', sql);
   return sql;
 };
 
@@ -495,7 +493,7 @@ const updateBranch15Sql = (params) => {
       AND u.d6_id = a.d6_id;
   `;
 
-  debug('updateBranch15Sql: ', sql);
+  console.log('updateBranch15Sql: ', sql);
   return sql;
 };
 

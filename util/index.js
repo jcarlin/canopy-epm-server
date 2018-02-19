@@ -1,5 +1,3 @@
-const debug = require('debug')('log');
-
 const capitalize = word => {
   return word.charAt(0).toUpperCase() + word.slice(1);
 };
@@ -123,8 +121,8 @@ const getExtractedElements = (manifest, type) => {
 
 // Add id and idColName to the dimensions (objects) array
 const mergeDimKeys = (dimArray, dimKeys) => {
-  debug('dimArray', dimArray);
-  debug('dimKeys', dimKeys);
+  console.log('dimArray', dimArray);
+  console.log('dimKeys', dimKeys);
   return dimArray.map(dim => {
     // Get dimension info
     const dimInfo = dimKeys.find(dimKey => {
@@ -132,8 +130,8 @@ const mergeDimKeys = (dimArray, dimKeys) => {
     });
 
     if (!dimInfo.id) {
-      debug('dim: ', dim);
-      debug('dimKeys: ', dimKeys);
+      console.log('dim: ', dim);
+      console.log('dimKeys: ', dimKeys);
     }
 
     dim.id = dimInfo.id;

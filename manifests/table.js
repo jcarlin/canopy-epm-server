@@ -86,4 +86,23 @@ const buildTableData = manifest => {
   return getNecessaryTransforms(regions, colDepth, rowDepth);
 };
 
-module.exports = { buildTableData };
+const buildRegionData = region => {
+  if (!region) {
+    throw new Error('Manfiest must contain regions');
+  }
+
+  
+  const columnRowDefs = buildRowColumns(region, region.colDepth, region.rowDepth);
+  const columns = processRegion(region, region.colDepth);
+  const columnDefs = assembleColumns(columnRowDefs, columns, region);
+
+  return transformRows(
+    columnDefs,
+    region,
+    columnRowDefs,
+    region.rowDepth,
+    region.transform
+  );
+};
+
+module.exports = { buildTableData, buildRegionData };

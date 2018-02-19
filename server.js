@@ -7,7 +7,6 @@ const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
 const pg = require('pg');
 const snowflake = require('snowflake-sdk');
-const debug = require('debug')('log');
 const async = require('async');
 const _ = require('lodash');
 
@@ -25,17 +24,20 @@ const {
   mergeDimVals,
   buildKeySet } = require('./util');
 const {
-  stitchDatabaseData, 
+  stitchDatabaseData,
+  stitchDatabaseRegionData, 
   produceVariance, 
   getPinnedSet, 
   extractKeySet, 
   extractKeySetAndId 
 } = require('./grid');
-const { buildTableData } = require('./manifests');
+const { buildTableData, buildRegionData } = require('./manifests');
 
 // Temporary defaulting to POSTGRESQL connection for all queries. UI will toggle this setting.
-process.env.DATABASE = database.dbTypes.POSTGRESQL;
+// process.env.DATABASE = database.dbTypes.POSTGRESQL;
 // process.env.DATABASE = database.dbTypes.SNOWFLAKE;
+
+global.db = database.dbTypes.POSTGRESQL;
 
 const port = process.env.PORT || 8080;
 const app = express();
@@ -45,20 +47,17 @@ let grainDefs = {};
 let dimKeys = {};
 let factKeys = [];
 
-// This will log to console if enabled (npm run-script dev)
-debug('booting %o', 'debug');
-
 // Define database clients/connections and method for querying
 const pgClient = new pg.Client(database.getDbConnSettings(database.dbTypes.POSTGRESQL));
 const sfClient = snowflake.createConnection(database.getDbConnSettings(database.dbTypes.SNOWFLAKE));
 
 const dbClientQuery = (sql, callback) => {
   try {
-    if (process.env.DATABASE == database.dbTypes.POSTGRESQL) {
+    if (db == database.dbTypes.POSTGRESQL) {
       pgClient.query(sql, (err, data) => {
         callback(err, data ? data.rows : data);
       });
-    } else if (process.env.DATABASE == database.dbTypes.SNOWFLAKE) {
+    } else if (db == database.dbTypes.SNOWFLAKE) {
       sfClient.execute({
         sqlText: sql,
         complete: function(err, stmt, data) {
@@ -102,7 +101,7 @@ app.use(cors());
 // app.use(checkJwt);
 
 const errorHandler = (err, req, res, next) => {
-  debug('errorHandler err: ', err);
+  console.log('errorHandler err: ', err);
   res.status(500);
   res.json({ error: err });
 };
@@ -113,7 +112,7 @@ const errorHandler = (err, req, res, next) => {
 app.get('/database', (req, res, next) => {
   try {
     const dbMap = database.dbConnections.map(conn => {
-      conn.active = (conn.type == process.env.DATABASE);
+      conn.active = (conn.type == db);
       return conn;
     });
     return res.json(dbMap);
@@ -130,10 +129,10 @@ app.post('/database', (req, res, next) => {
       });
     }
   
-    process.env.DATABASE = database.dbTypes[req.body.database.toUpperCase()];
-  
+    global.db = database.dbTypes[req.body.database.toUpperCase()];
+
     const dbMap = database.dbConnections.map(conn => {
-      conn.active = (conn.type == process.env.DATABASE);
+      conn.active = (conn.type == db);
       return conn;
     });
   
@@ -158,18 +157,14 @@ app.post('/grid', (req, res, next) => {
       });
     }
 
-    
-
-    const db = Number(process.env.DATABASE); // Why is this converting to string??
     const manifest = req.body.manifest;
-    console.log('manifest: ', JSON.stringify(manifest));
     const pinned = getPinnedSet(manifest.regions[0].pinned);
     const includeVariance = manifest.regions[0].includeVariance;
     const includeVariancePct = manifest.regions[0].includeVariancePct;
     const dimensionsWithKeys = mergeDimKeys(pinned, dimKeys);
-    debug('dimensionsWithKeys: ', dimensionsWithKeys);
-
+    
     console.log('dimensionsWithKeys: ', dimensionsWithKeys);
+
     const tableData = buildTableData(manifest); // manifest -> something ag-grid can use
     let transform = null;
 
@@ -190,7 +185,7 @@ app.post('/grid', (req, res, next) => {
 
     // Assemble sql for query
     const buildDataSetQuery = (result, callback) => {
-      debug('buildDataSetQuery');
+      console.log('buildDataSetQuery');
       const dimensionsWithVals = mergeDimVals(dimensionsWithKeys, result[0]);
       const filterStatements = dimensionsWithVals.map(dim => {
         return dim.idWhereClause;
@@ -215,7 +210,7 @@ app.post('/grid', (req, res, next) => {
 
     // Format response object
     const stitchData = (result, callback) => {
-      if (process.env.DATABASE == database.dbTypes.SNOWFLAKE) {        
+      if (db == database.dbTypes.SNOWFLAKE) {        
         result = result.map(row => {
           return _.transform(row, function (res, val, key) {
             res[key.toLowerCase()] = val;
@@ -223,12 +218,12 @@ app.post('/grid', (req, res, next) => {
         });
       }
         
-      let producedData = stitchDatabaseData(manifest, tableData, result);
+      let stitchedTableData = stitchDatabaseData(manifest, tableData, result);
 
       if (includeVariance && includeVariancePct) {
-        producedData = produceVariance(producedData); 
+        stitchedTableData = produceVariance(producedData); 
       }
-      callback(null, producedData);
+      callback(null, stitchedTableData);
     };
 
     // Process these functions in order, passing results to each subsequent function
@@ -238,13 +233,147 @@ app.post('/grid', (req, res, next) => {
       buildDataSetQuery,
       stitchData
     ],
-    function(err, tableData) {
+    function(err, stitchedTableData) {
       if (err) {
-        debug('async waterfall err: ', err);
+        console.log('async waterfall err: ', err);
         return next(err);
       }
-      return res.json(tableData); // And, finally, return tableData
+      return res.json(stitchedTableData); // And, finally, return stitchedTableData
     });
+  } catch (err) {
+    return next(err);
+  }
+});
+
+app.post('/grid2', (req, res, next) => {
+  try {
+    if (!req.body.manifest) {
+      return res.status(400).json({
+        error: `You must supply a manifest. 
+          Send it on an object with a 'manfifest' key: { manifest: ... }`
+      });
+    }
+
+    const tableDataSet = [];
+    const manifest = req.body.manifest;
+
+    const getTransform = (name) => {
+      return new Promise(resolve => {
+        fs.readFile(`./transforms/${name}`, 'utf8', (err, data) => {
+
+          transform = JSON.parse(data);
+          resolve(transform);
+        });
+      });
+    };
+
+    const getDimensionIds = (dimensionsWithKeys) => {
+      return new Promise(resolve => {
+        sql = database.getDimensionIdSql(dimensionsWithKeys);
+        dbClientQuery(sql, (err, res) => {
+          resolve(res);
+        });
+      });
+    };
+
+    const buildDataSetQuery = (dimensionsWithKeys, dimIds) => {
+      return new Promise(resolve => {
+        const dimensionsWithVals = mergeDimVals(dimensionsWithKeys, dimIds[0]);
+        const filterStatements = dimensionsWithVals.map(dim => {
+          return dim.idWhereClause;
+        }).join(' AND ');
+        
+        const sqlParams = {
+          dimensions: transform.dimensions,
+          metrics: transform.metrics.map(metric => `"${metric}"`).join(','),
+          tableName: transform.table,
+          filterStatements: filterStatements
+        };
+        
+        // Set params according to db nuances
+        if (db === database.dbTypes.SNOWFLAKE) {
+          sqlParams.metrics = transform.metrics.map(metric => `"${metric.toUpperCase().split(' ').join('_')}"`).join(',');
+          sqlParams.tableName = transform.table.split(' ').join('_');
+        }
+
+        sql = database.querySql(sqlParams);
+        dbClientQuery(sql, (err, data) => {
+          resolve(data);
+        });
+      });
+    };
+
+    // Format response object
+    const stitchData = (dbData, region) => {
+      return new Promise(resolve => {
+        if (db == database.dbTypes.SNOWFLAKE) {        
+          dbData = dbData.map(row => {
+            return _.transform(row, function (res, val, key) {
+              res[key.toLowerCase()] = val;
+            });
+          });
+        }
+      
+        let builtRegion = buildRegionData(region); // manifest -> something ag-grid can use
+        let stitchedTableData = stitchDatabaseRegionData(region, builtRegion, dbData);
+
+        if (region.includeVariance && region.includeVariancePct) {
+          stitchedTableData = produceVariance(producedData); 
+        }
+        resolve(stitchedTableData);
+      });
+    };
+
+    promMap = manifest.regions.map(async (region) => {
+      const pinned = getPinnedSet(region.pinned);
+      const includeVariance = region.includeVariance;
+      const includeVariancePct = region.includeVariancePct;
+      const dimensionsWithKeys = mergeDimKeys(pinned, dimKeys);
+      
+      const transform = await getTransform(region.transform);
+      const dimIds = await getDimensionIds(dimensionsWithKeys);
+      const data = await buildDataSetQuery(dimensionsWithKeys, dimIds);
+      const stitched = await stitchData(data, region);
+
+      stitched.colIndex = region.colIndex;
+      stitched.rowIndex = region.rowIndex;
+
+      // console.log(`region: ${region.rowIndex},${region.colIndex}`);
+      // console.log('stitched: ', stitched);
+      return stitched;
+    });
+  
+    const asyncProm = async () => {
+      await Promise.all(promMap).then((tableDataArr) => {
+        let tableData = {
+          rowDefs: [],
+          colDefs: tableDataArr[0].colDefs,
+          rowIndex: tableDataArr[0].arrIndex,
+          colIndex: tableDataArr[0].colIndex
+        };
+
+        for(i = 0; i < tableDataArr.length; i++) {
+          let region = tableDataArr[i];
+          if (tableData.rowIndex != region.rowIndex) {
+            tableData.rowIndex = region.rowIndex
+            tableData.rowDefs.push(...region.rowDefs);
+          }
+
+          if (tableData.colIndex != region.colIndex) {
+            tableData.colIndex = region.colIndex
+            tableData.colDefs.push(...region.colDefs);
+          }
+        }
+
+        return res.json(tableData);
+      }).catch(err => {
+        console.log('err: ', err);
+        next(err);
+      });
+    };
+
+
+    return asyncProm();
   } catch (err) {
     return next(err);
   }
@@ -311,7 +440,7 @@ app.patch('/grid', (req, res, next) => {
     };
   
     const updateBranch15 = (result, callback) => {
-      if (process.env.DATABASE == database.dbTypes.POSTGRESQL) {
+      if (db == database.dbTypes.POSTGRESQL) {
         sql = database.updateBranch15NatJoinSql(sqlParams);
       } else {
         sql = database.updateBranch15JoinSql(sqlParams);
@@ -321,7 +450,7 @@ app.patch('/grid', (req, res, next) => {
     };
   
     const updateApp20 = (result, callback) => {
-      if (process.env.DATABASE == database.dbTypes.POSTGRESQL) {
+      if (db == database.dbTypes.POSTGRESQL) {
         sql = database.updateApp20NatJoinSql(sqlParams);
       } else {
         sql = database.updateApp20JoinSql(sqlParams);
@@ -341,7 +470,7 @@ app.patch('/grid', (req, res, next) => {
     ],
     function(err, results) {
       if (err) {
-        debug('async waterfall err: ', err);
+        console.log('async waterfall err: ', err);
         return next(err);
       }
       return res.json({ results });
@@ -522,7 +651,7 @@ app.post('/graindef/update', (req, res, next) => {
     ],
     function(err, results) {
       if (err) {
-        debug('async waterfall err: ', err);
+        console.log('async waterfall err: ', err);
         return next(err);
       }
       return res.json({ tableCount: tableCount });
@@ -572,7 +701,6 @@ async function connect() {
     await pgClient.connect((err) => {
       if (err) {
         console.error('pgClient failed to connect', err.stack)
-        next(err);
       } else {
         console.log('pgClient connected successfully')
       }
@@ -580,17 +708,15 @@ async function connect() {
     await sfClient.connect(function(err, conn) {
       if (err) {
         console.error('sfClient failed to connect: ' + err.message);
-        next(err);
       } else {
         console.log('sfClient connected successfully');
       }
     });
     await startupTasks();
     app.listen(port);
-    console.log(`Express app started on port ${port}`);
-    console.log('process.env.DATABASE: ', process.env.DATABASE);
+    console.log(`Express app started on port ${port} using ${database.dbTypes[db]} database.`);
   } catch (err) {
-    return next(err);
+    console.log('err: ', err);
   }
 }
 
