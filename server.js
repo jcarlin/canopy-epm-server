@@ -321,7 +321,7 @@ app.post('/grid2', (req, res, next) => {
       });
     };
 
-    promMap = manifest.regions.map(async (region) => {
+    const promMap = manifest.regions.map(async (region) => {
       const pinned = getPinnedSet(region.pinned);
       const includeVariance = region.includeVariance;
       const includeVariancePct = region.includeVariancePct;

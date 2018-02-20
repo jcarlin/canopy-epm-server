@@ -1,0 +1,16 @@
+{
+  "transform_name": "Sales Revenue By Product Actual",
+  "table": "sales_revenue_by_product_actual",
+  "dimensions": [
+    "currency_id",
+    "datasrc_id",
+    "organization_id",
+    "scenario_id",
+    "time_id",
+    "variation_id",
+    "product_id",
+    "objectcode_id"
+  ],
+    "metrics": ["revenue_balance"],
+    "new_value": ""
+  }
