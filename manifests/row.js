@@ -1,7 +1,8 @@
 const { flatten, completelyFlatten, getUniqueRegions } = require('./util');
 
 const buildRows = (regions, rowDef, depth) => {
-  if (typeof regions === 'object') {
+  // TODO - remove this hack!
+  if (!regions.length) {
     regions = [regions];
   }
   const transformedRows = transformRowDefs(regions);
@@ -16,11 +17,8 @@ const buildRows = (regions, rowDef, depth) => {
 
 const transformRowDefs = regions => {
   const newRegions = getUniqueRegions(regions, 'rowIndex');
-  const rows = completelyFlatten(newRegions.map(region => region.rows));
-  
-  // new way:
-  // const rows = regions.rows;
-
+  const regionRows = newRegions.map(region => region.rows);
+  const rows = completelyFlatten(regionRows);
   const transform = (row, parents) => {
     parents = [...parents, row];
     return row.rows ? row.rows.map(r => transform(r, parents)) : parents;
@@ -33,7 +31,6 @@ const buildRowDefs = (rows, rowDef) => {
   return rows
     .map(rows =>
       rows.map(row => {
-        // console.log('buildRowDefs row: ', row);
         return {
           [row.dimension]: row.member,
           description: row.description,

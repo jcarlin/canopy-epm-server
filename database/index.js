@@ -1,4 +1,4 @@
-const { dbConnections, dbTypes, getDbConnSettings } = require('./connections.js');
+const { dbConnections, dbTypes, getDbConnSettings, getActiveDb } = require('./connections.js');
 const { 
   querySql,
   updateAppTableSql,
@@ -6,6 +6,7 @@ const {
   unnestFactTableKeySql,
   deactivateSql,
   insertSql,
+  sfInsertSql,
   updateBranch15NatJoinSql,
   updateApp20NatJoinSql,
   updateApp20Sql,
@@ -19,11 +20,13 @@ module.exports = {
   unnestFactTableKeySql,
   deactivateSql,
   insertSql,
+  sfInsertSql,
   updateBranch15NatJoinSql,
   updateApp20NatJoinSql,
   updateApp20Sql,
   updateBranch15Sql,
   dbConnections,
   dbTypes,
-  getDbConnSettings
+  getDbConnSettings,
+  getActiveDb
 };

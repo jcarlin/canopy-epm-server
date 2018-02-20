@@ -179,6 +179,54 @@
           }
         ]
       }
+    },
+    "sales-revenue-by-product-sku": {
+      "dimSuperSet": {
+        "total": 208,
+        "details": [
+          {
+            "dimension": "product",
+            "records": 1
+          },
+          {
+            "dimension": "currency",
+            "records": 1
+          },
+          {
+            "dimension": "datasrc",
+            "records": 1
+          },
+          {
+            "dimension": "objectcode",
+            "records": 8
+          },
+          {
+            "dimension": "organization",
+            "records": 1
+          },
+          {
+            "dimension": "scenario",
+            "records": 2
+          },
+          {
+            "dimension": "time",
+            "records": 13
+          },
+          {
+            "dimension": "variation",
+            "records": 1
+          }
+        ]
+      },
+      "dataSuperSet": {
+        "total": 11536863,
+        "details": [
+          {
+            "fact": "expense_balance",
+            "records": 11536863
+          }
+        ]
+      }
     }
   },
   "global": {

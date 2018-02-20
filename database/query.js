@@ -90,6 +90,20 @@ const insertSql = (params) => {
   return sql;
 };
 
+const sfInsertSql = (params) => {
+  const sql = `
+    INSERT INTO root_11c1 (m_id, ${params.dimIdColumns}, r10, fp2_id, fp1_id, cp2_id, cp1_id) 
+    SELECT (SELECT fact_id FROM s_fact WHERE fact_name = r.metric), ${params.dimRIdColumns}, r3, fp2.d9h2_parent_id AS fp2_id, p1.d9h2_parent_id AS fp1_id, cp2.d9h3_parent_id AS cp2_id, p1.d9h3_parent_id AS cp1_id
+    FROM (
+      SELECT 'bb_revenue' AS metric, ${params.dimRIdValues}, ${params.newValue} AS r3) r
+    JOIN dim_9 p1 ON p1.d9_id = r.d9_id
+    LEFT OUTER JOIN dim_9 fp2 ON p1.d9h2_parent_id = fp2.d9_id
+    LEFT OUTER JOIN dim_9 cp2 ON p1.d9h3_parent_id = cp2.d9_id;`;
+
+  console.log('sfInsertSql: ', sql);
+  return sql;
+};
+
 const updateBranch15NatJoinSql = (params) => {
   const sql = `
     UPDATE branch_15 u
@@ -504,6 +518,7 @@ module.exports = {
   unnestFactTableKeySql,
   deactivateSql,
   insertSql,
+  sfInsertSql,
   updateBranch15NatJoinSql,
   updateApp20NatJoinSql,
   updateApp20Sql,

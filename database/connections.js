@@ -43,4 +43,10 @@ const getDbConnSettings = (databaseType) => {
   }).settings;
 };
 
-module.exports = { dbConnections, dbTypes, getDbConnSettings };
+const getActiveDb = () => {
+  return dbConnections.find(conn => {
+    return conn.active = true;
+  }).name;
+};
+
+module.exports = { dbConnections, dbTypes, getDbConnSettings, getActiveDb };

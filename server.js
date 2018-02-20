@@ -34,9 +34,6 @@ const {
 const { buildTableData, buildRegionData } = require('./manifests');
 
 // Temporary defaulting to POSTGRESQL connection for all queries. UI will toggle this setting.
-// process.env.DATABASE = database.dbTypes.POSTGRESQL;
-// process.env.DATABASE = database.dbTypes.SNOWFLAKE;
-
 global.db = database.dbTypes.POSTGRESQL;
 
 const port = process.env.PORT || 8080;
@@ -342,30 +339,27 @@ app.post('/grid2', (req, res, next) => {
       // console.log('stitched: ', stitched);
       return stitched;
     });
+
+    function removeDuplicates(myArr, prop, nestedProp) {
+      return myArr.filter((obj, pos, arr) => {
+          return arr.map(mapObj => mapObj[prop][nestedProp]).indexOf(obj[prop][nestedProp]) === pos;
+      });
+    };
   
     const asyncProm = async () => {
       await Promise.all(promMap).then((tableDataArr) => {
-        let tableData = {
-          rowDefs: [],
-          colDefs: tableDataArr[0].colDefs,
-          rowIndex: tableDataArr[0].arrIndex,
-          colIndex: tableDataArr[0].colIndex
-        };
+        compColDefs = [];
+        compRowDefs = [];
 
-        for(i = 0; i < tableDataArr.length; i++) {
-          let region = tableDataArr[i];
-          if (tableData.rowIndex != region.rowIndex) {
-            tableData.rowIndex = region.rowIndex
-            tableData.rowDefs.push(...region.rowDefs);
-          }
+        tableDataArr.map(tableData => {
+          compColDefs = compColDefs.concat(tableData.colDefs);
+          compRowDefs = compRowDefs.concat(tableData.rowDefs);
+        });
 
-          if (tableData.colIndex != region.colIndex) {
-            tableData.colIndex = region.colIndex
-            tableData.colDefs.push(...region.colDefs);
-          }
-        }
-
-        return res.json(tableData);
+        return res.json({
+          rowDefs: compRowDefs,
+          colDefs: removeDuplicates(compColDefs, 'properties', 'field')
+        });
       }).catch(err => {
         console.log('err: ', err);
         next(err);
@@ -428,22 +422,33 @@ app.patch('/grid', (req, res, next) => {
           return dim.idWhereClause;
         }).join(' AND '),
         dimIdValues: dimensionsWithVals.map(dim => { return dim.value; }),
-        dimIdColumns: dimensionsWithVals.map(dim => { return dim.idColName; })
+        dimIdColumns: dimensionsWithVals.map(dim => { return dim.idColName; }),
+        dimRIdColumns: dimensionsWithVals.map(dim => { return `r.${dim.idColName}`; }),
+        dimRIdValues: dimensionsWithVals.map(dim => { return `${dim.value} AS ${dim.idColName}`; })
       };
 
+      if (db === database.dbTypes.SNOWFLAKE) {
+        return callback(null);
+      }
+      
       sql = database.deactivateSql(sqlParams);
       dbClientQuery(sql, callback);
     };
   
     const insertNewValue = (result, callback) => {  
-      dbClientQuery(database.insertSql(sqlParams), callback);
+      if (db === database.dbTypes.POSTGRESQL) {
+        dbClientQuery(database.insertSql(sqlParams), callback);
+      } else {
+        dbClientQuery(database.sfInsertSql(sqlParams), callback);
+      }
     };
   
     const updateBranch15 = (result, callback) => {
-      if (db == database.dbTypes.POSTGRESQL) {
+      if (db === database.dbTypes.POSTGRESQL) {
         sql = database.updateBranch15NatJoinSql(sqlParams);
       } else {
-        sql = database.updateBranch15JoinSql(sqlParams);
+        // sql = database.updateBranch15JoinSql(sqlParams);
+        return callback(null);
       }
     
       dbClientQuery(sql, callback);
@@ -453,7 +458,8 @@ app.patch('/grid', (req, res, next) => {
       if (db == database.dbTypes.POSTGRESQL) {
         sql = database.updateApp20NatJoinSql(sqlParams);
       } else {
-        sql = database.updateApp20JoinSql(sqlParams);
+        // sql = database.updateApp20JoinSql(sqlParams);
+        return callback(null);
       }
     
       dbClientQuery(sql, callback);
@@ -464,8 +470,8 @@ app.patch('/grid', (req, res, next) => {
       getTransform,
       getDimensionIds,
       deactivateRecord,
-      insertNewValue,
-      updateBranch15
+      insertNewValue
+      // updateBranch15
       // buildUpdateApp20
     ],
     function(err, results) {
@@ -641,7 +647,8 @@ app.post('/graindef/update', (req, res, next) => {
         }
       }
 
-      callback(allQueryStrings);
+      console.log('allQueryStrings: ', allQueryStrings);
+      callback(null, allQueryStrings);
     };
 
     // Process these functions in order, passing results to each subsequent function
@@ -714,7 +721,7 @@ async function connect() {
     });
     await startupTasks();
     app.listen(port);
-    console.log(`Express app started on port ${port} using ${database.dbTypes[db]} database.`);
+    console.log(`Express app started on port ${port} using ${database.getActiveDb()} database.`);
   } catch (err) {
     console.log('err: ', err);
   }
