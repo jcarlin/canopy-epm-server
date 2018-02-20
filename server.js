@@ -252,14 +252,19 @@ app.post('/grid2', (req, res, next) => {
     }
 
     const tableDataSet = [];
+    const colIndexes = [];
+    const rowIndexes = [];
+    let compColDefs = [];
+    let compRowDefs = [];
     const manifest = req.body.manifest;
+    let tableData = buildTableData(manifest);
 
     const getTransform = (name) => {
       return new Promise(resolve => {
         fs.readFile(`./transforms/${name}`, 'utf8', (err, data) => {
 
-          transform = JSON.parse(data);
-          resolve(transform);
+          const tform = JSON.parse(data);
+          resolve(tform);
         });
       });
     };
@@ -273,7 +278,7 @@ app.post('/grid2', (req, res, next) => {
       });
     };
 
-    const buildDataSetQuery = (dimensionsWithKeys, dimIds) => {
+    const buildDataSetQuery = (dimensionsWithKeys, dimIds, transform) => {
       return new Promise(resolve => {
         const dimensionsWithVals = mergeDimVals(dimensionsWithKeys, dimIds[0]);
         const filterStatements = dimensionsWithVals.map(dim => {
@@ -303,25 +308,24 @@ app.post('/grid2', (req, res, next) => {
     // Format response object
     const stitchData = (dbData, region) => {
       return new Promise(resolve => {
-        if (db == database.dbTypes.SNOWFLAKE) {        
+        if (db == database.dbTypes.SNOWFLAKE) { 
           dbData = dbData.map(row => {
             return _.transform(row, function (res, val, key) {
               res[key.toLowerCase()] = val;
             });
           });
         }
-      
-        let builtRegion = buildRegionData(region); // manifest -> something ag-grid can use
-        let stitchedTableData = stitchDatabaseRegionData(region, builtRegion, dbData);
 
+        tableData = stitchDatabaseRegionData(region, tableData, dbData);
         if (region.includeVariance && region.includeVariancePct) {
-          stitchedTableData = produceVariance(producedData); 
+          // TODO - this might be broken
+          stitched = produceVariance(tableData);
         }
-        resolve(stitchedTableData);
+        resolve(tableData);
       });
     };
 
-    const promMap = manifest.regions.map(async (region) => {
+    promMap = manifest.regions.map(async (region) => {
       const pinned = getPinnedSet(region.pinned);
       const includeVariance = region.includeVariance;
       const includeVariancePct = region.includeVariancePct;
@@ -329,14 +333,8 @@ app.post('/grid2', (req, res, next) => {
       
       const transform = await getTransform(region.transform);
       const dimIds = await getDimensionIds(dimensionsWithKeys);
-      const data = await buildDataSetQuery(dimensionsWithKeys, dimIds);
+      const data = await buildDataSetQuery(dimensionsWithKeys, dimIds, transform);
       const stitched = await stitchData(data, region);
-
-      stitched.colIndex = region.colIndex;
-      stitched.rowIndex = region.rowIndex;
-
-      // console.log(`region: ${region.rowIndex},${region.colIndex}`);
-      // console.log('stitched: ', stitched);
       return stitched;
     });
 
@@ -348,24 +346,13 @@ app.post('/grid2', (req, res, next) => {
   
     const asyncProm = async () => {
       await Promise.all(promMap).then((tableDataArr) => {
-        compColDefs = [];
-        compRowDefs = [];
-
-        tableDataArr.map(tableData => {
-          compColDefs = compColDefs.concat(tableData.colDefs);
-          compRowDefs = compRowDefs.concat(tableData.rowDefs);
-        });
-
-        return res.json({
-          rowDefs: compRowDefs,
-          colDefs: removeDuplicates(compColDefs, 'properties', 'field')
-        });
+        // return the last tableData object - this one will have all the values
+        return res.json(tableDataArr[tableDataArr.length -1]);
       }).catch(err => {
         console.log('err: ', err);
-        next(err);
+        return next(err);
       });
     };
-
 
     return asyncProm();
   } catch (err) {

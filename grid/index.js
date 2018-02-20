@@ -96,10 +96,6 @@ const stitchDatabaseData = (manifest, tableData, dbData) => {
           return eval(totalMatchString);
         });
 
-        match
-          ? (def[key].value = match[pinned[0].member])
-          : (def[key].value = null);
-
         // Set the value (number) of the cell
         if (match) {
           // Put any desired rounding here. Currently handled in the client: https://goo.gl/J7CKFp
@@ -150,16 +146,12 @@ const stitchDatabaseRegionData = (region, tableData, dbData) => {
           return eval(totalMatchString);
         });
 
-        match
-          ? (def[key].value = match[region.pinned[0].member])
-          : (def[key].value = null);
-
         // Set the value (number) of the cell
         if (match) {
           // Put any desired rounding here. Currently handled in the client: https://goo.gl/J7CKFp
           def[key].value = match[region.pinned[0].member];
         } else {
-          def[key].value = null;
+          def[key].value = (def[key].value ? def[key].value : null);
         }
       }
     });

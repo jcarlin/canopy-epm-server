@@ -119,6 +119,46 @@
 			"member": "sku_069152_000192",
 			"description": "LG Electronics (24LJ4540) 24-Inch Class HD 720p LED TV",
 			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_084665_000213",
+			"description": "LG Electronics 24LJ4540-WU 24-Inch 720p LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_084070_000234",
+			"description": "LG Electronics 32LJ550B 32-Inch 720p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_064449_000255",
+			"description": "LG Electronics 43LJ5500 43-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_079886_000276",
+			"description": "LG Electronics 49LJ5100 49-Inch 1080p LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_074451_000297",
+			"description": "LG Electronics 49UJ6300 49-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_073611_000318",
+			"description": "LG Electronics 55LJ5500 55-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_005307_000339",
+			"description": "LG Electronics 65UJ7700 65-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_083493_000360",
+			"description": "LG Electronics 75UJ6470 75-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
 		}],
 		"columns": [{
 			"dimension": "scenario_id",
@@ -177,7 +217,7 @@
 			"dimension": "Datasrc",
 			"member": "preliminary"
 		}, {
-			"dimension": "Object Code",
+			"dimension": "Objectcode",
 			"member": "4901b"
 		}, {
 			"dimension": "Time",
@@ -225,6 +265,46 @@
 			"dimension": "product_id",
 			"member": "sku_069152_000192",
 			"description": "LG Electronics (24LJ4540) 24-Inch Class HD 720p LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_084665_000213",
+			"description": "LG Electronics 24LJ4540-WU 24-Inch 720p LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_084070_000234",
+			"description": "LG Electronics 32LJ550B 32-Inch 720p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_064449_000255",
+			"description": "LG Electronics 43LJ5500 43-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_079886_000276",
+			"description": "LG Electronics 49LJ5100 49-Inch 1080p LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_074451_000297",
+			"description": "LG Electronics 49UJ6300 49-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_073611_000318",
+			"description": "LG Electronics 55LJ5500 55-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_005307_000339",
+			"description": "LG Electronics 65UJ7700 65-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_083493_000360",
+			"description": "LG Electronics 75UJ6470 75-Inch 4K Ultra HD Smart LED TV",
 			"data entry": true
 		}],
 		"columns": [{
