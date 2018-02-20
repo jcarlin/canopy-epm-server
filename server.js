@@ -428,7 +428,7 @@ app.patch('/grid', (req, res, next) => {
       };
 
       if (db === database.dbTypes.SNOWFLAKE) {
-        return callback(null);
+        return callback(null, null);
       }
       
       sql = database.deactivateSql(sqlParams);
