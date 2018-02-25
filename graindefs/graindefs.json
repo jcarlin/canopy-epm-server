@@ -3,7 +3,7 @@
 	"name": "poc_grain_sack",
 	"desc": "First attempt at Canopy POC building grain",
 	"author": "adahl",
-	"grainSack": [
+	"graindefs": [
     {
       "id":201,
       "name":"prod_all",

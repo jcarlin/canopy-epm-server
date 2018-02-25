@@ -6,7 +6,7 @@ const makeGrainBrickQueryStrings = (params) => {
   const dimIdName = `d${dimNumber}_id`;
   const dimByte = params.dimByte;
   const dimTableName = `dim_${dimNumber}`;
-  const grainViewName = `grain_${params.grainDefName}`;
+  const grainViewName = `grain_${params.graindefName}`;
   
   const grainTableSql =
     ` DROP TABLE IF EXISTS ${grainTableName} CASCADE;
@@ -60,9 +60,9 @@ const makeGrainBlockQueryStrings = (params, options) => {
   const goofyDimIdName = `goofy_${dimIdName}`;
   const dimByte = params.dimByte;
   const dimTableName = `dim_${dimNumber}`;
-  const grainViewName = `grain_${params.grainDefName}`;
+  const grainViewName = `grain_${params.graindefName}`;
   const hierName = params.hierName;
-  const grainDefId = params.grainDefId;
+  const graindefId = params.graindefId;
   
   const grainTableSql =
     ` DROP TABLE IF EXISTS ${grainTableName} CASCADE;

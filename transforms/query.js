@@ -11,7 +11,7 @@ const getDimensionIdSql = dimensions => {
     FROM (SELECT ${subSelects.join(',')}) a;
   `;
 
-  console.log('getDimensionIdSql: ', sql);
+  // console.log('getDimensionIdSql: ', sql);
   return sql;
 };
 
@@ -25,7 +25,7 @@ const querySql = (params) => {
     WHERE ${params.filterStatements};
   `;
 
-  console.log('querySql: ', sql);
+  // console.log('querySql: ', sql);
   return sql;
 };
 
@@ -37,7 +37,7 @@ const updateAppTableSql = (params) => {
     WHERE ${params.filterStatements};
   `;
 
-  console.log('updateAppTableSql: ', sql);
+  // console.log('updateAppTableSql: ', sql);
   return sql;
 };
 

@@ -1,3 +1,6 @@
+const path = require('path');
+const fs = require('fs');
+
 const capitalize = word => {
   return word.charAt(0).toUpperCase() + word.slice(1);
 };
@@ -127,11 +130,6 @@ const mergeDimKeys = (dimArray, dimKeys) => {
       return dimKey.name === dim.dimension;
     });
 
-    if (!dimInfo.id) {
-      console.log('dim: ', dim);
-      console.log('dimKeys: ', dimKeys);
-    }
-
     dim.id = dimInfo.id;
     dim.idColName = `d${dimInfo.id}_id`;
 
@@ -139,7 +137,7 @@ const mergeDimKeys = (dimArray, dimKeys) => {
   });
 };
 
-// Return factKey from grainDefs.factKeys (because it has more info) instead of fact from transform.dimensions
+// Return factKey from graindefs.factKeys (because it has more info) instead of fact from transform.dimensions
 const mergeFactKeys = (factArray, factKeyArray) => {
   return factArray.map(fact => {
     return factKeyArray.find(factKey => {
@@ -169,6 +167,19 @@ const buildKeySet = (rowKeySet, colKeySet, pinned) => {
   ];
 };
 
+const readFile = filePath => new Promise((resolve, reject) => {
+  fs.readFile(filePath, (err, data) => {
+    if (err) reject(err);
+    else resolve(JSON.parse(data));
+  });
+});
+
+const removeDuplicates = (myArr, prop, nestedProp) => {
+  return myArr.filter((obj, pos, arr) => {
+      return arr.map(mapObj => mapObj[prop][nestedProp]).indexOf(obj[prop][nestedProp]) === pos;
+  });
+};
+
 module.exports = {
   capitalize,
   makeLowerCase,
@@ -179,5 +190,7 @@ module.exports = {
   mergeDimKeys,
   mergeFactKeys,
   mergeDimVals,
-  buildKeySet
+  buildKeySet,
+  readFile,
+  removeDuplicates
 };

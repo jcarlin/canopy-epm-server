@@ -58,7 +58,7 @@ const findPinned = (regions, colIndex, rowIndex) => {
 };
 
 const stitchDatabaseData = (manifest, tableData, dbData) => {
-  let loggedToConsole = false;
+  let loggedToConsole = true;
 
   tableData.rowDefs.forEach(def => {
     const keys = Object.keys(def);
@@ -110,11 +110,11 @@ const stitchDatabaseData = (manifest, tableData, dbData) => {
 };
 
 const stitchDatabaseRegionData = (region, tableData, dbData) => {
-  let loggedToConsole = false;
+  let loggedToConsole = true;
 
   tableData.rowDefs.forEach(def => {
     const keys = Object.keys(def);
-
+  
     keys.forEach(key => {
       if (typeof def[key] === 'object') {
         const colIndex = def[key].colIndex;
@@ -125,7 +125,7 @@ const stitchDatabaseRegionData = (region, tableData, dbData) => {
         const columnKeyStrings = produceKeyStrings(columnKeys);
         const joinedColumnKeys = columnKeyStrings.join(' && ');
         const joinedRowKeys = rowKeyStrings.join(' && ');
-        const totalMatchString = `${joinedColumnKeys} && ${joinedRowKeys}`;
+        const totalMatchString = `${joinedRowKeys} && ${joinedColumnKeys}`;
 
         // debug
         if (!loggedToConsole) {
