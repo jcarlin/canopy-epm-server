@@ -1,8 +1,8 @@
--- View: app_net_rev
+-- View: elt.app_net_rev
 
--- DROP VIEW app_net_rev;
+-- DROP VIEW elt.app_net_rev;
 
-CREATE OR REPLACE VIEW app_net_rev AS 
+CREATE OR REPLACE VIEW elt.app_net_rev AS
  SELECT a.d2_id,
     dim_2.d2_name AS product_id,
     dim_3.d3_id,
@@ -44,5 +44,6 @@ CREATE OR REPLACE VIEW app_net_rev AS
      JOIN dim_11 USING (d11_id)
      JOIN dim_6 USING (d6_id);
 
-ALTER TABLE app_net_rev
-  OWNER TO canopy_db_admin;
+ALTER TABLE elt.app_net_rev
+    OWNER TO canopy_db_admin;
+
