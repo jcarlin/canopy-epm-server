@@ -159,6 +159,431 @@
 			"member": "sku_083493_000360",
 			"description": "LG Electronics 75UJ6470 75-Inch 4K Ultra HD Smart LED TV",
 			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_006290_000381",
+			"description": "LG Electronics LJ400B 28LJ400B-PU 27.5-Inch 720p LED-LCD TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_063195_000402",
+			"description": "LG Electronics 24LH4830-PU-24-Inch-Smart",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_019079_000423",
+			"description": "LG Electronics 43UJ6300-43-Inch-Ultra",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_080529_000444",
+			"description": "LG Electronics 55UJ6300-55-Inch-Ultra",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_051749_000465",
+			"description": "LG Electronics 65UJ6300-65-Inch-Ultra",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_073820_000486",
+			"description": "Pyle 15.6-Inch 1080p LED TV with High Resolution Monitor",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_106889_000507",
+			"description": "Samsung QN49Q6F 49-Inch 4K Ultra HD Smart QLED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_061184_000528",
+			"description": "Samsung QN55Q7F 55-Inch 4K Ultra HD Smart QLED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_032132_000549",
+			"description": "Samsung QN65Q7F 65-Inch 4K Ultra HD Smart QLED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_119842_000570",
+			"description": "Samsung UN28M4500A 28-Inch 720p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_102015_000591",
+			"description": "Samsung UN32J4001 32-Inch 720p LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_082089_000612",
+			"description": "Samsung UN32J5003 32-Inch 1080p LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_075778_000633",
+			"description": "Samsung UN32M5300A 32-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_087780_000654",
+			"description": "Samsung UN32M5300A 32-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_072729_000675",
+			"description": "Samsung UN40H5003 40-Inch 1080p LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_048260_000696",
+			"description": "Samsung UN40M5300A 40-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_042472_000717",
+			"description": "Samsung UN40MU7000 40-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_062600_000738",
+			"description": "Samsung UN43J5000 43-Inch 1080p LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_047278_000759",
+			"description": "Samsung UN43J5000 43-Inch 1080p LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_032579_000780",
+			"description": "Samsung UN43J5202A 43-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_015082_000801",
+			"description": "Samsung UN43J5202A 43-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_045320_000822",
+			"description": "Samsung UN49M5300A 49-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_024906_000843",
+			"description": "Samsung UN49M5300A 49-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_022371_000864",
+			"description": "Samsung UN49MU8000 49-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_057759_000885",
+			"description": "Samsung UN50M5300A 50-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_084798_000906",
+			"description": "Samsung UN55MU6290 55-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_061545_000927",
+			"description": "Samsung UN55MU6500 Curved 55-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_118935_000948",
+			"description": "Samsung UN65MU6500 Curved 65-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_063564_000969",
+			"description": "Samsung UN55MU7000 55-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_076992_000990",
+			"description": "Samsung UN55MU8000 55-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_037509_001011",
+			"description": "Samsung UN55MU9000 55-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_113543_001032",
+			"description": "Samsung UN58MU6100 58-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_039305_001053",
+			"description": "Samsung UN65MU7000 65-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_112065_001074",
+			"description": "Samsung UN65MU8000 65-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_126763_001095",
+			"description": "Samsung UN65MU9000 65-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_008875_001116",
+			"description": "Samsung UN75MU6300 75-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_099097_001137",
+			"description": "Samsung UN75MU8000 75-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_090109_001158",
+			"description": "Samsung UN75MU9000 75-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_019473_001179",
+			"description": "Samsung UN82MU8000 82-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_071031_001200",
+			"description": "Samsung UN24H4000-24-Inch-720p-Model",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_013557_001221",
+			"description": "Samsung UN24M4500A-24-Inch-Smart",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_114693_001242",
+			"description": "Samsung UN28H4000-28-Inch-720p-Model",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_114110_001263",
+			"description": "Samsung UN32M4500A-32-Inch-Smart",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_098322_001284",
+			"description": "Samsung UN40MU6300-40-Inch-Ultra",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_027609_001305",
+			"description": "Samsung UN43MU6300-43-Inch-Ultra",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_051107_001326",
+			"description": "Samsung UN50J5000-50-Inch-1080p-Model",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_048632_001347",
+			"description": "Samsung UN50MU6300-50-Inch-Ultra",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_018336_001368",
+			"description": "Samsung UN55MU6300-55-Inch-Ultra",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_008571_001389",
+			"description": "Samsung UN65MU6300-65-Inch-Ultra",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_099108_001410",
+			"description": "Sceptre 32-Inch Class 1080p 60Hz LED HDTV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_087369_001431",
+			"description": "Sceptre 40-Inch 1080p LED HDTV X405BV-FSR Black",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_086731_001452",
+			"description": "Sceptre 40-Inch LED Class Full 1080P HDTV X405BV-F",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_101214_001473",
+			"description": "Sceptre 50 Inch 1080p LED HDTV X505BV-FSR Black",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_070944_001494",
+			"description": "Sceptre E195BV-SHD 19-Inch 720p 60Hz Class LED HDTV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_005992_001515",
+			"description": "Sceptre E246BV-SR 24-Inch LED HDTV HDMI",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_001815_001536",
+			"description": "Sceptre U550CV-UMR 55-Inch 4K Ultra HD 120 LED UTV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_033115_001557",
+			"description": "Sceptre X415BV-FMQR 40-Inch Full HD LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_064095_001578",
+			"description": "Sceptre X415BV-FSR 40-Inch Slim LED 1080p HDTV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_112371_001599",
+			"description": "Sceptre X438BV-FSR 43 inches 1080p LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_120943_001620",
+			"description": "Sceptre-X328BV-SR-32-Inch-720p-Model",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_123103_001641",
+			"description": "Sony KD43X720E 43-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_084776_001662",
+			"description": "Sony KD49X720E 49-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_120605_001683",
+			"description": "Sony KD50X690E 50-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_048830_001704",
+			"description": "Sony KD55X720E 55-Inch 4k Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_065049_001725",
+			"description": "Sony KD60X690E 60-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_052845_001746",
+			"description": "Sony KDL40W650D 40-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_024249_001767",
+			"description": "Sony KDL48W650D 48-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_004023_001788",
+			"description": "TCL 28S305 28-Inch 720p Roku Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_037581_001809",
+			"description": "TCL 32D100 32-Inch 720p LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_049738_001830",
+			"description": "TCL 32S301 32-inch 720p 60Hz Roku Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_075014_001851",
+			"description": "TCL 32S305 32-Inch 720p Roku Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_124597_001872",
+			"description": "TCL 43S305 43-Inch 1080p Roku Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_018903_001893",
+			"description": "TCL 49D100 49-Inch 1080p LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_113685_001914",
+			"description": "TCL 49S305 49-Inch 1080p Roku Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_114448_001935",
+			"description": "TCL 50FS3800 50-Inch 1080p Roku Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_005885_001956",
+			"description": "TCL 55C807 55-Inch 4K Ultra HD Roku Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_055697_001977",
+			"description": "TCL 55P607 55-Inch 4K Ultra HD Roku Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_047014_001998",
+			"description": "TCL 55S405 55-Inch 4K Ultra HD Roku Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_100273_002019",
+			"description": "TCL 65C807 65-Inch 4K Ultra HD Roku Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_071583_002040",
+			"description": "TCL-32S305-32-Inch-Smart-Model",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_000684_002061",
+			"description": "TCL-40S305-40-Inch-1080p-Smart",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_094911_002082",
+			"description": "TCL-43S305-43-Inch-1080p-Smart",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_014169_002103",
+			"description": "TCL-43S405-43-Inch-Ultra-Smart",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_043323_002124",
+			"description": "TCL-49S405-49-Inch-Ultra-Smart",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_016523_002145",
+			"description": "VIZIO LED 48-Inch 1080P 120 HZ Wi-Fi Smart TV",
+			"data entry": true
 		}],
 		"columns": [{
 			"dimension": "scenario_id",
@@ -306,6 +731,431 @@
 			"member": "sku_083493_000360",
 			"description": "LG Electronics 75UJ6470 75-Inch 4K Ultra HD Smart LED TV",
 			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_006290_000381",
+			"description": "LG Electronics LJ400B 28LJ400B-PU 27.5-Inch 720p LED-LCD TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_063195_000402",
+			"description": "LG Electronics 24LH4830-PU-24-Inch-Smart",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_019079_000423",
+			"description": "LG Electronics 43UJ6300-43-Inch-Ultra",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_080529_000444",
+			"description": "LG Electronics 55UJ6300-55-Inch-Ultra",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_051749_000465",
+			"description": "LG Electronics 65UJ6300-65-Inch-Ultra",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_073820_000486",
+			"description": "Pyle 15.6-Inch 1080p LED TV with High Resolution Monitor",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_106889_000507",
+			"description": "Samsung QN49Q6F 49-Inch 4K Ultra HD Smart QLED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_061184_000528",
+			"description": "Samsung QN55Q7F 55-Inch 4K Ultra HD Smart QLED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_032132_000549",
+			"description": "Samsung QN65Q7F 65-Inch 4K Ultra HD Smart QLED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_119842_000570",
+			"description": "Samsung UN28M4500A 28-Inch 720p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_102015_000591",
+			"description": "Samsung UN32J4001 32-Inch 720p LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_082089_000612",
+			"description": "Samsung UN32J5003 32-Inch 1080p LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_075778_000633",
+			"description": "Samsung UN32M5300A 32-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_087780_000654",
+			"description": "Samsung UN32M5300A 32-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_072729_000675",
+			"description": "Samsung UN40H5003 40-Inch 1080p LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_048260_000696",
+			"description": "Samsung UN40M5300A 40-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_042472_000717",
+			"description": "Samsung UN40MU7000 40-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_062600_000738",
+			"description": "Samsung UN43J5000 43-Inch 1080p LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_047278_000759",
+			"description": "Samsung UN43J5000 43-Inch 1080p LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_032579_000780",
+			"description": "Samsung UN43J5202A 43-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_015082_000801",
+			"description": "Samsung UN43J5202A 43-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_045320_000822",
+			"description": "Samsung UN49M5300A 49-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_024906_000843",
+			"description": "Samsung UN49M5300A 49-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_022371_000864",
+			"description": "Samsung UN49MU8000 49-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_057759_000885",
+			"description": "Samsung UN50M5300A 50-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_084798_000906",
+			"description": "Samsung UN55MU6290 55-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_061545_000927",
+			"description": "Samsung UN55MU6500 Curved 55-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_118935_000948",
+			"description": "Samsung UN65MU6500 Curved 65-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_063564_000969",
+			"description": "Samsung UN55MU7000 55-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_076992_000990",
+			"description": "Samsung UN55MU8000 55-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_037509_001011",
+			"description": "Samsung UN55MU9000 55-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_113543_001032",
+			"description": "Samsung UN58MU6100 58-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_039305_001053",
+			"description": "Samsung UN65MU7000 65-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_112065_001074",
+			"description": "Samsung UN65MU8000 65-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_126763_001095",
+			"description": "Samsung UN65MU9000 65-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_008875_001116",
+			"description": "Samsung UN75MU6300 75-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_099097_001137",
+			"description": "Samsung UN75MU8000 75-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_090109_001158",
+			"description": "Samsung UN75MU9000 75-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_019473_001179",
+			"description": "Samsung UN82MU8000 82-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_071031_001200",
+			"description": "Samsung UN24H4000-24-Inch-720p-Model",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_013557_001221",
+			"description": "Samsung UN24M4500A-24-Inch-Smart",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_114693_001242",
+			"description": "Samsung UN28H4000-28-Inch-720p-Model",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_114110_001263",
+			"description": "Samsung UN32M4500A-32-Inch-Smart",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_098322_001284",
+			"description": "Samsung UN40MU6300-40-Inch-Ultra",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_027609_001305",
+			"description": "Samsung UN43MU6300-43-Inch-Ultra",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_051107_001326",
+			"description": "Samsung UN50J5000-50-Inch-1080p-Model",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_048632_001347",
+			"description": "Samsung UN50MU6300-50-Inch-Ultra",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_018336_001368",
+			"description": "Samsung UN55MU6300-55-Inch-Ultra",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_008571_001389",
+			"description": "Samsung UN65MU6300-65-Inch-Ultra",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_099108_001410",
+			"description": "Sceptre 32-Inch Class 1080p 60Hz LED HDTV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_087369_001431",
+			"description": "Sceptre 40-Inch 1080p LED HDTV X405BV-FSR Black",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_086731_001452",
+			"description": "Sceptre 40-Inch LED Class Full 1080P HDTV X405BV-F",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_101214_001473",
+			"description": "Sceptre 50 Inch 1080p LED HDTV X505BV-FSR Black",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_070944_001494",
+			"description": "Sceptre E195BV-SHD 19-Inch 720p 60Hz Class LED HDTV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_005992_001515",
+			"description": "Sceptre E246BV-SR 24-Inch LED HDTV HDMI",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_001815_001536",
+			"description": "Sceptre U550CV-UMR 55-Inch 4K Ultra HD 120 LED UTV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_033115_001557",
+			"description": "Sceptre X415BV-FMQR 40-Inch Full HD LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_064095_001578",
+			"description": "Sceptre X415BV-FSR 40-Inch Slim LED 1080p HDTV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_112371_001599",
+			"description": "Sceptre X438BV-FSR 43 inches 1080p LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_120943_001620",
+			"description": "Sceptre-X328BV-SR-32-Inch-720p-Model",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_123103_001641",
+			"description": "Sony KD43X720E 43-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_084776_001662",
+			"description": "Sony KD49X720E 49-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_120605_001683",
+			"description": "Sony KD50X690E 50-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_048830_001704",
+			"description": "Sony KD55X720E 55-Inch 4k Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_065049_001725",
+			"description": "Sony KD60X690E 60-Inch 4K Ultra HD Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_052845_001746",
+			"description": "Sony KDL40W650D 40-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_024249_001767",
+			"description": "Sony KDL48W650D 48-Inch 1080p Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_004023_001788",
+			"description": "TCL 28S305 28-Inch 720p Roku Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_037581_001809",
+			"description": "TCL 32D100 32-Inch 720p LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_049738_001830",
+			"description": "TCL 32S301 32-inch 720p 60Hz Roku Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_075014_001851",
+			"description": "TCL 32S305 32-Inch 720p Roku Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_124597_001872",
+			"description": "TCL 43S305 43-Inch 1080p Roku Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_018903_001893",
+			"description": "TCL 49D100 49-Inch 1080p LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_113685_001914",
+			"description": "TCL 49S305 49-Inch 1080p Roku Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_114448_001935",
+			"description": "TCL 50FS3800 50-Inch 1080p Roku Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_005885_001956",
+			"description": "TCL 55C807 55-Inch 4K Ultra HD Roku Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_055697_001977",
+			"description": "TCL 55P607 55-Inch 4K Ultra HD Roku Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_047014_001998",
+			"description": "TCL 55S405 55-Inch 4K Ultra HD Roku Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_100273_002019",
+			"description": "TCL 65C807 65-Inch 4K Ultra HD Roku Smart LED TV",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_071583_002040",
+			"description": "TCL-32S305-32-Inch-Smart-Model",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_000684_002061",
+			"description": "TCL-40S305-40-Inch-1080p-Smart",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_094911_002082",
+			"description": "TCL-43S305-43-Inch-1080p-Smart",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_014169_002103",
+			"description": "TCL-43S405-43-Inch-Ultra-Smart",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_043323_002124",
+			"description": "TCL-49S405-49-Inch-Ultra-Smart",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_016523_002145",
+			"description": "VIZIO LED 48-Inch 1080P 120 HZ Wi-Fi Smart TV",
+			"data entry": true
 		}],
 		"columns": [{
 			"dimension": "scenario_id",
@@ -341,7 +1191,7 @@
 					"description": "Worldwide",
 					"data entry": false
 				}
-			]
-		}]
+      ]
+    }]
 	}]
 }

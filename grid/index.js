@@ -90,12 +90,13 @@ const stitchDatabaseData = (manifest, tableData, dbData) => {
           loggedToConsole = true;
         }
 
+        // Dimension from pinned[0]
         const pinned = findPinned(manifest.regions, colIndex, rowIndex);
-        
+      
         match = dbData.find(row => {
           return eval(totalMatchString);
         });
-
+  
         // Set the value (number) of the cell
         if (match) {
           // Put any desired rounding here. Currently handled in the client: https://goo.gl/J7CKFp
@@ -114,6 +115,8 @@ const stitchDatabaseRegionData = (region, tableData, dbData) => {
 
   tableData.rowDefs.forEach(def => {
     const keys = Object.keys(def);
+
+    let matches;
   
     keys.forEach(key => {
       if (typeof def[key] === 'object') {
@@ -121,11 +124,6 @@ const stitchDatabaseRegionData = (region, tableData, dbData) => {
         const rowIndex = def[key].rowIndex;
         const columnKeys = extractKeySet(def[key].columnKey);
         const rowKeys = extractKeySet(def[key].rowKey);
-        const rowKeyStrings = produceKeyStrings(rowKeys);
-        const columnKeyStrings = produceKeyStrings(columnKeys);
-        const joinedColumnKeys = columnKeyStrings.join(' && ');
-        const joinedRowKeys = rowKeyStrings.join(' && ');
-        const totalMatchString = `${joinedRowKeys} && ${joinedColumnKeys}`;
 
         // debug
         if (!loggedToConsole) {
@@ -134,17 +132,16 @@ const stitchDatabaseRegionData = (region, tableData, dbData) => {
           console.log('rowIndex: ' + JSON.stringify(rowIndex));
           console.log('columnKeys: ' + JSON.stringify(columnKeys));
           console.log('rowKeys: ' + JSON.stringify(rowKeys));
-          console.log('rowKeyStrings: ' + JSON.stringify(rowKeyStrings));
-          console.log('columnKeyStrings: ' + JSON.stringify(columnKeyStrings));
-          console.log('joinedColumnKeys: ' + JSON.stringify(joinedColumnKeys));
-          console.log('joinedRowKeys: ' + JSON.stringify(joinedRowKeys));
-          console.log('totalMatchString: ' + JSON.stringify(totalMatchString));
           loggedToConsole = true;
         }
-        
-        match = dbData.find(row => {
-          return eval(totalMatchString);
+
+        // console.time('match')
+        match = dbData.find((row) => {
+          const rowMatch = rowKeys.every(rowKey => row[rowKey.dimension] === rowKey.member)
+          const colMatch = columnKeys.every(columnKey => row[columnKey.dimension] === columnKey.member)
+          return rowMatch && colMatch;
         });
+        // console.timeEnd('match')
 
         // Set the value (number) of the cell
         if (match) {
