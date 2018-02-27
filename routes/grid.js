@@ -5,6 +5,7 @@ const util = require('./../util')
 const transforms = require('./../transforms')
 const db = require('../db')
 const fs = require('fs');
+const _ = require('lodash');
 
 // create a new express-promise-router
 // this has the same API as the normal express router except

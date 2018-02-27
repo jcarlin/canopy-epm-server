@@ -34,7 +34,7 @@ pool.on('error', (err, client) => {
  * SNOWFLAKE
 */
 const sfClient = snowflake.createConnection({
-  account:  process.env.SFACCOUNT     || 'ge10380', // 'CANOPYEPM',
+  account:  process.env.SFACCOUNT     || 'ge10380', 
   username: process.env.SFUSER        || 'canopyepm',
   password: process.env.SFPASSWORD,
   region:   process.env.SFREGION      || 'us-east-1',
