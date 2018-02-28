@@ -39,7 +39,7 @@
 		"showColHeaders": true,
 		"includeVariance": false,
 		"includeVariancePct": false,
-		"transform": "profit_and_loss_by_time.json",
+		"transform": "gross_profit_by_time.json",
 		"pinned": [{
 			"dimension": "Metric",
 			"member": "net_rev_trans_exp_balance"

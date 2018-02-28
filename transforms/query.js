@@ -11,7 +11,6 @@ const getDimensionIdSql = dimensions => {
     FROM (SELECT ${subSelects.join(',')}) a;
   `;
 
-  // console.log('getDimensionIdSql: ', sql);
   return sql;
 };
 
@@ -25,7 +24,6 @@ const querySql = (params) => {
     WHERE ${params.filterStatements};
   `;
 
-  // console.log('querySql: ', sql);
   return sql;
 };
 
@@ -37,7 +35,6 @@ const updateAppTableSql = (params) => {
     WHERE ${params.filterStatements};
   `;
 
-  // console.log('updateAppTableSql: ', sql);
   return sql;
 };
 
@@ -56,7 +53,6 @@ const unnestFactTableKeySql = factId => {
     ORDER BY dim_byte, dim_id;
   `;
 
-  console.log('unnestFactTableKeySql: ', sql);
   return sql;
 };
 
@@ -67,26 +63,24 @@ const deactivateSql = (params) => {
     WHERE active = true AND ${params.filterStatements};
   `;
 
-  console.log('deactivateSql: ', sql);
   return sql;
 };
 
 const insertSql = (params) => {
   const sql = `
     INSERT INTO ${params.tableName} (
-      ${params.dimIdColumns}, 
-      r${params.factId}, 
-      r${params.factId}_ord, 
+      ${params.dimIdColumns},
+      r${params.factId},
+      r${params.factId}_ord,
       active)
     VALUES (
       ${params.dimIdValues},
-      ${params.newValue}::DOUBLE PRECISION, 
+      ${params.newValue}::DOUBLE PRECISION,
       (SELECT max(r${params.factId}_ord) + 1 FROM ${params.tableName}),
       true
     );
   `;
   
-  console.log("insertSql: ", sql);
   return sql;
 };
 
@@ -95,12 +89,10 @@ const sfInsertSql = (params) => {
     INSERT INTO root_11c1 (m_id, ${params.dimIdColumns}, r10, fp2_id, fp1_id, cp2_id, cp1_id) 
     SELECT (SELECT fact_id FROM s_fact WHERE fact_name = r.metric), ${params.dimRIdColumns}, r3, fp2.d9h2_parent_id AS fp2_id, p1.d9h2_parent_id AS fp1_id, cp2.d9h3_parent_id AS cp2_id, p1.d9h3_parent_id AS cp1_id
     FROM (
-      SELECT 'bb_revenue' AS metric, ${params.dimRIdValues}, ${params.newValue} AS r3) r
+      SELECT ${params.metric} AS metric, ${params.dimRIdValues}, ${params.newValue} AS r3) r
     JOIN dim_9 p1 ON p1.d9_id = r.d9_id
     LEFT OUTER JOIN dim_9 fp2 ON p1.d9h2_parent_id = fp2.d9_id
     LEFT OUTER JOIN dim_9 cp2 ON p1.d9h3_parent_id = cp2.d9_id;`;
-
-  console.log('sfInsertSql: ', sql);
   return sql;
 };
 
@@ -162,8 +154,6 @@ const updateBranch15NatJoinSql = (params) => {
       AND u.d6_id = a.d6_id
     RETURNING u.*;
   `;
-
-  console.log('updateBranch15NatJoinSql: ', sql);
   return sql;
 };
 
@@ -207,7 +197,6 @@ const updateApp20NatJoinSql = (params) => {
     RETURNING u.*;
   `;
 
-  console.log('updateApp20NatJoinSql: ', sql);
   return sql;
 };
 
@@ -264,7 +253,6 @@ const updateApp20Sql = (params) => {
       AND u.d6_id = a.d6_id;
   `;
 
-  console.log('updateApp20Sql: ', sql);
   return sql;
 };
 
@@ -507,7 +495,6 @@ const updateBranch15Sql = (params) => {
       AND u.d6_id = a.d6_id;
   `;
 
-  console.log('updateBranch15Sql: ', sql);
   return sql;
 };
 

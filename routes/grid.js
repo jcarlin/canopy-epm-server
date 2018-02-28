@@ -76,7 +76,7 @@ router.post('/', async (req, res, next) => {
         dbData = dbData.map(row => {
           return _.transform(row, function (res, val, key) {
             res[key.toLowerCase()] = val;
-          }); 
+          });
         });
       }
 
@@ -115,6 +115,57 @@ router.post('/', async (req, res, next) => {
     // return the last tableData object - this one will have all the values
     return res.json(tableDataArr[tableDataArr.length -1]);
   });
+});
+
+/**
+ * Edit a cell based on an ICE
+ */
+router.patch('/', async (req, res, next) => {
+  if (!req.body.ice || !req.body.manifest) {
+    return res.status(400).json({
+      error: 'You must send data and manifest for independent change event'
+    });
+  }
+  
+  let sql = null;
+  const ice = req.body.ice;
+  const manifest = req.body.manifest;
+  const newValue = ice.value;
+  const region = manifest.regions.find(region => {
+    return region.colIndex === ice.colIndex && region.rowIndex === ice.rowIndex;
+  });
+  const keySets = util.buildKeySet(grid.extractKeySetAndId(ice.rowKey), grid.extractKeySetAndId(ice.columnKey), grid.getPinnedSet(region.pinned));
+  const dimensionsWithKeys = util.mergeDimKeys(keySets, dimKeys);
+
+  const transform = await util.readFile(`./transforms/${region.transform}`)
+  const dimIdSql = transforms.getDimensionIdSql(dimensionsWithKeys);
+  const dimData = await db.query(dimIdSql)
+  const factInfo = util.mergeFactKeys(transform.metrics, factKeys)[0];
+  const dimensionsWithVals = util.mergeDimVals(dimensionsWithKeys, dimData[0]);
+  
+  const sqlParams = {
+    tableName: `root_${factInfo.fact_id}`,
+    factId: factInfo.fact_id,
+    metric: transform.metrics[0],
+    newValue: ice.value,
+    filterStatements: dimensionsWithVals.map(dim => {
+      return dim.idWhereClause;
+    }).join(' AND '),
+    dimIdValues: dimensionsWithVals.map(dim => { return dim.value; }),
+    dimIdColumns: dimensionsWithVals.map(dim => { return dim.idColName; }),
+    dimRIdColumns: dimensionsWithVals.map(dim => { return `r.${dim.idColName}`; }),
+    dimRIdValues: dimensionsWithVals.map(dim => { return `${dim.value} AS ${dim.idColName}`; })
+  };
+
+  if (process.env.DB_TYPE === 'POSTGRESQL') {
+    sql = transforms.deactivateSql(sqlParams);
+    await db.query(sql)
+    sql = transforms.insertSql(sqlParams)
+  } else if (process.env.DB_TYPE === 'SNOWFLAKE') {
+    sql = transforms.sfInsertSql(sqlParams)
+  }
+  const data = await db.query(sql)
+  return res.json({data})
 });
 
 // export our router to be mounted by the parent application

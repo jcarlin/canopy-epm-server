@@ -13,55 +13,5 @@
     "objectcode_id"
   ],
   "metrics": ["app_net_rev"],
-  "filters": [
-    {
-      "dim": "Department",
-      "values": ["Sales"]
-    },
-    {
-      "dim": "Scenario",
-      "values": ["Actual"]
-    },
-    {
-      "dim": "Time",
-      "values": ["2017 Jan"]
-    },
-    {
-      "dim": "Variation",
-      "values": ["YTD"]
-    },
-    {
-      "dim": "Account",
-      "values": [
-        "40000 - REVENUE",
-        "43001 - GIFT REVENUE",
-        "44001 - INVESTMENT INCOME",
-        "48001 - INTERDEPT REVENUE",
-        "46FAC - FACILITY RENTAL",
-        "46PAT - PATENTS/ROYALTIES",
-        "49001 - TRANSFERS",
-        "50000 - TOTAL EXPENSES",
-        "500SE - COMPENSATION EXPENSES",
-        "51100 - SALARY AND WAGES",
-        "51700 - FRINGE BENEFITS",
-        "51900 - OTHER COMPENSATION",
-        "51BON - BONUS EXPENSE",
-        "56900 - INDIRECT COSTS",
-        "ENDFB - ENDING BALANCE"
-      ]
-    },
-    {
-      "dim": "Product",
-      "values": [
-        "Books",
-        "DVDs",
-        "Healthcare",
-        "Automotive",
-        "Electronics",
-        "Sporting Goods",
-        "Apparel"
-      ]
-    }
-  ],
   "new_value": ""
 }
