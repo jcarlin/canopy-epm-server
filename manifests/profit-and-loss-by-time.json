@@ -26,7 +26,7 @@
 			"description": "Periodic"
 		}, {
 			"dimension": "Variation",
-			"member": "ytd",
+			"member": "fy_ytd",
 			"description": "Year to Date"
 		}]
 	}],
@@ -42,7 +42,7 @@
 		"transform": "profit_and_loss_by_time.json",
 		"pinned": [{
 			"dimension": "Metric",
-			"member": "app_net_rev"
+			"member": "net_rev_trans_exp_balance"
 		}, {
 			"dimension": "Currency",
 			"member": "lc"

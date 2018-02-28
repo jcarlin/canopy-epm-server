@@ -32,7 +32,7 @@
 		"transform": "profit_and_loss_variance.json",
 		"pinned": [{
 			"dimension": "Metric",
-			"member": "app_net_rev"
+			"member": "net_rev_trans_exp_balance"
 		}, {
 			"dimension": "Currency",
 			"member": "lc"
@@ -176,16 +176,16 @@
 			"data entry": false
 		}],
 		"columns": [{
-			"dimension": "Variation",
+			"dimension": "variation_id",
 			"member": "periodic",
 			"columns": [{
-					"dimension": "Time",
+					"dimension": "time_id",
 					"member": "20160200",
 					"description": "2016 Feb",
 					"data entry": false
 				},
 				{
-					"dimension": "Time",
+					"dimension": "time_id",
 					"member": "20170200",
 					"description": "2017 Feb",
 					"data entry": false
@@ -348,16 +348,16 @@
 			"data entry": false
 		}],
 		"columns": [{
-			"dimension": "Variation",
-			"member": "ytd",
+			"dimension": "variation_id",
+			"member": "fy_ytd",
 			"columns": [{
-					"dimension": "Time",
+					"dimension": "time_id",
 					"member": "20160200",
 					"description": "2016 Feb",
 					"data entry": false
 				},
 				{
-					"dimension": "Time",
+					"dimension": "time_id",
 					"member": "20170200",
 					"description": "2017 Feb",
 					"data entry": false
