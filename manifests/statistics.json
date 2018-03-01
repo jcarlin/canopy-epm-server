@@ -6,7 +6,7 @@
         "details": [
           {
             "dimension": "product",
-            "records": 20
+            "records": 100
           },
           {
             "dimension": "currency",
