@@ -4,20 +4,19 @@ const grid = require('./../grid')
 const util = require('./../util')
 const transforms = require('./../transforms')
 const db = require('../db')
-const fs = require('fs');
-const _ = require('lodash');
+const fs = require('fs')
+const _ = require('lodash')
+const hrtime = require('process.hrtime')
 
-// create a new express-promise-router
-// this has the same API as the normal express router except
-// it allows you to use async functions as route handlers
 const router = new Router()
 
 let graindefs = {};
 let dimKeys = {};
 let factKeys = [];
 
+// Tasks to perform on startup
 (async () => {
-  graindefs = await util.readFile('./graindefs/graindefs.json');
+  graindefs = await util.readFile('./graindefs/graindefs.json')
   dimKeys = graindefs.dimKeys;
   factKeys = graindefs.factKeys;
 })();
@@ -88,32 +87,51 @@ router.post('/', async (req, res, next) => {
       resolve(tableData);
     });
   };
-
+  
+  //const totalTimeTimer = hrtime()
+  let sqlExecTimes = []
+  let stitchTimes = []
+  let totalTimes = []
+  const t = 'sql'
   promMap = manifest.regions.map(async (region) => {
+    const totalTimeTimer = hrtime()
     const pinned = grid.getPinnedSet(region.pinned);
     const includeVariance = region.includeVariance;
     const includeVariancePct = region.includeVariancePct;
     const dimensionsWithKeys = util.mergeDimKeys(pinned, dimKeys);
     const dimIdSql = transforms.getDimensionIdSql(dimensionsWithKeys);
     const transform = await util.readFile(`./transforms/${region.transform}`);
-    // const dimIds = await getDimensionIds(dimensionsWithKeys);
     const dimIds = await db.query(dimIdSql);
-    
-    console.time('buildDataSetQuery');
     const sql = await buildDataSetQuery(dimensionsWithKeys, dimIds, transform);
+
+    const execTimer = hrtime()
     const data = await db.query(sql);
-    console.timeEnd('buildDataSetQuery');
-    
+    sqlExecTimes.push(hrtime(execTimer, 'ms'))
+
     console.time('stitchData');
+    const stitchTimer = hrtime()
     const stitched = await stitchData(data, region);
+    stitchTimes.push(hrtime(stitchTimer, 'ms'))
     console.timeEnd('stitchData');
     
+    totalTimes.push(hrtime(totalTimeTimer, 'ms'))
     return stitched;
   });
 
   await Promise.all(promMap).then((tableDataArr) => {
+    
+    const totalExecTime = util.formatTimeStat(sqlExecTimes.reduce((total, curr) => {return total + curr}))
+    const totalStitchTime = util.formatTimeStat(stitchTimes.reduce((total, curr) => {return total + curr}))
+    const totalTime = util.formatTimeStat(totalTimes.reduce((total, curr) => {return total + curr}))
     // return the last tableData object - this one will have all the values
-    return res.json(tableDataArr[tableDataArr.length -1]);
+    const tableData = tableDataArr[tableDataArr.length -1]
+    tableData.statistics = {
+      sqlExecTime: totalExecTime,
+      stitchTime: totalStitchTime,
+      totalTime: totalTime
+      // more stats can go here
+    }
+    return res.json(tableData);
   });
 });
 
@@ -157,15 +175,17 @@ router.patch('/', async (req, res, next) => {
     dimRIdValues: dimensionsWithVals.map(dim => { return `${dim.value} AS ${dim.idColName}`; })
   };
 
+  let results = null;
   if (process.env.DB_TYPE === 'POSTGRESQL') {
     sql = transforms.deactivateSql(sqlParams);
     await db.query(sql)
-    sql = transforms.insertSql(sqlParams)
+    await db.query(transforms.insertSql(sqlParams))
+    await db.query(transforms.updateBranch15NatJoinSql(sqlParams))
+    results = await db.query(transforms.updateApp20NatJoinSql(sqlParams))
   } else if (process.env.DB_TYPE === 'SNOWFLAKE') {
-    sql = transforms.sfInsertSql(sqlParams)
+    results = await db.query(transforms.sfInsertSql(sqlParams))
   }
-  const data = await db.query(sql)
-  return res.json({data})
+  return res.json({results})
 });
 
 // export our router to be mounted by the parent application

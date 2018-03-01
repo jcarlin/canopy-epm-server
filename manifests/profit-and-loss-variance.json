@@ -177,7 +177,8 @@
 		}],
 		"columns": [{
 			"dimension": "variation_id",
-			"member": "periodic",
+      "member": "periodic",
+      "description": "Periodic",
 			"columns": [{
 					"dimension": "time_id",
 					"member": "20160200",
@@ -349,7 +350,8 @@
 		}],
 		"columns": [{
 			"dimension": "variation_id",
-			"member": "fy_ytd",
+      "member": "fy_ytd",
+      "description": "YTD",
 			"columns": [{
 					"dimension": "time_id",
 					"member": "20160200",

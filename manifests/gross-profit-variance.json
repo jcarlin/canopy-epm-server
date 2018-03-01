@@ -233,7 +233,8 @@
 		}],
 		"columns": [{
 			"dimension": "variation_id",
-			"member": "periodic",
+      "member": "periodic",
+      "description": "Periodic",
 			"columns": [{
 					"dimension": "scenario_id",
 					"member": "actual",
@@ -395,7 +396,8 @@
 		}],
 		"columns": [{
 			"dimension": "variation_id",
-			"member": "fy_ytd",
+      "member": "fy_ytd",
+      "description": "YTD",
 			"columns": [{
 					"dimension": "scenario_id",
 					"member": "actual",

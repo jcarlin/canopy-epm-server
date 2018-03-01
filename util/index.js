@@ -5,6 +5,17 @@ const capitalize = word => {
   return word.charAt(0).toUpperCase() + word.slice(1);
 };
 
+const formatTimeStat = msDuration => {
+  const milliseconds = parseInt((msDuration%1000)/100)
+  let seconds = parseInt((msDuration/1000)%60)
+  let minutes = parseInt((msDuration/(1000*60))%60);
+
+  minutes = (minutes < 10) ? "0" + minutes : minutes;
+  seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+  return minutes + ":" + seconds + "." + milliseconds;
+}
+
 const makeLowerCase = word => {
   return word.toLowerCase();
 };
@@ -192,5 +203,6 @@ module.exports = {
   mergeDimVals,
   buildKeySet,
   readFile,
-  removeDuplicates
+  removeDuplicates,
+  formatTimeStat
 };
