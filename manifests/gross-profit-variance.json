@@ -111,9 +111,6 @@
 		}, {
 			"dimension": "Organization",
 			"member": "$LIST$"
-		}, {
-			"dimension": "Scenario",
-			"member": "$LIST$"
 		}],
 		"rows": [{
 			"dimension": "product_id",
