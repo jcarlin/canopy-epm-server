@@ -23,15 +23,15 @@
 		}]
 	}, {
 		"list": [{
-			"dimension": "ObjectCode",
+			"dimension": "Objectcode",
 			"member": "49300",
 			"description": "Gross Profit"
 		}, {
-			"dimension": "ObjectCode",
+			"dimension": "Objectcode",
 			"member": "4901b",
 			"description": "Sales Revenue"
 		}, {
-			"dimension": "ObjectCode",
+			"dimension": "Objectcode",
 			"member": "4902b",
 			"description": "Cost of Sales"
 		}]
@@ -106,7 +106,7 @@
 			"dimension": "Datasrc",
 			"member": "final"
 		}, {
-			"dimension": "ObjectCode",
+			"dimension": "Objectcode",
 			"member": "$LIST$"
 		}, {
 			"dimension": "Organization",
@@ -269,7 +269,7 @@
 			"dimension": "Datasrc",
 			"member": "final"
 		}, {
-			"dimension": "ObjectCode",
+			"dimension": "Objectcode",
 			"member": "$LIST$"
 		}, {
 			"dimension": "Organization",
