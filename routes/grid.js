@@ -89,10 +89,9 @@ router.post('/', async (req, res, next) => {
   };
   
   //const totalTimeTimer = hrtime()
-  let sqlExecTimes = []
+  let queryTimes = []
   let stitchTimes = []
   let totalTimes = []
-  const t = 'sql'
   promMap = manifest.regions.map(async (region) => {
     const totalTimeTimer = hrtime()
     const pinned = grid.getPinnedSet(region.pinned);
@@ -106,7 +105,7 @@ router.post('/', async (req, res, next) => {
 
     const execTimer = hrtime()
     const data = await db.query(sql);
-    sqlExecTimes.push(hrtime(execTimer, 'ms'))
+    queryTimes.push(hrtime(execTimer, 'ms'))
 
     console.time('stitchData');
     const stitchTimer = hrtime()
@@ -119,18 +118,21 @@ router.post('/', async (req, res, next) => {
   });
 
   await Promise.all(promMap).then((tableDataArr) => {
+    let totalTime = totalTimes.reduce((total, curr) => {return total + curr});
+    let totalQueryTime = queryTimes.reduce((total, curr) => {return total + curr});
+    let totalRenderTime = totalTime - totalQueryTime;
+    totalRenderTime = util.formatTimeStat(totalRenderTime);
+    totalQueryTime = util.formatTimeStat(totalQueryTime);
+    totalTime = util.formatTimeStat(totalTime);
     
-    const totalExecTime = util.formatTimeStat(sqlExecTimes.reduce((total, curr) => {return total + curr}))
-    const totalStitchTime = util.formatTimeStat(stitchTimes.reduce((total, curr) => {return total + curr}))
-    const totalTime = util.formatTimeStat(totalTimes.reduce((total, curr) => {return total + curr}))
     // return the last tableData object - this one will have all the values
-    const tableData = tableDataArr[tableDataArr.length -1]
+    const tableData = tableDataArr[tableDataArr.length -1];
     tableData.statistics = {
-      sqlExecTime: totalExecTime,
-      stitchTime: totalStitchTime,
+      queryTime: totalQueryTime,
+      renderTime: totalRenderTime,
       totalTime: totalTime
       // more stats can go here
-    }
+    };
     return res.json(tableData);
   });
 });

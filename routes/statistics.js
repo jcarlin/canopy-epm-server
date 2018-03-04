@@ -5,6 +5,7 @@ const router = new Router()
 
 router.get('/', async (req, res, next) => {
   const manifestType = req.query.manifestType;
+  const tenant = req.query.tenant;
 
   if (!manifestType) {
     return res.status(400).json({ error: 'You must supply a manifest type' });
@@ -14,7 +15,7 @@ router.get('/', async (req, res, next) => {
   
   return res.json({
     "manifestStats": stats.manifests[manifestType],
-    "globalStats": stats.global,
+    "globalStats": stats.global.find(global => { return global.tenant === tenant}),
     "startTime": new Date()
   });
 });
