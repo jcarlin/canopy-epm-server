@@ -65,127 +65,127 @@
 		"rows": [{
 			"dimension": "objectcode_id",
 			"member": "endfb",
-			"description": "Net Profit",
+			"description": "  Net Profit",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "chgcf",
-			"description": "Income from Operations",
+			"description": "      Income from Operations",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "49300",
-			"description": "Gross Profit",
+			"description": "          Gross Profit",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "4901b",
-			"description": "Sales",
+			"description": "              Sales",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "4902b",
-			"description": "Cost of Sales",
+			"description": "              Cost of Sales",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "50000",
-			"description": "Operating Expenses",
+			"description": "          Operating Expenses",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "500se",
-			"description": "Sales and Marketing",
+			"description": "              Sales and Marketing",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "51100",
-			"description": "Advertising",
+			"description": "                  Advertising",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "51oth",
-			"description": "Direct Marketing",
+			"description": "                  Direct Marketing",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "52100",
-			"description": "General and Administrative",
+			"description": "              General and Administrative",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "56900",
-			"description": "Wages and Salaries",
+			"description": "                  Wages and Salaries",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "53101",
-			"description": "Outside Services",
+			"description": "                  Outside Services",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "53201",
-			"description": "Supplies",
+			"description": "                  Supplies",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "57100",
-			"description": "Meals and Entertainment",
+			"description": "                  Meals and Entertainment",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "57300",
-			"description": "Rent",
+			"description": "                  Rent",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "57600",
-			"description": "Telephone",
+			"description": "                  Telephone",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "58otr",
-			"description": "Utilities",
+			"description": "                  Utilities",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "59000",
-			"description": "Depreciation",
+			"description": "                  Depreciation",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "5othr",
-			"description": "Insurance",
+			"description": "                  Insurance",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "58dbt",
-			"description": "Repairs and Maintenance",
+			"description": "                  Repairs and Maintenance",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "58901",
-			"description": "Miscellaneous",
+			"description": "                  Miscellaneous",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "30000",
-			"description": "Taxes",
+			"description": "      Taxes",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "30001",
-			"description": "Income Taxes",
+			"description": "          Income Taxes",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "30110",
-			"description": "Payroll Taxes",
+			"description": "          Payroll Taxes",
 			"data entry": false
 		}, {
 			"dimension": "objectcode_id",
 			"member": "30120",
-			"description": "Real Estate Taxes",
+			"description": "          Real Estate Taxes",
 			"data entry": false
 		}],
 		"columns": [{
