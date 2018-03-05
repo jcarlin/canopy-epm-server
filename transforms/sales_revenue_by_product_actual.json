@@ -1,7 +1,6 @@
 {
-  "transform_id": "4",
-  "transform_name": "Net Rev Trans Exp Balance",
-  "table": "app_net_rev",
+  "transform_name": "Sales Revenue By Product Actual",
+  "table": "sales_revenue_by_product_actual",
   "dimensions": [
     "currency_id",
     "datasrc_id",
@@ -12,6 +11,6 @@
     "product_id",
     "objectcode_id"
   ],
-  "metrics": ["app_net_rev"],
-  "new_value": ""
-}
+    "metrics": ["revenue_balance"],
+    "new_value": ""
+  }

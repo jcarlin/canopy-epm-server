@@ -19,16 +19,16 @@
 		"showColHeaders": true,
 		"includeVariance": false,
 		"includeVariancePct": false,
-		"transform": "net_rev_trans_exp_balance.json",
+		"transform": "object_code_by_time.json",
 		"pinned": [{
 			"dimension": "Metric",
-			"member": "r6"
+			"member": "expense_balance"
 		}, {
 			"dimension": "Currency",
 			"member": "lc"
 		}, {
 			"dimension": "Datasrc",
-			"member": "edw_gl_activity"
+			"member": "edw_ga_activity"
 		}, {
 			"dimension": "Organization",
 			"member": "level_10_99460_leaf"

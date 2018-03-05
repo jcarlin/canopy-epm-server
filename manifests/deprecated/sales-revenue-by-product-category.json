@@ -1,0 +1,396 @@
+{
+	"page": [{
+		"list": [{
+			"dimension": "Time",
+			"member": "20160900",
+			"description": "2016 Sep"
+		}, {
+			"dimension": "Time",
+			"member": "20161000",
+			"description": "2016 Oct"
+		}, {
+			"dimension": "Time",
+			"member": "20161100",
+			"description": "2016 Nov"
+		}, {
+			"dimension": "Time",
+			"member": "20161200",
+			"description": "2016 Dec"
+		}, {
+			"dimension": "Time",
+			"member": "20170100",
+			"description": "2017 Jan"
+		}, {
+			"dimension": "Time",
+			"member": "20170200",
+			"description": "2017 Feb"
+		}, {
+			"dimension": "Time",
+			"member": "20170300",
+			"description": "2017 Mar"
+		}, {
+			"dimension": "Time",
+			"member": "20170400",
+			"description": "2017 Apr"
+		}, {
+			"dimension": "Time",
+			"member": "20170500",
+			"description": "2017 May"
+		}, {
+			"dimension": "Time",
+			"member": "20170600",
+			"description": "2017 Jun"
+		}, {
+			"dimension": "Time",
+			"member": "20170700",
+			"description": "2016 Jul"
+		}, {
+			"dimension": "Time",
+			"member": "20170800",
+			"description": "2017 Aug"
+		}]
+	}],
+	"regions": [{
+		"rowIndex": 0,
+		"colIndex": 0,
+		"rowDepth": 1,
+		"colDepth": 2,
+		"showRowHeaders": true,
+		"showColHeaders": false,
+		"includeVariance": false,
+		"includeVariancePct": false,
+		"transform": "sales_revenue_by_product.json",
+		"pinned": [{
+			"dimension": "Metric",
+			"member": "bb_revenue"
+		}, {
+			"dimension": "Currency",
+			"member": "lc"
+		}, {
+			"dimension": "Datasrc",
+			"member": "preliminary"
+		}, {
+			"dimension": "Objectcode",
+			"member": "4901b"
+		}, {
+			"dimension": "Time",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Variation",
+			"member": "periodic"
+		}],
+		"rows": [{
+			"dimension": "product_id",
+			"member": "sku_099975_000056",
+			"description": "Accessories",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_096184_000048",
+			"description": "Automotive",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_068521_000057",
+			"description": "Bluetooth Speakers",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_043912_000058",
+			"description": "Cameras",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_078638_000059",
+			"description": "Car Electronics",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_107805_000060",
+			"description": "Cell Phones",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_057124_000049",
+			"description": "Clothing",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_024077_000050",
+			"description": "Grocery",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_003554_000061",
+			"description": "Headphones",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_006312_000051",
+			"description": "Health Care",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_023812_000052",
+			"description": "Home & Garden",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_097826_000062",
+			"description": "Home Audio",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_093194_000063",
+			"description": "Instruments",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_071765_000064",
+			"description": "Monitors",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_016113_000053",
+			"description": "Movies",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_082448_000065",
+			"description": "Photo & Video",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_071867_000054",
+			"description": "Sports Equipment",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_018404_000066",
+			"description": "Televisions",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_106111_000055",
+			"description": "Toys",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_026883_000067",
+			"description": "Video Games",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_123378_000068",
+			"description": "Wearable Technology",
+			"data entry": true
+		}],
+		"columns": [{
+			"dimension": "scenario_id",
+			"member": "booked_budget",
+			"description": "Budget",
+			"columns": [{
+					"dimension": "organization_id",
+					"member": "level_6_184343_leaf",
+					"description": "East Region",
+					"data entry": true
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_6_184345_leaf",
+					"description": "Central Region",
+					"data entry": true
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_6_184348_leaf",
+					"description": "West Region",
+					"data entry": true
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_2_168380_node",
+					"description": "United States",
+					"data entry": false
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_1_2_node",
+					"description": "Worldwide",
+					"data entry": false
+				}
+			]
+		}]
+	}, {
+		"rowIndex": 0,
+		"colIndex": 1,
+		"rowDepth": 1,
+		"colDepth": 2,
+		"showRowHeaders": false,
+		"showColHeaders": false,
+		"includeVariance": false,
+		"includeVariancePct": false,
+		"transform": "sales_revenue_by_product.json",
+		"pinned": [{
+			"dimension": "Metric",
+			"member": "bb_revenue"
+		}, {
+			"dimension": "Currency",
+			"member": "lc"
+		}, {
+			"dimension": "Datasrc",
+			"member": "preliminary"
+		}, {
+			"dimension": "Objectcode",
+			"member": "4901b"
+		}, {
+			"dimension": "Time",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Variation",
+			"member": "periodic"
+		}],
+		"rows": [{
+			"dimension": "product_id",
+			"member": "sku_099975_000056",
+			"description": "Accessories",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_096184_000048",
+			"description": "Automotive",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_068521_000057",
+			"description": "Bluetooth Speakers",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_043912_000058",
+			"description": "Cameras",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_078638_000059",
+			"description": "Car Electronics",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_107805_000060",
+			"description": "Cell Phones",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_057124_000049",
+			"description": "Clothing",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_024077_000050",
+			"description": "Grocery",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_003554_000061",
+			"description": "Headphones",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_006312_000051",
+			"description": "Health Care",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_023812_000052",
+			"description": "Home & Garden",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_097826_000062",
+			"description": "Home Audio",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_093194_000063",
+			"description": "Instruments",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_071765_000064",
+			"description": "Monitors",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_016113_000053",
+			"description": "Movies",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_082448_000065",
+			"description": "Photo & Video",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_071867_000054",
+			"description": "Sports Equipment",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_018404_000066",
+			"description": "Televisions",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_106111_000055",
+			"description": "Toys",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_026883_000067",
+			"description": "Video Games",
+			"data entry": true
+		}, {
+			"dimension": "product_id",
+			"member": "sku_123378_000068",
+			"description": "Wearable Technology",
+			"data entry": true
+		}],
+		"columns": [{
+			"dimension": "scenario_id",
+			"member": "actual",
+			"description": "Actual",
+			"columns": [{
+					"dimension": "organization_id",
+					"member": "level_6_184343_leaf",
+					"description": "East Region",
+					"data entry": true
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_6_184345_leaf",
+					"description": "Central Region",
+					"data entry": true
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_6_184348_leaf",
+					"description": "West Region",
+					"data entry": true
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_2_168380_node",
+					"description": "United States",
+					"data entry": false
+				},
+				{
+					"dimension": "organization_id",
+					"member": "level_1_2_node",
+					"description": "Worldwide",
+					"data entry": false
+				}
+			]
+		}]
+	}]
+}

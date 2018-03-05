@@ -14,13 +14,7 @@ const {
 const { buildRowColumns } = require('./rowColumn');
 const { makeLowerCase } = require('./../util');
 
-const transformRows = (
-  columnDefs,
-  regions,
-  columnRowDefs,
-  rowDepth,
-  transforms
-) => {
+const transformRows = (columnDefs, regions, columnRowDefs, rowDepth, transforms) => {
   const rowDef = buildRowDef(columnDefs);
   let rowDefs = buildRows(regions, rowDef, rowDepth);
 
@@ -59,6 +53,11 @@ const transformColumns = (regions, colDepth, rowDepth, transforms) => {
 
 // NOTE: This is a placeholder function that will evolve
 const assembleColumns = (columnRowDefs, columns, firstRegion) => {
+  // TODO: replace with something better. Need to do more testing until it breaks (nested rows) and go from there.
+  // Stomp on columnRowDefs to use descriptions from manifest. 
+  // Can't do this earlier because it throws off all of the data stitching functions.
+  columnRowDefs = [{"columns":[{"value":"","level":0}],"properties":{"field":"description","editable":true}}];
+  
   if (firstRegion.includeVariance) {
     // PERIODIC LAYOUT
     return [...columns[0], ...columnRowDefs, ...columns[1]];
@@ -80,7 +79,6 @@ const buildTableData = manifest => {
   }
 
   const regions = manifest.regions;
-
   const firstRegion = regions[0];
   const colDepth = firstRegion.colDepth;
   const rowDepth = firstRegion.rowDepth;
@@ -88,4 +86,22 @@ const buildTableData = manifest => {
   return getNecessaryTransforms(regions, colDepth, rowDepth);
 };
 
-module.exports = { buildTableData };
+const buildRegionData = region => {
+  if (!region) {
+    throw new Error('Manfiest must contain regions');
+  }
+
+  const columnRowDefs = buildRowColumns(region, region.colDepth, region.rowDepth);
+  const columns = processRegion(region, region.colDepth);
+  const columnDefs = assembleColumns(columnRowDefs, columns, region);
+
+  return transformRows(
+    columnDefs,
+    region,
+    columnRowDefs,
+    region.rowDepth,
+    region.transform
+  );
+};
+
+module.exports = { buildTableData, buildRegionData };

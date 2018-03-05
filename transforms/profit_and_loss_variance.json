@@ -1,6 +1,5 @@
 {
-  "transform_id": "4",
-  "transform_name": "Net Rev Trans Exp Balance",
+  "transform_name": "Profit and Loss Variance",
   "table": "app_net_rev",
   "dimensions": [
     "currency_id",
@@ -12,6 +11,6 @@
     "product_id",
     "objectcode_id"
   ],
-  "metrics": ["app_net_rev"],
-  "new_value": ""
-}
+    "metrics": ["app_net_rev"],
+    "new_value": ""
+  }

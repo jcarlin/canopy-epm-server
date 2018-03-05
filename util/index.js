@@ -1,6 +1,20 @@
+const path = require('path');
+const fs = require('fs');
+
 const capitalize = word => {
   return word.charAt(0).toUpperCase() + word.slice(1);
 };
+
+const formatTimeStat = msDuration => {
+  const milliseconds = parseInt(msDuration%1000)
+  let seconds = parseInt((msDuration/1000)%60)
+  let minutes = parseInt((msDuration/(1000*60))%60);
+
+  minutes = (minutes < 10) ? "0" + minutes : minutes;
+  seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+  return seconds + "s " + milliseconds + 'ms';
+}
 
 const makeLowerCase = word => {
   return word.toLowerCase();
@@ -119,11 +133,76 @@ const getExtractedElements = (manifest, type) => {
   return output;
 };
 
+// Add id and idColName to the dimensions (objects) array
+const mergeDimKeys = (dimArray, dimKeys) => {
+  return dimArray.map(dim => {
+    // Get dimension info
+    const dimInfo = dimKeys.find(dimKey => {
+      return dimKey.name === dim.dimension;
+    });
+
+    dim.id = dimInfo.id;
+    dim.idColName = `d${dimInfo.id}_id`;
+
+    return dim;
+  });
+};
+
+// Return factKey from graindefs.factKeys (because it has more info) instead of fact from transform.dimensions
+const mergeFactKeys = (factArray, factKeyArray) => {
+  return factArray.map(fact => {
+    return factKeyArray.find(factKey => {
+      return factKey.fact_name === fact;
+    });
+  });
+};
+
+// Add value and idWhereClause to the dimensions (objects) array
+const mergeDimVals = (dimensions, dimVals) => {
+  return dimensions.map(dim => {
+    const dimVal = dimVals[dim.idColName];
+    return Object.assign(
+      {},
+      dim,
+      {value: dimVal},
+      {idWhereClause: `d${dim.id}_id = ${dimVal}`}
+    );
+  })
+};
+
+const buildKeySet = (rowKeySet, colKeySet, pinned) => {
+  return [
+    ...rowKeySet,
+    ...colKeySet,
+    ...pinned
+  ];
+};
+
+const readFile = filePath => new Promise((resolve, reject) => {
+  fs.readFile(filePath, (err, data) => {
+    if (err) reject(err);
+    else resolve(JSON.parse(data));
+  });
+});
+
+const removeDuplicates = (myArr, prop, nestedProp) => {
+  return myArr.filter((obj, pos, arr) => {
+      return arr.map(mapObj => mapObj[prop][nestedProp]).indexOf(obj[prop][nestedProp]) === pos;
+  });
+};
+
 module.exports = {
   capitalize,
   makeLowerCase,
   extractFields,
   buildElements,
   seekElements,
-  getExtractedElements
+  getExtractedElements,
+  mergeDimKeys,
+  mergeFactKeys,
+  mergeDimVals,
+  buildKeySet,
+  readFile,
+  removeDuplicates,
+  formatTimeStat
 };

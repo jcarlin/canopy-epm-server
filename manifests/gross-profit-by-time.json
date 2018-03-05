@@ -1,0 +1,274 @@
+{
+	"page": [{
+		"list": [{
+			"dimension": "Organization",
+			"member": "level_1_2_node",
+			"description": "Worldwide"
+		}, {
+			"dimension": "Organization",
+			"member": "level_2_168380_node",
+			"description": "United States"
+		}, {
+			"dimension": "Organization",
+			"member": "level_6_184343_leaf",
+			"description": "East Region"
+		}, {
+			"dimension": "Organization",
+			"member": "level_6_184345_leaf",
+			"description": "Central Region"
+		}, {
+			"dimension": "Organization",
+			"member": "level_6_184348_leaf",
+			"description": "West Region"
+		}]
+	}, {
+		"list": [{
+			"dimension": "Scenario",
+			"member": "actual",
+			"description": "Actual"
+		}, {
+			"dimension": "Scenario",
+			"member": "booked_budget",
+			"description": "Budget"
+		}]
+	}, {
+		"list": [{
+			"dimension": "Objectcode",
+			"member": "49300",
+			"description": "Gross Profit"
+		}, {
+			"dimension": "Objectcode",
+			"member": "4901b",
+			"description": "Sales Revenue"
+		}, {
+			"dimension": "Objectcode",
+			"member": "4902b",
+			"description": "Cost of Sales"
+		}]
+	}, {
+		"list": [{
+			"dimension": "Variation",
+			"member": "periodic",
+			"description": "Periodic"
+		}, {
+			"dimension": "Variation",
+			"member": "fy_ytd",
+			"description": "Year to Date"
+		}]
+	}],
+	"regions": [{
+		"rowIndex": 0,
+		"colIndex": 0,
+		"rowDepth": 1,
+		"colDepth": 1,
+		"showRowHeaders": true,
+		"showColHeaders": true,
+		"includeVariance": false,
+		"includeVariancePct": false,
+		"transform": "gross_profit_by_time.json",
+		"pinned": [{
+			"dimension": "Metric",
+			"member": "net_rev_trans_exp_balance"
+		}, {
+			"dimension": "Currency",
+			"member": "lc"
+		}, {
+			"dimension": "Datasrc",
+			"member": "final"
+		}, {
+			"dimension": "Objectcode",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Organization",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Scenario",
+			"member": "$LIST$"
+		}, {
+			"dimension": "Variation",
+			"member": "$LIST$"
+		}],
+		"rows": [{
+			"dimension": "product_id",
+			"member": "all_products",
+			"description": "  All Products",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "electronics",
+			"description": "      Electronics",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "accessories",
+			"description": "          Accessories",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "bluetooth_speakers",
+			"description": "          Bluetooth Speakers",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "cameras",
+			"description": "          Cameras",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "car_electronics",
+			"description": "          Car Electronics",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "cell_phones",
+			"description": "          Cell Phones",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "headphones",
+			"description": "          Headphones",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "home_audio",
+			"description": "          Home Audio",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "instruments",
+			"description": "          Instruments",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "monitors",
+			"description": "          Monitors",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "photo_video",
+			"description": "          Photo & Video",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "televisions",
+			"description": "          Televisions",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "wearable_technology",
+			"description": "          Wearable Technology",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "automotive",
+			"description": "      Automotive",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "clothing",
+			"description": "      Clothing",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "grocery",
+			"description": "      Grocery",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "healthcare",
+			"description": "      Health Care",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "home_garden",
+			"description": "      Home & Garden",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "movies",
+			"description": "      Movies",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "sports_equipment",
+			"description": "      Sports Equipment",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "toys",
+			"description": "      Toys",
+			"data entry": false
+		}, {
+			"dimension": "product_id",
+			"member": "video_games",
+			"description": "      Video Games",
+			"data entry": false
+		}],
+		"columns": [{
+			"dimension": "time_id",
+			"member": "20160900",
+			"description": "2016 Sep",
+			"data entry": false
+		}, {
+			"dimension": "time_id",
+			"member": "20161000",
+			"description": "2016 Oct",
+			"data entry": false
+		}, {
+			"dimension": "time_id",
+			"member": "20161100",
+			"description": "2016 Nov",
+			"data entry": false
+		}, {
+			"dimension": "time_id",
+			"member": "20161200",
+			"description": "2016 Dec",
+			"data entry": false
+		}, {
+			"dimension": "time_id",
+			"member": "20170100",
+			"description": "2017 Jan",
+			"data entry": false
+		}, {
+			"dimension": "time_id",
+			"member": "20170200",
+			"description": "2017 Feb",
+			"data entry": false
+		}, {
+			"dimension": "time_id",
+			"member": "20170300",
+			"description": "2017 Mar",
+			"data entry": false
+		}, {
+			"dimension": "time_id",
+			"member": "20170400",
+			"description": "2017 Apr",
+			"data entry": false
+		}, {
+			"dimension": "time_id",
+			"member": "20170500",
+			"description": "2017 May",
+			"data entry": false
+		}, {
+			"dimension": "time_id",
+			"member": "20170600",
+			"description": "2017 Jun",
+			"data entry": false
+		}, {
+			"dimension": "time_id",
+			"member": "20170700",
+			"description": "2016 Jul",
+			"data entry": false
+		}, {
+			"dimension": "time_id",
+			"member": "20170800",
+			"description": "2017 Aug",
+			"data entry": false
+		}, {
+			"dimension": "time_id",
+			"member": "2017_fy",
+			"description": "FY 2017",
+			"data entry": false
+		}]
+	}]
+}

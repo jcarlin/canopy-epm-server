@@ -1,7 +1,7 @@
 {
-  "transform_id": "4",
-  "transform_name": "Net Rev Trans Exp Balance",
-  "table": "app_net_rev",
+  "transform_id": "6",
+  "transform_name": "Gross Profit By time",
+  "table": "gross_profit_by_time",
   "dimensions": [
     "currency_id",
     "datasrc_id",
@@ -12,6 +12,6 @@
     "product_id",
     "objectcode_id"
   ],
-  "metrics": ["app_net_rev"],
-  "new_value": ""
-}
+    "metrics": ["net_rev_trans_exp_balance"],
+    "new_value": ""
+  }

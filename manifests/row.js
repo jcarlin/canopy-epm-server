@@ -1,6 +1,10 @@
 const { flatten, completelyFlatten, getUniqueRegions } = require('./util');
 
 const buildRows = (regions, rowDef, depth) => {
+  // TODO - remove this hack!
+  if (!regions.length) {
+    regions = [regions];
+  }
   const transformedRows = transformRowDefs(regions);
   const flattenedRows   = flatten(transformedRows, depth - 1);
   const builtRows       = buildRowDefs(flattenedRows, rowDef);
@@ -13,8 +17,8 @@ const buildRows = (regions, rowDef, depth) => {
 
 const transformRowDefs = regions => {
   const newRegions = getUniqueRegions(regions, 'rowIndex');
-  const rows = completelyFlatten(newRegions.map(region => region.rows));
-
+  const regionRows = newRegions.map(region => region.rows);
+  const rows = completelyFlatten(regionRows);
   const transform = (row, parents) => {
     parents = [...parents, row];
     return row.rows ? row.rows.map(r => transform(r, parents)) : parents;
@@ -29,6 +33,7 @@ const buildRowDefs = (rows, rowDef) => {
       rows.map(row => {
         return {
           [row.dimension]: row.member,
+          description: row.description,
           editable: row['data entry']
         };
       })
@@ -82,9 +87,15 @@ const generateRowKey = (rowKeys, rowDef) => {
   return rowKeys.map(key => `${key}__${rowDef[key]}`).join('___');
 };
 
+// columns:
+// [ { dimension: 'FY 2017',
+// value: 'FY 2017',
+// member: '2017_fy',
+// level: 0 } ]
 const generateColumnKey = columns => {
   return columns
     .map(column => `${column.dimension}__${column.member}`)
+    //.map(column => `${column.dimension}__${column.description}`)
     .join('___');
 };
 

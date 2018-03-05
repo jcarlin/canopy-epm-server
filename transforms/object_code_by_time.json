@@ -1,7 +1,7 @@
 {
-  "transform_id": "4",
-  "transform_name": "Net Rev Trans Exp Balance",
-  "table": "app_net_rev",
+  "transform_id": "5",
+  "transform_name": "Object Code By Time",
+  "table": "object_code_by_time",
   "dimensions": [
     "currency_id",
     "datasrc_id",
@@ -12,6 +12,6 @@
     "product_id",
     "objectcode_id"
   ],
-  "metrics": ["app_net_rev"],
-  "new_value": ""
-}
+    "metrics": ["expense_balance"],
+    "new_value": ""
+  }

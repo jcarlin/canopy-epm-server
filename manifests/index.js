@@ -1,3 +1,5 @@
-const { buildTableData } = require('./table');
+require('dotenv').config();
 
-module.exports = { buildTableData };
+const { buildTableData, buildRegionData } = require('./table');
+
+module.exports = { buildTableData, buildRegionData };

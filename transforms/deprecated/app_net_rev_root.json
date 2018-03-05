@@ -1,7 +1,7 @@
 {
   "transform_id": "4",
   "transform_name": "Net Rev Trans Exp Balance",
-  "table": "app_net_rev",
+  "table": "app_net_rev_root",
   "dimensions": [
     "currency_id",
     "datasrc_id",

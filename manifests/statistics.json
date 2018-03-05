@@ -1,0 +1,594 @@
+{
+  "manifests": {
+    "sales-revenue-by-product": {
+      "dimSuperSet": {
+        "total": 975631800,
+        "details": [
+          {
+            "dimension": "product",
+            "hierarchy": "producttype",
+            "records": 100
+          },
+          {
+            "dimension": "currency",
+            "hierarchy": "currency",
+            "records": 1
+          },
+          {
+            "dimension": "datasrc",
+            "hierarchy": "datasrcalternate",
+            "records": 1
+          },
+          {
+            "dimension": "objectcode",
+            "hierarchy": "objectcode",
+            "records": 1
+          },
+          {
+            "dimension": "organization",
+            "hierarchy": "award",
+            "records": 375243
+          },
+          {
+            "dimension": "scenario",
+            "hierarchy": "scenario",
+            "records": 2
+          },
+          {
+            "dimension": "time",
+            "hierarchy": "fiscal",
+            "records": 13
+          },
+          {
+            "dimension": "variation",
+            "hierarchy": "variation",
+            "records": 1
+          }
+        ]
+      },
+      "dataSuperSet": {
+        "total": 3326447,
+        "details": [
+          {
+            "fact": "bb_revenue",
+            "records": 1663240
+          },
+          {
+            "fact": "revenue_balance",
+            "records": 1663207
+          }
+        ]
+      }
+    },
+    "gross-profit-by-time": {
+      "dimSuperSet": {
+        "total": 31706737981047400,
+        "details": [
+          {
+            "dimension": "product",
+            "hierarchy": "producttype",
+            "records": 127009
+          },
+          {
+            "dimension": "currency",
+            "hierarchy": "currency",
+            "records": 1
+          },
+          {
+            "dimension": "datasrc",
+            "hierarchy": "datasrcalternate",
+            "records": 18
+          },
+          {
+            "dimension": "objectcode",
+            "hierarchy": "objectcode",
+            "records": 1540
+          },
+          {
+            "dimension": "organization",
+            "hierarchy": "award",
+            "records": 375243
+          },
+          {
+            "dimension": "scenario",
+            "hierarchy": "scenario",
+            "records": 2
+          },
+          {
+            "dimension": "time",
+            "hierarchy": "fiscal",
+            "records": 12
+          },
+          {
+            "dimension": "variation",
+            "hierarchy": "variation",
+            "records": 1
+          }
+        ]
+      },
+      "dataSuperSet": {
+        "total": 25066877,
+        "details": [
+          {
+            "fact": "net_rev_trans_exp_balance",
+            "records": 25066877
+          }
+        ]
+      }
+    },
+    "gross-profit-variance": {
+      "dimSuperSet": {
+        "total": 31706737981047400,
+        "details": [
+            {
+              "dimension": "product",
+              "hierarchy": "producttype",
+              "records": 127009
+            },
+            {
+              "dimension": "currency",
+              "hierarchy": "currency",
+              "records": 1
+            },
+            {
+              "dimension": "datasrc",
+              "hierarchy": "datasrcalternate",
+              "records": 18
+            },
+            {
+              "dimension": "objectcode",
+              "hierarchy": "objectcode",
+              "records": 1540
+            },
+            {
+              "dimension": "organization",
+              "hierarchy": "award",
+              "records": 375243
+            },
+            {
+              "dimension": "scenario",
+              "hierarchy": "scenario",
+              "records": 2
+            },
+            {
+              "dimension": "time",
+              "hierarchy": "fiscal",
+              "records": 12
+            },
+            {
+              "dimension": "variation",
+              "hierarchy": "variation",
+              "records": 1
+            }
+        ]
+      },
+      "dataSuperSet": {
+        "total": 25066877,
+        "details": [
+          {
+            "fact": "net_rev_trans_exp_balance",
+            "records": 25066877
+          }
+        ]
+      }
+    },
+    "profit-and-loss-by-time": {
+      "dimSuperSet": {
+        "total": 249641663040,
+        "details": [
+            {
+              "dimension": "currency",
+              "hierarchy": "currency",
+              "records": 1
+            },
+            {
+              "dimension": "datasrc",
+              "hierarchy": "datasrcalternate",
+              "records": 18
+            },
+            {
+              "dimension": "objectcode",
+              "hierarchy": "objectcode",
+              "records": 1540
+            },
+            {
+              "dimension": "organization",
+              "hierarchy": "award",
+              "records": 375243
+            },
+            {
+              "dimension": "scenario",
+              "hierarchy": "scenario",
+              "records": 2
+            },
+            {
+              "dimension": "time",
+              "hierarchy": "fiscal",
+              "records": 12
+            },
+            {
+              "dimension": "variation",
+              "hierarchy": "variation",
+              "records": 1
+            }
+        ]
+      },
+      "dataSuperSet": {
+        "total": 25066877,
+        "details": [
+          {
+            "fact": "net_rev_trans_exp_balance",
+            "records": 25066877
+          }
+        ]
+      }
+    },
+    "profit-and-loss-variance": {
+      "dimSuperSet": {
+        "total": 499283326080,
+        "details": [
+            {
+              "dimension": "currency",
+              "hierarchy": "currency",
+              "records": 1
+            },
+            {
+              "dimension": "datasrc",
+              "hierarchy": "datasrcalternate",
+              "records": 18
+            },
+            {
+              "dimension": "objectcode",
+              "hierarchy": "objectcode",
+              "records": 1540
+            },
+            {
+              "dimension": "organization",
+              "hierarchy": "award",
+              "records": 375243
+            },
+            {
+              "dimension": "scenario",
+              "hierarchy": "scenario",
+              "records": 2
+            },
+            {
+              "dimension": "time",
+              "hierarchy": "fiscal",
+              "records": 24
+            },
+            {
+              "dimension": "variation",
+              "hierarchy": "variation",
+              "records": 1
+            }
+        ]
+      },
+      "dataSuperSet": {
+        "total": 25066877,
+        "details": [
+          {
+            "fact": "net_rev_trans_exp_balance",
+            "records": 25066877
+          }
+        ]
+      }
+    },
+    "object-code-by-product": {
+      "dimSuperSet": {
+        "total": 9985666521600,
+        "details": [
+          {
+            "dimension": "product",
+            "records": 20
+          },
+          {
+            "dimension": "currency",
+            "records": 1
+          },
+          {
+            "dimension": "datasrc",
+            "records": 18
+          },
+          {
+            "dimension": "objectcode",
+            "records": 1540
+          },
+          {
+            "dimension": "organization",
+            "records": 375243
+          },
+          {
+            "dimension": "scenario",
+            "records": 2
+          },
+          {
+            "dimension": "time",
+            "records": 24
+          },
+          {
+            "dimension": "variation",
+            "records": 1
+          }
+        ]
+      },
+      "dataSuperSet": {
+        "total": 25066877,
+        "details": [
+          {
+            "fact": "net_rev_trans_exp_balance",
+            "records": 25066877
+          }
+        ]
+      }
+    },
+    "object-code-by-time": {
+      "dimSuperSet": {
+        "total": 182,
+        "details": [
+          {
+            "dimension": "product",
+            "records": 1
+          },
+          {
+            "dimension": "currency",
+            "records": 1
+          },
+          {
+            "dimension": "datasrc",
+            "records": 1
+          },
+          {
+            "dimension": "objectcode",
+            "records": 7
+          },
+          {
+            "dimension": "organization",
+            "records": 1
+          },
+          {
+            "dimension": "scenario",
+            "records": 2
+          },
+          {
+            "dimension": "time",
+            "records": 13
+          },
+          {
+            "dimension": "variation",
+            "records": 1
+          }
+        ]
+      },
+      "dataSuperSet": {
+        "total": 13183440,
+        "details": [
+          {
+            "fact": "expense_balance",
+            "records": 13183440
+          }
+        ]
+      }
+    },
+    "sales-revenue-by-product-sku": {
+      "dimSuperSet": {
+        "total": 208,
+        "details": [
+          {
+            "dimension": "product",
+            "records": 1
+          },
+          {
+            "dimension": "currency",
+            "records": 1
+          },
+          {
+            "dimension": "datasrc",
+            "records": 1
+          },
+          {
+            "dimension": "objectcode",
+            "records": 8
+          },
+          {
+            "dimension": "organization",
+            "records": 1
+          },
+          {
+            "dimension": "scenario",
+            "records": 2
+          },
+          {
+            "dimension": "time",
+            "records": 13
+          },
+          {
+            "dimension": "variation",
+            "records": 1
+          }
+        ]
+      },
+      "dataSuperSet": {
+        "total": 11536863,
+        "details": [
+          {
+            "fact": "expense_balance",
+            "records": 11536863
+          }
+        ]
+      }
+    }
+  },
+  "global": [
+    {
+      "tenant": "nile",
+      "dimSuperSet": {
+        "total": 2004504110822515000000,
+        "details": [
+          {
+            "dimension": "product",
+            "hierarchy": "producttype",
+            "records": 127011
+          },
+          {
+            "dimension": "currency",
+            "hierarchy": "currency",
+            "records": 6
+          },
+          {
+            "dimension": "datasrc",
+            "hierarchy": "datasrcalternate",
+            "records": 59
+          },
+          {
+            "dimension": "objectcode",
+            "hierarchy": "objectcode",
+            "records": 2257
+          },
+          {
+            "dimension": "organization",
+            "hierarchy": "award",
+            "records": 375245
+          },
+          {
+            "dimension": "scenario",
+            "hierarchy": "scenario",
+            "records": 20
+          },
+          {
+            "dimension": "time",
+            "hierarchy": "fiscal",
+            "records": 376
+          },
+          {
+            "dimension": "variation",
+            "hierarchy": "variation",
+            "records": 7
+          }
+        ]
+      },
+      "dataSuperSet": {
+        "total": 48770020274976,
+        "details": [
+          {
+            "dimension": "product",
+            "records": 42
+          },
+          {
+            "dimension": "currency",
+            "records": 1
+          },
+          {
+            "dimension": "datasrc",
+            "records": 22
+          },
+          {
+            "dimension": "objectcode",
+            "records": 742
+          },
+          {
+            "dimension": "organization",
+            "records": 65141
+          },
+          {
+            "dimension": "scenario",
+            "records": 7
+          },
+          {
+            "dimension": "time",
+            "records": 156
+          },
+          {
+            "dimension": "variation",
+            "records": 1
+          }
+        ]
+      }
+    },
+    {
+      "tenant": "higher-ed",
+      "dimSuperSet": {
+        "total": 378771119507289600,
+        "details": [
+          {
+            "dimension": "product",
+            "hierarchy": "producttype",
+            "records": 24
+          },
+          {
+            "dimension": "currency",
+            "hierarchy": "currency",
+            "records": 6
+          },
+          {
+            "dimension": "datasrc",
+            "hierarchy": "datasrcalternate",
+            "records": 59
+          },
+          {
+            "dimension": "objectcode",
+            "hierarchy": "objectcode",
+            "records": 2257
+          },
+          {
+            "dimension": "organization",
+            "hierarchy": "award",
+            "records": 375245
+          },
+          {
+            "dimension": "scenario",
+            "hierarchy": "scenario",
+            "records": 20
+          },
+          {
+            "dimension": "time",
+            "hierarchy": "fiscal",
+            "records": 376
+          },
+          {
+            "dimension": "variation",
+            "hierarchy": "variation",
+            "records": 7
+          }
+        ]
+      },
+      "dataSuperSet": {
+        "total": 23223819178560,
+        "details": [
+          {
+            "dimension": "product",
+            "records": 20
+          },
+          {
+            "dimension": "currency",
+            "records": 1
+          },
+          {
+            "dimension": "datasrc",
+            "records": 22
+          },
+          {
+            "dimension": "objectcode",
+            "records": 742
+          },
+          {
+            "dimension": "organization",
+            "records": 65141
+          },
+          {
+            "dimension": "scenario",
+            "records": 7
+          },
+          {
+            "dimension": "time",
+            "records": 156
+          },
+          {
+            "dimension": "variation",
+            "records": 1
+          }
+        ]
+      }
+    }
+	]
+}
