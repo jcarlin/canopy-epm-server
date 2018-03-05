@@ -6,34 +6,42 @@
         "details": [
           {
             "dimension": "product",
+            "hierarchy": "producttype",
             "records": 100
           },
           {
             "dimension": "currency",
+            "hierarchy": "currency",
             "records": 1
           },
           {
             "dimension": "datasrc",
+            "hierarchy": "datasrcalternate",
             "records": 1
           },
           {
             "dimension": "objectcode",
+            "hierarchy": "objectcode",
             "records": 1
           },
           {
             "dimension": "organization",
+            "hierarchy": "award",
             "records": 375243
           },
           {
             "dimension": "scenario",
+            "hierarchy": "scenario",
             "records": 2
           },
           {
             "dimension": "time",
+            "hierarchy": "fiscal",
             "records": 13
           },
           {
             "dimension": "variation",
+            "hierarchy": "variation",
             "records": 1
           }
         ]
@@ -58,34 +66,42 @@
         "details": [
           {
             "dimension": "product",
+            "hierarchy": "producttype",
             "records": 127009
           },
           {
             "dimension": "currency",
+            "hierarchy": "currency",
             "records": 1
           },
           {
             "dimension": "datasrc",
+            "hierarchy": "datasrcalternate",
             "records": 18
           },
           {
             "dimension": "objectcode",
+            "hierarchy": "objectcode",
             "records": 1540
           },
           {
             "dimension": "organization",
+            "hierarchy": "award",
             "records": 375243
           },
           {
             "dimension": "scenario",
+            "hierarchy": "scenario",
             "records": 2
           },
           {
             "dimension": "time",
+            "hierarchy": "fiscal",
             "records": 24
           },
           {
             "dimension": "variation",
+            "hierarchy": "variation",
             "records": 1
           }
         ]
@@ -104,38 +120,46 @@
       "dimSuperSet": {
         "total": 63413475962094720,
         "details": [
-          {
-            "dimension": "product",
-            "records": 127009
-          },
-          {
-            "dimension": "currency",
-            "records": 1
-          },
-          {
-            "dimension": "datasrc",
-            "records": 18
-          },
-          {
-            "dimension": "objectcode",
-            "records": 1540
-          },
-          {
-            "dimension": "organization",
-            "records": 375243
-          },
-          {
-            "dimension": "scenario",
-            "records": 2
-          },
-          {
-            "dimension": "time",
-            "records": 24
-          },
-          {
-            "dimension": "variation",
-            "records": 1
-          }
+            {
+              "dimension": "product",
+              "hierarchy": "producttype",
+              "records": 127009
+            },
+            {
+              "dimension": "currency",
+              "hierarchy": "currency",
+              "records": 1
+            },
+            {
+              "dimension": "datasrc",
+              "hierarchy": "datasrcalternate",
+              "records": 18
+            },
+            {
+              "dimension": "objectcode",
+              "hierarchy": "objectcode",
+              "records": 1540
+            },
+            {
+              "dimension": "organization",
+              "hierarchy": "award",
+              "records": 375243
+            },
+            {
+              "dimension": "scenario",
+              "hierarchy": "scenario",
+              "records": 2
+            },
+            {
+              "dimension": "time",
+              "hierarchy": "fiscal",
+              "records": 24
+            },
+            {
+              "dimension": "variation",
+              "hierarchy": "variation",
+              "records": 1
+            }
         ]
       },
       "dataSuperSet": {
@@ -152,38 +176,46 @@
       "dimSuperSet": {
         "total": 63413475962094720,
         "details": [
-          {
-            "dimension": "product",
-            "records": 127009
-          },
-          {
-            "dimension": "currency",
-            "records": 1
-          },
-          {
-            "dimension": "datasrc",
-            "records": 18
-          },
-          {
-            "dimension": "objectcode",
-            "records": 1540
-          },
-          {
-            "dimension": "organization",
-            "records": 375243
-          },
-          {
-            "dimension": "scenario",
-            "records": 2
-          },
-          {
-            "dimension": "time",
-            "records": 24
-          },
-          {
-            "dimension": "variation",
-            "records": 1
-          }
+            {
+              "dimension": "product",
+              "hierarchy": "producttype",
+              "records": 127009
+            },
+            {
+              "dimension": "currency",
+              "hierarchy": "currency",
+              "records": 1
+            },
+            {
+              "dimension": "datasrc",
+              "hierarchy": "datasrcalternate",
+              "records": 18
+            },
+            {
+              "dimension": "objectcode",
+              "hierarchy": "objectcode",
+              "records": 1540
+            },
+            {
+              "dimension": "organization",
+              "hierarchy": "award",
+              "records": 375243
+            },
+            {
+              "dimension": "scenario",
+              "hierarchy": "scenario",
+              "records": 2
+            },
+            {
+              "dimension": "time",
+              "hierarchy": "fiscal",
+              "records": 24
+            },
+            {
+              "dimension": "variation",
+              "hierarchy": "variation",
+              "records": 1
+            }
         ]
       },
       "dataSuperSet": {
@@ -200,38 +232,46 @@
       "dimSuperSet": {
         "total": 63413475962094720,
         "details": [
-          {
-            "dimension": "product",
-            "records": 127009
-          },
-          {
-            "dimension": "currency",
-            "records": 1
-          },
-          {
-            "dimension": "datasrc",
-            "records": 18
-          },
-          {
-            "dimension": "objectcode",
-            "records": 1540
-          },
-          {
-            "dimension": "organization",
-            "records": 375243
-          },
-          {
-            "dimension": "scenario",
-            "records": 2
-          },
-          {
-            "dimension": "time",
-            "records": 24
-          },
-          {
-            "dimension": "variation",
-            "records": 1
-          }
+            {
+              "dimension": "product",
+              "hierarchy": "producttype",
+              "records": 127009
+            },
+            {
+              "dimension": "currency",
+              "hierarchy": "currency",
+              "records": 1
+            },
+            {
+              "dimension": "datasrc",
+              "hierarchy": "datasrcalternate",
+              "records": 18
+            },
+            {
+              "dimension": "objectcode",
+              "hierarchy": "objectcode",
+              "records": 1540
+            },
+            {
+              "dimension": "organization",
+              "hierarchy": "award",
+              "records": 375243
+            },
+            {
+              "dimension": "scenario",
+              "hierarchy": "scenario",
+              "records": 2
+            },
+            {
+              "dimension": "time",
+              "hierarchy": "fiscal",
+              "records": 24
+            },
+            {
+              "dimension": "variation",
+              "hierarchy": "variation",
+              "records": 1
+            }
         ]
       },
       "dataSuperSet": {
