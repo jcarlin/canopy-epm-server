@@ -174,13 +174,8 @@
     },
     "profit-and-loss-by-time": {
       "dimSuperSet": {
-        "total": 63413475962094720,
+        "total": 499283326080,
         "details": [
-            {
-              "dimension": "product",
-              "hierarchy": "producttype",
-              "records": 127009
-            },
             {
               "dimension": "currency",
               "hierarchy": "currency",
@@ -230,13 +225,8 @@
     },
     "profit-and-loss-variance": {
       "dimSuperSet": {
-        "total": 63413475962094720,
+        "total": 499283326080,
         "details": [
-            {
-              "dimension": "product",
-              "hierarchy": "producttype",
-              "records": 127009
-            },
             {
               "dimension": "currency",
               "hierarchy": "currency",
