@@ -62,7 +62,7 @@
     },
     "gross-profit-by-time": {
       "dimSuperSet": {
-        "total": 63413475962094720,
+        "total": 31706737981047400,
         "details": [
           {
             "dimension": "product",
@@ -97,7 +97,7 @@
           {
             "dimension": "time",
             "hierarchy": "fiscal",
-            "records": 24
+            "records": 12
           },
           {
             "dimension": "variation",
@@ -118,7 +118,7 @@
     },
     "gross-profit-variance": {
       "dimSuperSet": {
-        "total": 63413475962094720,
+        "total": 31706737981047400,
         "details": [
             {
               "dimension": "product",
@@ -153,7 +153,7 @@
             {
               "dimension": "time",
               "hierarchy": "fiscal",
-              "records": 24
+              "records": 12
             },
             {
               "dimension": "variation",
@@ -174,7 +174,7 @@
     },
     "profit-and-loss-by-time": {
       "dimSuperSet": {
-        "total": 499283326080,
+        "total": 249641663040,
         "details": [
             {
               "dimension": "currency",
@@ -204,7 +204,7 @@
             {
               "dimension": "time",
               "hierarchy": "fiscal",
-              "records": 24
+              "records": 12
             },
             {
               "dimension": "variation",
