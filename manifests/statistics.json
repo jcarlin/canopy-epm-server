@@ -16,7 +16,7 @@
           },
           {
             "dimension": "datasrc",
-            "hierarchy": "datasrcalternate",
+            "hierarchy": "alternate",
             "records": 1
           },
           {
@@ -26,7 +26,7 @@
           },
           {
             "dimension": "organization",
-            "hierarchy": "award",
+            "hierarchy": "geography",
             "records": 375243
           },
           {
@@ -76,7 +76,7 @@
           },
           {
             "dimension": "datasrc",
-            "hierarchy": "datasrcalternate",
+            "hierarchy": "alternate",
             "records": 18
           },
           {
@@ -86,7 +86,7 @@
           },
           {
             "dimension": "organization",
-            "hierarchy": "award",
+            "hierarchy": "geography",
             "records": 375243
           },
           {
@@ -132,7 +132,7 @@
             },
             {
               "dimension": "datasrc",
-              "hierarchy": "datasrcalternate",
+              "hierarchy": "alternate",
               "records": 18
             },
             {
@@ -142,7 +142,7 @@
             },
             {
               "dimension": "organization",
-              "hierarchy": "award",
+              "hierarchy": "geography",
               "records": 375243
             },
             {
@@ -183,7 +183,7 @@
             },
             {
               "dimension": "datasrc",
-              "hierarchy": "datasrcalternate",
+              "hierarchy": "alternate",
               "records": 18
             },
             {
@@ -193,7 +193,7 @@
             },
             {
               "dimension": "organization",
-              "hierarchy": "award",
+              "hierarchy": "geography",
               "records": 375243
             },
             {
@@ -234,7 +234,7 @@
             },
             {
               "dimension": "datasrc",
-              "hierarchy": "datasrcalternate",
+              "hierarchy": "alternate",
               "records": 18
             },
             {
@@ -244,7 +244,7 @@
             },
             {
               "dimension": "organization",
-              "hierarchy": "award",
+              "hierarchy": "geography",
               "records": 375243
             },
             {
@@ -437,7 +437,7 @@
           },
           {
             "dimension": "datasrc",
-            "hierarchy": "datasrcalternate",
+            "hierarchy": "alternate",
             "records": 59
           },
           {
@@ -447,7 +447,7 @@
           },
           {
             "dimension": "organization",
-            "hierarchy": "award",
+            "hierarchy": "geography",
             "records": 375245
           },
           {
