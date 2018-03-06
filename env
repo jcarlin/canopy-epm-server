@@ -3,7 +3,7 @@ AUTH0_AUDIENCE=https://api.canopyepm.com
 AUTH0_ISSUER=canopyepm.auth0.com
 
 # Default Database type to connect on startup
-DB_TYPE='POSTGRESQL'
+DB_TYPE='SNOWFLAKE'
 
 # PostgreSQL Connection details
 PGHOST='canopy-epm-test.cxuldttnrpns.us-east-2.rds.amazonaws.com'
