@@ -468,11 +468,11 @@
         ]
       },
       "dataSuperSet": {
-        "total": 48770020274976,
+        "total": 33885903214800000,
         "details": [
           {
             "dimension": "product",
-            "records": 42
+            "records": 2100
           },
           {
             "dimension": "currency",
@@ -480,23 +480,23 @@
           },
           {
             "dimension": "datasrc",
-            "records": 22
+            "records": 26
           },
           {
             "dimension": "objectcode",
-            "records": 742
+            "records": 1575
           },
           {
             "dimension": "organization",
-            "records": 65141
+            "records": 169847
           },
           {
             "dimension": "scenario",
-            "records": 7
+            "records": 10
           },
           {
             "dimension": "time",
-            "records": 156
+            "records": 232
           },
           {
             "dimension": "variation",
