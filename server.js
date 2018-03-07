@@ -7,7 +7,6 @@ const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
 const async = require('async');
 
-
 const mountAllRoutes = require('./routes')
 const port = process.env.PORT || 8080;
 const app = express();

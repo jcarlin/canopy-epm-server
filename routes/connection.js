@@ -1,5 +1,15 @@
-const Router = require('express-promise-router')
-const db = require('../db')
+const Router = require('express-promise-router');
+const db = require('../db');
+
+(async() => {
+  await db.query(`CREATE EXTENSION IF NOT EXISTS hstore SCHEMA pg_catalog;`, null, 'POSTGRESQL');
+  await db.query(`SET search_path TO elt;`, null, 'POSTGRESQL');
+  const dimKeys = await db.query('SELECT * FROM s_dim;', null, 'POSTGRESQL');
+  const hierKeys = await db.query('SELECT * FROM s_hier;', null, 'POSTGRESQL');
+
+  process.env.DIM_KEYS = JSON.stringify(dimKeys);
+  process.env.HIER_KEYS = JSON.stringify(hierKeys);
+})()
 
 const dbConnections = (activeDb) => {
   return [

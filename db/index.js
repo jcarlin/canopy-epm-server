@@ -22,6 +22,7 @@ pool.query(startupSql, (err, res) => {
     console.log('PostgreSQL failed. startupSql errored.')
     return process.exit(-1) // Shutdown node
   }
+
   console.log('PostgreSQL successfully running and `startupSql` executed.')
 })
 
@@ -54,12 +55,15 @@ sfClient.connect(function(err, conn) {
 /**
  * All queries route through here 
  */
-const query = (sql, params) => {
+const query = (sql, params, database) => {
   return new Promise((resolve, reject) => {
+    // Use passed database otherwise env var db.
+    const dbType = database ? database : process.env.DB_TYPE;
+    
     console.log(sql);
 
     // TODO
-    if (process.env.DB_TYPE === 'POSTGRESQL') { //postgres
+    if (dbType === 'POSTGRESQL') { //postgres
       console.time('pgQuery')
       pool.query(sql, params)
       .then(res => {
@@ -72,7 +76,7 @@ const query = (sql, params) => {
       })
     }
 
-    if (process.env.DB_TYPE === 'SNOWFLAKE') { //snowflake
+    if (dbType === 'SNOWFLAKE') { //snowflake
       console.time('sfQuery')
       sfClient.execute({
         sqlText: sql,
