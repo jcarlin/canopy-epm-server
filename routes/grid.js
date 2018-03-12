@@ -10,17 +10,6 @@ const hrtime = require('process.hrtime')
 
 const router = new Router()
 
-let graindefs = {};
-let dimKeys = {};
-let factKeys = [];
-
-// Tasks to perform on startup
-(async () => {
-  graindefs = await util.readFile('./graindefs/graindefs.json')
-  dimKeys = graindefs.dimKeys;
-  factKeys = graindefs.factKeys;
-})();
-
 /**
  * In response to the client app sending
  * a hydrated manifest, send back the completely
@@ -97,9 +86,10 @@ router.post('/', async (req, res, next) => {
     const pinned = grid.getPinnedSet(region.pinned);
     const includeVariance = region.includeVariance;
     const includeVariancePct = region.includeVariancePct;
+    const dimKeys = JSON.parse(process.env.DIM_KEYS);
     const dimensionsWithKeys = util.mergeDimKeys(pinned, dimKeys);
     const dimIdSql = transforms.getDimensionIdSql(dimensionsWithKeys);
-    const transform = await util.readFile(`./transforms/${region.transform}`);
+    const transform = await util.readJsonFile(`./transforms/${region.transform}`);
     const dimIds = await db.query(dimIdSql);
     const sql = await buildDataSetQuery(dimensionsWithKeys, dimIds, transform);
 
@@ -155,9 +145,10 @@ router.patch('/', async (req, res, next) => {
     return region.colIndex === ice.colIndex && region.rowIndex === ice.rowIndex;
   });
   const keySets = util.buildKeySet(grid.extractKeySetAndId(ice.rowKey), grid.extractKeySetAndId(ice.columnKey), grid.getPinnedSet(region.pinned));
+  const dimKeys = JSON.parse(process.env.DIM_KEYS);
   const dimensionsWithKeys = util.mergeDimKeys(keySets, dimKeys);
 
-  const transform = await util.readFile(`./transforms/${region.transform}`)
+  const transform = await util.readJsonFile(`./transforms/${region.transform}`)
   const dimIdSql = transforms.getDimensionIdSql(dimensionsWithKeys);
   const dimData = await db.query(dimIdSql)
   const factInfo = util.mergeFactKeys(transform.metrics, factKeys)[0];

@@ -1,4 +1,18 @@
-const makeGrainBrickQueryStrings = (params) => {
+const upsertGraindefSql = (params) => {
+  const sql = `
+    INSERT INTO model.graindef (graindef_id, graindef_name, graindef_dimensions, graindef_graindef)
+    VALUES (${params.id}, '${params.name}', '{${params.dimension}}', '${params.graindefString}'::json)
+    ON CONFLICT (graindef_id, graindef_name) DO 
+    UPDATE SET
+      graindef_id = EXCLUDED.graindef_id,
+      graindef_dimensions = EXCLUDED.graindef_dimensions,
+      graindef_graindef = EXCLUDED.graindef_graindef
+    WHERE graindef.graindef_name = EXCLUDED.graindef_name;`;
+
+  return sql;
+};
+
+const makeGrainBrickSql = (params) => {
   const members = params.members;
   const grainTableName = params.grainTableName;
   const grainSerName = params.grainSerName;
@@ -50,7 +64,7 @@ const makeGrainBrickQueryStrings = (params) => {
             ` ];
 };
 
-const makeGrainBlockQueryStrings = (params, options) => {
+const makeGrainBlockSql = (params, options) => {
   const members = params.members;
   const grainTableName = params.grainTableName;
   const grainSerName = params.grainSerName;
@@ -222,6 +236,7 @@ const makeGrainBlockQueryStrings = (params, options) => {
 
 
 module.exports = { 
-  makeGrainBrickQueryStrings,
-  makeGrainBlockQueryStrings
+  upsertGraindefSql,
+  makeGrainBrickSql,
+  makeGrainBlockSql
 };

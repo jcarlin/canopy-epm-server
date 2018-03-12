@@ -5,8 +5,8 @@ const graindefs = require('./../graindefs')
 const router = new Router()
 
 router.get('/', async (req, res, next) => {
-  const graindefsJson = await util.readFile('./graindefs/graindefs.json')
-  return res.json(graindefsJson.graindefs);
+  results = await db.query("SELECT * FROM model.graindef;", null, 'POSTGRESQL');
+  return res.json(results);
 });
 
 const getDimInfo = (member, dimKeys) => {
@@ -52,7 +52,7 @@ const createGrainDefSql = (graindef, member, dimInfo, hierKeys, schema) => {
     
     // assemble the sql for the brick/block creation
     if (graindef.grainType === "brick" && member.memberSetType === "evaluated") {
-      queryStrings = graindefs.makeGrainBrickQueryStrings(sqlParams);
+      queryStrings = graindefs.makeGrainBrickSql(sqlParams);
     } else if (graindef.grainType === "block") {
       // TODO: remove this hack (that grabs the parent graindef (table))
       if (member.platformType === "node_leaf") {
@@ -66,7 +66,7 @@ const createGrainDefSql = (graindef, member, dimInfo, hierKeys, schema) => {
           return msc.database === "postgres";
         });
       }
-      queryStrings = graindefs.makeGrainBlockQueryStrings(sqlParams, {"memberSet": member});
+      queryStrings = graindefs.makeGrainBlockSql(sqlParams, {"memberSet": member});
     }
     
     // TODO - queryStrings should not be an array
@@ -77,10 +77,11 @@ const createGrainDefSql = (graindef, member, dimInfo, hierKeys, schema) => {
   })
 }
 
+// Old 'generate all graindef' route:
 // router.post('/', async (req, res, next) => {
 //   const graindefId = req.body.graindefId;
 //   const graindefName = req.body.graindefName;
-//   const graindefsJson = await util.readFile('./graindefs/graindefs.json')
+//   const graindefsJson = await util.readJsonFile('./graindefs/graindefs.json')
 //   // TODO - remove dimKeys and hierKeys from graindefs.json.
 //   const dimKeys = graindefsJson.dimKeys
 //   const hierKeys = graindefsJson.hierKeys
@@ -110,26 +111,34 @@ router.patch('/', async (req, res, next) => {
   const memberSet = graindefJson.memberSets[0];
   const dimKeys = process.env.DIM_KEYS;
   const hierKeys = process.env.HIER_KEYS;
-  
-  // TODO - extract sql to graindefs/query.js
-  results = await db.query(`
-    INSERT INTO model.graindef (graindef_id, graindef_name, graindef_dimensions, graindef_graindef)
-    VALUES (${graindefJson.id}, '${graindefJson.name}', '{${memberSet.dimension}}', '${graindefString}'::json)
-    ON CONFLICT (graindef_id, graindef_name) DO 
-    UPDATE SET
-      graindef_id = EXCLUDED.graindef_id,
-      graindef_dimensions = EXCLUDED.graindef_dimensions,
-      graindef_graindef = EXCLUDED.graindef_graindef
-    WHERE graindef.graindef_name = EXCLUDED.graindef_name;`, null, 'POSTGRESQL' );
 
   const dimInfo = await getDimInfo(memberSet, dimKeys)
   
-  // For now, all graindefs are going into 'model' schema
-  const graindefSql = await createGrainDefSql(graindefJson, memberSet, dimInfo, hierKeys, 'model')
-
-  results = await db.query(graindefSql, null, 'POSTGRESQL');
+  // Get and execute upsert model.graindef sql
+  sqlParams = {
+    id: graindefJson.id, 
+    name: graindefJson.name, 
+    dimension: memberSet.dimension, 
+    graindefString: graindefString
+  };
+  sql = graindefs.upsertGraindefSql(sqlParams);
+  results = await db.query(sql, null, 'POSTGRESQL');
   
-  return res.json(`Successfully executed sql to create graindef ${graindefJson.name}.`);
+  // Get and execute graindef creation sql
+  const graindefSql = await createGrainDefSql(graindefJson, memberSet, dimInfo, hierKeys, 'elt')
+  results = await db.query(graindefSql, null, 'POSTGRESQL');
+
+  // Gather all the views (that should be recreated), and execute their sql
+  const files = await util.readDir('./db/postgresql/views');
+  files.map(async (file) => {
+    const sql = await util.readFile(`./db/postgresql/views/${file}`);
+    results = await db.query(sql, null, 'POSTGRESQL');
+  });
+
+  // Async parallel execute sql for all the views (that should be recreated)
+  await Promise.all(files).then((sqlResults) => {
+    return res.json(`Successfully executed sql to create graindef ${graindefJson.name}.`);
+  });
 });
 
 // export our router to be mounted by the parent application

@@ -28,7 +28,7 @@ router.get('/', async (req, res, next) => {
     return res.status(400).json({ error: 'You must supply a manifest type' });
   }
 
-  const manifest = await util.readFile(`./manifests/${manifestType}.json`)
+  const manifest = await util.readJsonFile(`./manifests/${manifestType}.json`)
   return res.json({manifest});
 });
 
