@@ -5,13 +5,15 @@ const graindefs = require('./../graindefs')
 const router = new Router()
 
 router.get('/', async (req, res, next) => {
-  results = await db.query("SELECT * FROM model.graindef;", null, 'POSTGRESQL');
+  results = await db.query("SELECT graindef_graindef FROM model.graindef;", null, 'POSTGRESQL');
+  results = results.map(row => {
+    return row.graindef_graindef[0];
+  })
   return res.json(results);
 });
 
 const getDimInfo = (member, dimKeys) => {
   return new Promise((resolve, reject) => {
-    dimKeys = JSON.parse(dimKeys);
     // Get dimension info
     const dimInfo = dimKeys.find(dimKey => {
       return dimKey.dim_name === member.dimension;
@@ -43,10 +45,10 @@ const createGrainDefSql = (graindef, member, dimInfo, hierKeys, schema) => {
     // Get hierarchy info
     if (member.hierarchy) {
       const hierInfo = hierKeys.find(hierKey => {
-        return hierKey.name === member.hierarchy;
+        return hierKey.hier_name === member.hierarchy;
       });
 
-      sqlParams.hierNumber = hierInfo.id;
+      sqlParams.hierNumber = hierInfo.hier_id;
       sqlParams.hierName = member.hierarchy;
     }
     
@@ -109,8 +111,8 @@ router.patch('/', async (req, res, next) => {
   
   // TODO - add support for multiple memberSets objects
   const memberSet = graindefJson.memberSets[0];
-  const dimKeys = process.env.DIM_KEYS;
-  const hierKeys = process.env.HIER_KEYS;
+  const dimKeys = JSON.parse(process.env.DIM_KEYS);
+  const hierKeys = JSON.parse(process.env.HIER_KEYS);
 
   const dimInfo = await getDimInfo(memberSet, dimKeys)
   
@@ -119,7 +121,7 @@ router.patch('/', async (req, res, next) => {
     id: graindefJson.id, 
     name: graindefJson.name, 
     dimension: memberSet.dimension, 
-    graindefString: graindefString
+    graindefString: graindefString.replace(/'/g, "''")
   };
   sql = graindefs.upsertGraindefSql(sqlParams);
   results = await db.query(sql, null, 'POSTGRESQL');
