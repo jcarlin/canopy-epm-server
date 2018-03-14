@@ -64,6 +64,27 @@ const makeGrainBrickSql = (params) => {
             ` ];
 };
 
+const makeGrainBrickSqlSf = (params) => {
+  const members = params.members;
+  const grainTableName = params.grainTableName;
+  const grainSerName = params.grainSerName;
+  const dimNumber = params.dimNumber;
+  const dimIdName = `d${dimNumber}_id`;
+  const dimByte = params.dimByte;
+  const dimTableName = `dim_${dimNumber}`;
+  const grainViewName = `grain_${params.graindefName}`;
+  const schema = params.schema;
+  
+  const grainTableSql =
+    `CREATE TABLE IF NOT EXISTS ${grainTableName} (
+        epoch_id     SMALLINT DEFAULT 1,
+        ${grainSerName}  INTEGER,
+        ${dimIdName} ${dimByte} NOT NULL);`;
+
+  // return them all as one string with some line breaks in between for debuging
+  return grainTableSql;
+};
+
 const makeGrainBlockSql = (params, options) => {
   const members = params.members;
   const grainTableName = params.grainTableName;
@@ -234,9 +255,37 @@ const makeGrainBlockSql = (params, options) => {
             ` ];
 };
 
+const makeGrainBlockSqlSf = (params, options) => {
+  const members = params.members;
+  const grainTableName = params.grainTableName;
+  const grainSerName = params.grainSerName;
+  const dimNumber = params.dimNumber;
+  const dimIdName = `d${dimNumber}_id`;
+  const hierNumber = params.hierNumber;
+  const hierIdName = `d${hierNumber}_id`;
+  const goofyDimIdName = `goofy_${dimIdName}`;
+  const dimByte = params.dimByte;
+  const dimTableName = `dim_${dimNumber}`;
+  const grainViewName = `grain_${params.graindefName}`;
+  const hierName = params.hierName;
+  const graindefId = params.graindefId;
+  const schema = params.schema;
+  
+  const grainTableSql =
+    ` DROP TABLE IF EXISTS ${grainTableName} CASCADE;
+      CREATE TABLE IF NOT EXISTS ${grainTableName} (
+        epoch_id     SMALLINT DEFAULT 1,
+        ${grainSerName}  INTEGER,
+        ${dimIdName} ${dimByte} NOT NULL,
+        ${goofyDimIdName} ${dimByte} NOT NULL);`;
+
+  return grainTableSql;
+};
 
 module.exports = { 
   upsertGraindefSql,
   makeGrainBrickSql,
-  makeGrainBlockSql
+  makeGrainBrickSqlSf,
+  makeGrainBlockSql,
+  makeGrainBlockSqlSf
 };

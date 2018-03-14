@@ -1,11 +1,15 @@
 const {
   upsertGraindefSql,
   makeGrainBlockSql,
-  makeGrainBrickSql
+  makeGrainBlockSqlSf,
+  makeGrainBrickSql,
+  makeGrainBrickSqlSf
 } = require('./query.js')
 
 module.exports = {
   upsertGraindefSql,
   makeGrainBlockSql,
-  makeGrainBrickSql
+  makeGrainBlockSqlSf,
+  makeGrainBrickSql,
+  makeGrainBrickSqlSf
 }
