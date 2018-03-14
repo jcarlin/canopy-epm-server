@@ -13,7 +13,7 @@ const getDimInfo = (member, dimKeys) => {
     });
 
     if (!dimInfo) {
-      reject('Could not find dimInfo for member.')
+      reject(new Error('Could not find dimInfo for member.'))
     }
     resolve(dimInfo)
   })
@@ -42,8 +42,8 @@ const createGrainDefSql = (graindef, member, dimInfo, hierKeys, schema) => {
         return hierKey.hier_name === member.hierarchy;
       });
 
-      if (!hierInfo.length) {
-        return reject('createGraindefSql could not find hierInfo');
+      if (!hierInfo) {
+        return reject(new Error('createGraindefSql could not find hierInfo'));
       }
 
       sqlParams.hierNumber = hierInfo.hier_id;
@@ -71,7 +71,7 @@ const createGrainDefSql = (graindef, member, dimInfo, hierKeys, schema) => {
     }
 
     if (queryStrings.length < 1) {
-      return reject('No queryStrings returned.')
+      return reject(new Error('No queryStrings returned.'))
     }
     return resolve(queryStrings[0]);
   })
@@ -99,8 +99,8 @@ const createGrainDefSqlSf = (graindef, member, dimInfo, hierKeys, schema) => {
         return hierKey.hier_name === member.hierarchy;
       });
 
-      if (!hierInfo.length) {
-        return reject('createGraindefSql could not find hierInfo');
+      if (!hierInfo) {
+        return reject(new Error('createGraindefSql could not find hierInfo'));
       }
 
       sqlParams.hierNumber = hierInfo.hier_id;
