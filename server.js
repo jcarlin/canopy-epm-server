@@ -7,7 +7,6 @@ const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
 const async = require('async');
 
-
 const mountAllRoutes = require('./routes')
 const port = process.env.PORT || 8080;
 const app = express();
@@ -47,10 +46,9 @@ mountAllRoutes(app);
 
 // Move this to ./routes?
 const errorHandler = (err, req, res, next) => {
-  console.log('errorHandler err: ', err);
+  console.log('Server Error: ', err.message);
   console.trace();
-  res.status(500);
-  return res.json({ error: err.message });
+  return res.status(500).send(err.message);
 };
 
 // Error Handler

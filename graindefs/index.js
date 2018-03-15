@@ -1,13 +1,15 @@
 const {
-  makeAppNetRevView,
-  makeGrainBlockQueryStrings,
-  makeGrainBrickQueryStrings,
-  makeObjectCodeByTimeView
+  upsertGraindefSql,
+  makeGrainBlockSql,
+  makeGrainBlockSqlSf,
+  makeGrainBrickSql,
+  makeGrainBrickSqlSf
 } = require('./query.js')
 
 module.exports = {
-  makeAppNetRevView,
-  makeGrainBlockQueryStrings,
-  makeGrainBrickQueryStrings,
-  makeObjectCodeByTimeView
+  upsertGraindefSql,
+  makeGrainBlockSql,
+  makeGrainBlockSqlSf,
+  makeGrainBrickSql,
+  makeGrainBrickSqlSf
 }

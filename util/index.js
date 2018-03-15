@@ -138,11 +138,11 @@ const mergeDimKeys = (dimArray, dimKeys) => {
   return dimArray.map(dim => {
     // Get dimension info
     const dimInfo = dimKeys.find(dimKey => {
-      return dimKey.name === dim.dimension;
+      return dimKey.dim_name === dim.dimension;
     });
 
-    dim.id = dimInfo.id;
-    dim.idColName = `d${dimInfo.id}_id`;
+    dim.id = dimInfo.dim_id;
+    dim.idColName = `d${dimInfo.dim_id}_id`;
 
     return dim;
   });
@@ -178,10 +178,31 @@ const buildKeySet = (rowKeySet, colKeySet, pinned) => {
   ];
 };
 
-const readFile = filePath => new Promise((resolve, reject) => {
+const readDir = filePath => new Promise((resolve, reject) => {
+  fs.readdir(filePath, (err, files) => {
+    if (err) reject(err);
+    else resolve(files);
+  });
+});
+
+const readJsonFile = filePath => new Promise((resolve, reject) => {
   fs.readFile(filePath, (err, data) => {
     if (err) reject(err);
     else resolve(JSON.parse(data));
+  });
+});
+
+const writeJsonFile = (filePath, data) => new Promise((resolve, reject) => {
+  fs.writeFile(filePath, data, (err) => {
+    if (err) reject(err);
+    else resolve('The file has been saved!');
+  });
+});
+
+const readFile = filePath => new Promise((resolve, reject) => {
+  fs.readFile(filePath, (err, data) => {
+    if (err) reject(err);
+    else resolve(data.toString());
   });
 });
 
@@ -202,7 +223,10 @@ module.exports = {
   mergeFactKeys,
   mergeDimVals,
   buildKeySet,
+  readDir,
   readFile,
+  readJsonFile,
   removeDuplicates,
-  formatTimeStat
+  formatTimeStat,
+  writeJsonFile
 };
