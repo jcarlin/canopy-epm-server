@@ -2,13 +2,13 @@ branch-defaults:
   development:
     environment: canopy-epm-server-dev
   master:
-    environment: canopy-epm-server-test
+    environment: canopy-epm-server-prd
 environment-defaults:
   canopy-epm-server-dev:
     branch: null
     repository: null
 global:
-  application_name: canopy-epm-server-test
+  application_name: canopy-epm-server
   default_ec2_keyname: venturplex-canopy-poc
   default_platform: arn:aws:elasticbeanstalk:us-east-2::platform/Node.js running on
     64bit Amazon Linux/4.4.0
