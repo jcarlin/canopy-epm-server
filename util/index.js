@@ -192,6 +192,13 @@ const readJsonFile = filePath => new Promise((resolve, reject) => {
   });
 });
 
+const writeJsonFile = (filePath, data) => new Promise((resolve, reject) => {
+  fs.writeFile(filePath, data, (err) => {
+    if (err) reject(err);
+    else resolve('The file has been saved!');
+  });
+});
+
 const readFile = filePath => new Promise((resolve, reject) => {
   fs.readFile(filePath, (err, data) => {
     if (err) reject(err);
@@ -220,5 +227,6 @@ module.exports = {
   readFile,
   readJsonFile,
   removeDuplicates,
-  formatTimeStat
+  formatTimeStat,
+  writeJsonFile
 };

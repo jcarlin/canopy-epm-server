@@ -151,6 +151,7 @@ router.patch('/', async (req, res, next) => {
   const transform = await util.readJsonFile(`./transforms/${region.transform}`)
   const dimIdSql = transforms.getDimensionIdSql(dimensionsWithKeys);
   const dimData = await db.query(dimIdSql)
+  const factKeys = JSON.parse(process.env.FACT_KEYS);
   const factInfo = util.mergeFactKeys(transform.metrics, factKeys)[0];
   const dimensionsWithVals = util.mergeDimVals(dimensionsWithKeys, dimData[0]);
   

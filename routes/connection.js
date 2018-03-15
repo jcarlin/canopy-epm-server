@@ -6,9 +6,11 @@ const db = require('../db');
   await db.query(`SET search_path TO elt;`, null, 'POSTGRESQL');
   const dimKeys = await db.query('SELECT * FROM s_dim;', null, 'POSTGRESQL');
   const hierKeys = await db.query('SELECT * FROM s_hier;', null, 'POSTGRESQL');
+  const factKeys = await db.query('SELECT * FROM s_fact;', null, 'POSTGRESQL');
 
   process.env.DIM_KEYS = JSON.stringify(dimKeys);
   process.env.HIER_KEYS = JSON.stringify(hierKeys);
+  process.env.FACT_KEYS = JSON.stringify(factKeys);
 })()
 
 const dbConnections = (activeDb) => {

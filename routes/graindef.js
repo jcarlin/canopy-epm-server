@@ -167,7 +167,6 @@ router.patch('/', async (req, res, next) => {
   /**
    * POSTGRESQL
   */
-
   // Get and execute graindef creation sql 
   const graindefSql = await createGrainDefSql(graindefJson, memberSet, dimInfo, hierKeys, 'elt');
   results = await db.query(graindefSql, null, 'POSTGRESQL');
@@ -196,12 +195,34 @@ router.patch('/', async (req, res, next) => {
   const graindefSqlSf = await createGrainDefSqlSf(graindefJson, memberSet, dimInfo, hierKeys);
   await db.query(graindefSqlSf, null, 'SNOWFLAKE');
 
+  // Get all the data that was inserted in postgresql, format it for snowflake
   results = await db.query(`SELECT * FROM grain_${graindefJson.id}`, null, 'POSTGRESQL');
-  const valueList = results.map(row => {
+
+  if (results.length > 10000) {
+    return res.status(400).json({
+      error: `Graindef grain_${graindefJson.id} successfully created BUT Snowflake insert skipped; more than 10,000 rows constraint`
+    });
+  }
+
+  const valueList = results.map((row) => {
     return `(${Object.values(row).join(", ")})`;
   }).join(", ");
 
+  // Insert data into snowflake 
   await db.query(`INSERT INTO grain_${graindefJson.id} VALUES ${valueList}`, null, 'SNOWFLAKE');
+
+  // await util.writeJsonFile(`${__dirname}/test.json`, JSON.stringify(results.slice(0, 100))); // chopped it down to 100 rows in json just for testing
+
+  // await db.query(`drop stage if exists grain_605_stage;`); 
+
+  // await db.query(`CREATE STAGE grain_605_stage FILE_FORMAT = (TYPE = JSON FILE_EXTENSION = 'json')`);
+
+  // THIS IS FAILING!
+  // await db.query(`put file:///${__dirname}/test.json @grain_605_stage`);
+
+  // HAVEN'T TESTED YET
+  // await db.query(`COPY INTO grain_605 FROM @grain_605_stage FILE_FORMAT = (TYPE = JSON)`);
+
   return res.json(`Successfully executed sql to create graindef ${graindefJson.name}.`);
 });
 

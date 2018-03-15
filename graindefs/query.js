@@ -272,12 +272,11 @@ const makeGrainBlockSqlSf = (params, options) => {
   const schema = params.schema;
   
   const grainTableSql =
-    ` DROP TABLE IF EXISTS ${grainTableName} CASCADE;
-      CREATE TABLE IF NOT EXISTS ${grainTableName} (
-        epoch_id     SMALLINT DEFAULT 1,
-        ${grainSerName}  INTEGER,
-        ${dimIdName} ${dimByte} NOT NULL,
-        ${goofyDimIdName} ${dimByte} NOT NULL);`;
+    `CREATE TABLE IF NOT EXISTS ${grainTableName} (
+      epoch_id     SMALLINT DEFAULT 1,
+      ${grainSerName}  INTEGER,
+      ${dimIdName} ${dimByte} NOT NULL,
+      ${goofyDimIdName} ${dimByte} NOT NULL);`;
 
   return grainTableSql;
 };
