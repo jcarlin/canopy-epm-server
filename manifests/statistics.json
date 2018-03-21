@@ -2,7 +2,7 @@
   "manifests": {
     "sales-revenue-by-product": {
       "dimSuperSet": {
-        "total": 975631800,
+        "total": 900583200,
         "details": [
           {
             "dimension": "product",
@@ -37,7 +37,7 @@
           {
             "dimension": "time",
             "hierarchy": "fiscal",
-            "records": 13
+            "records": 12
           },
           {
             "dimension": "variation",
@@ -62,7 +62,7 @@
     },
     "gross-profit-by-time": {
       "dimSuperSet": {
-        "total": 31706737981047400,
+        "total": 34348966146134600,
         "details": [
           {
             "dimension": "product",
@@ -97,7 +97,7 @@
           {
             "dimension": "time",
             "hierarchy": "fiscal",
-            "records": 12
+            "records": 13
           },
           {
             "dimension": "variation",
@@ -174,7 +174,7 @@
     },
     "profit-and-loss-by-time": {
       "dimSuperSet": {
-        "total": 249641663040,
+        "total": 270445134960,
         "details": [
             {
               "dimension": "currency",
@@ -204,7 +204,7 @@
             {
               "dimension": "time",
               "hierarchy": "fiscal",
-              "records": 12
+              "records": 13
             },
             {
               "dimension": "variation",
@@ -225,7 +225,7 @@
     },
     "profit-and-loss-variance": {
       "dimSuperSet": {
-        "total": 499283326080,
+        "total": 41606943840,
         "details": [
             {
               "dimension": "currency",
@@ -255,7 +255,7 @@
             {
               "dimension": "time",
               "hierarchy": "fiscal",
-              "records": 24
+              "records": 2
             },
             {
               "dimension": "variation",
