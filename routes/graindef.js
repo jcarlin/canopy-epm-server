@@ -172,15 +172,15 @@ router.patch('/', async (req, res, next) => {
   results = await db.query(graindefSql, null, 'POSTGRESQL');
 
   // Gather all the views (that should be recreated), and execute their sql
-  const files = await util.readDir('./db/postgresql/views');
-  files.map(async (file) => {
+  const pgViews = await util.readDir('./db/postgresql/views');
+  pgViews.map(async (file) => {
     const sql = await util.readFile(`./db/postgresql/views/${file}`);
     results = await db.query(sql, null, 'POSTGRESQL');
   });
 
   // Async parallel execute sql for all the views (that should be recreated)
-  await Promise.all(files).then((sqlResults) => {
-    // return res.json(`Successfully executed sql to create graindef ${graindefJson.name}.`);
+  await Promise.all(pgViews).then((sqlResults) => {
+    console.log('pg views recreated');
   });
 
   /**
@@ -194,6 +194,22 @@ router.patch('/', async (req, res, next) => {
   // Get and execute graindef creation sql 
   const graindefSqlSf = await createGrainDefSqlSf(graindefJson, memberSet, dimInfo, hierKeys);
   await db.query(graindefSqlSf, null, 'SNOWFLAKE');
+
+  // NOTE: The below commented code rebuilds the sf views.
+  // I left it out because I don't believe they are dropped from graindef building
+  // and don't want to rebuild them because I'm uncertain of impact.
+
+  // Gather all the views (that should be recreated), and execute their sql
+  // const sfViews = await util.readDir('./db/snowflake/views');
+  // sfViews.map(async (file) => {
+  //   const sql = await util.readFile(`./db/snowflake/views/${file}`);
+  //   results = await db.query(sql, null, 'SNOWFLAKE');
+  // });
+
+  // Async parallel execute sql for all the views (that should be recreated)
+  // await Promise.all(sfViews).then((sqlResults) => {
+  //   console.log('sf views recreated');
+  // });
 
   // Get all the data that was inserted in postgresql, format it for snowflake
   results = await db.query(`SELECT * FROM grain_${graindefJson.id}`, null, 'POSTGRESQL');
